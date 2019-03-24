@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>接口</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="__LAYUI__/layui/css/layui.css">
+    <link rel="stylesheet" href="__LAYUI__/style/admin.css">
+</head>
+
+<body>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <!-- 搜索 -->
+                        <div class="table-reload-btn">
+                            <form class="layui-form">
+                                <div class="layui-inline">
+                                    <div class="layui-btn-group">
+                                        <button type="button" class="layui-btn" id="btn-add">添加接口</button>
+                                        <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
+                                        <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
+                                    </div>
+                                </div>
+                                <div class="layui-inline">
+                                    <input type="hidden" name="field_name" value="name">
+                                    <input type="text" name="field_value" class="layui-input" autocomplete="off" placeholder="输入名称搜索">
+                                </div>
+                                <div class="layui-inline">
+                                    <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
+                                    <button class="layui-btn layui-btn-primary reload-btn">重置</button>
+                                    <button class="layui-btn layui-btn-primary layui-hide reset-btn" type="reset">重置</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="layui-card-body">
+                        <!-- 表格 -->
+                        <div class="">
+                            <table class="layui-hidden" id="treetable" lay-filter="treetable"></table>
+                        </div>
+                        <!-- 是否禁用 -->
+                        <script type="text/html" id="is_disable">
+                            <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable = 1 ? '' : 'checked' }}>
+                        </script>
+                        <!-- 操作列 -->
+                        <script type="text/html" id="oper-col">
+                            <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">修改</button>
+                            <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</button>
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="__LAYUI__/layui/layui.js"></script>
+    <script>
+    layui.config({ base: '__LAYUI__/' }); //静态资源所在路径
+    layui.extend({ index: 'lib/index', treetable: 'treetable-lay/treetable' }); //主入口模块
+    layui.use(['index', 'jquery', 'table', 'layer', 'form', 'laydate', 'treetable'], function() {
+
+        var $ = layui.jquery;
+        var table = layui.table;
+        var layer = layui.layer;
+        var form = layui.form;
+        var laydate = layui.laydate;
+        var treetable = layui.treetable;
+
+        // 渲染表格
+        var renderTable = function() {
+            layer.load(2);
+            treetable.render({
+                treeColIndex: 1,
+                treeSpid: 0,
+                treeIdName: 'id',
+                treePidName: 'interface_pid',
+                treeDefaultClose: true,
+                treeLinkage: false,
+                elem: '#treetable',
+                url: "{:url()}",
+                page: false,
+                cols: [
+                    [
+                        { type: 'numbers', title: '序号' },
+                        { field: 'name', title: '名称' },
+                        { field: 'id', title: 'ID' },
+                        { field: 'pid', title: 'PID' },
+                        { field: 'admin_id', title: '创建者', width: 120, edit: 'text' },
+                        { field: 'sort', title: '排序', sort: true, width: 120, edit: 'text' },
+                        { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
+                        { field: 'create_time', title: '创建时间', sort: true, width: 160 },
+                        { field: 'update_time', title: '更新时间', sort: true, width: 160 },
+                        { templet: '#oper-col', title: '操作' }
+                    ]
+                ],
+                done: function() {
+                    layer.closeAll('loading');
+                }
+            });
+        };
+
+        renderTable();
+
+        // 添加
+        $('#btn-add').click(function() {
+            layer.open({
+                type: 2,
+                title: '接口添加',
+                content: '{:url("interfaces_add")}',
+                area: ['88%', '88%'],
+                shade: 0,
+                maxmin: true,
+                move: false,
+                end: function() {
+                    renderTable();
+                }
+            })
+        });
+
+        // 全部展开
+        $('#btn-expand').click(function() {
+            treetable.expandAll('#treetable');
+        });
+        // 全部折叠
+        $('#btn-fold').click(function() {
+            treetable.foldAll('#treetable');
+        });
+
+        // 搜索
+        form.on('submit(formSubmit)', function(data) {
+            console.log(data);
+            var load = layer.msg('正在搜索...', { icon: 16, shade: 0.3 });
+            var keyword = data.field.field_value;
+            var searchCount = 0;
+            $('#treetable').next('.treeTable').find('.layui-table-body tbody tr td').each(function() {
+                $(this).css('background-color', 'transparent');
+                var text = $(this).text();
+                if (keyword != '' && text.indexOf(keyword) >= 0) {
+                    $(this).css('background-color', 'rgba(250,230,160,0.5)');
+                    if (searchCount == 0) {
+                        treetable.expandAll('#treetable');
+                        $('html,body').stop(true);
+                        $('html,body').animate({ scrollTop: $(this).offset().top - 150 }, 500);
+                    }
+                    searchCount++;
+                }
+            });
+            if (keyword == '') {
+                layer.msg("请输入搜索内容", { icon: 5 });
+            } else if (searchCount == 0) {
+                layer.msg("没有匹配结果", { icon: 5 });
+            }
+            layer.close(load);
+            return false; //阻止表单跳转
+        });
+
+        // 重置
+        $('.reload-btn').click(function() {
+            $('.reset-btn').trigger('click'); //重置表单
+            renderTable(); //表格重载
+            return false; //阻止表单跳转
+        });
+
+        // 删除、修改
+        table.on('tool(treetable)', function(obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+
+            if (layEvent === 'del') {
+                layer.confirm('确定要删除吗？', { icon: 3, title: '提示' }, function(index) {
+                    $.ajax({
+                        type: 'post',
+                        url: '{:url("interfaces_dele")}',
+                        data: { id: data.id },
+                        success: function(res) {
+                            if (res.code == 0) {
+                                layer.open({
+                                    icon: 1,
+                                    content: res.msg,
+                                    end: function() {
+                                        renderTable();
+                                    }
+                                });
+                            } else {
+                                layer.open({
+                                    content: res.msg
+                                });
+                            }
+                        },
+                        error: function() {
+                            layer.msg('网络出错！');
+                        }
+                    });
+                    layer.close(index);
+                });
+                return false;
+            } else if (layEvent === 'edit') {
+                layer.open({
+                    type: 2,
+                    title: '接口修改',
+                    content: '{:url("interfaces_edit")}?interface_id=' + data.id,
+                    area: ['80%', '80%'],
+                    shade: 0,
+                    maxmin: true,
+                    move: false,
+                    end: function() {
+                        renderTable();
+                    }
+                })
+                return false;
+            }
+        });
+
+        // 是否禁用
+        form.on('switch(disable)', function(data) {
+            var load = layer.msg('正在修改...', { icon: 16, shade: 0.3 });
+            var value = data.value.split('|');
+            var id = value[0];
+            var is_disable = value[1];
+            $.ajax({
+                async: false,
+                url: '{:url("interfaces_disable")}',
+                data: { id: id, is_disable: is_disable },
+                success: function(res) {
+                    layer.close(load);
+                    layer.msg(res.msg);
+                },
+                error: function(xhr, status, error) {
+                    layer.close(load);
+                    layer.msg('网络错误！');
+                },
+                complete: function(xhr, status) {
+                    renderTable(); //表格重载
+                }
+            })
+        });
+    });
+    </script>
+</body>
+
+</html>
