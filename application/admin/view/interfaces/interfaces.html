@@ -87,7 +87,7 @@
                 cols: [
                     [
                         { type: 'numbers', title: '序号' },
-                        { field: 'name', title: '名称' },
+                        { field: 'name', title: '名称', minWidth:120},
                         { field: 'id', title: 'ID' },
                         { field: 'pid', title: 'PID' },
                         { field: 'admin_id', title: '创建者', width: 120, edit: 'text' },
@@ -95,13 +95,11 @@
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
                         { field: 'create_time', title: '创建时间', sort: true, width: 160 },
                         { field: 'update_time', title: '更新时间', sort: true, width: 160 },
-                        { templet: '#oper-col', title: '操作' }
+                        { templet: '#oper-col', title: '操作',width: 160  }
                     ]
-                ],
-                done: function() {
-                    layer.closeAll('loading');
-                }
+                ]
             });
+            layer.closeAll('loading');
         };
 
         renderTable();
@@ -209,7 +207,7 @@
                     maxmin: true,
                     move: false,
                     end: function() {
-                        renderTable();
+                        // renderTable();
                     }
                 })
                 return false;

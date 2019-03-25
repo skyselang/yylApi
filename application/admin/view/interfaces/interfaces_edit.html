@@ -16,6 +16,7 @@
         <div class="layui-card">
             <form class="layui-form" action="">
                 <br>
+                <input type="hidden" name="interface_id" value="{$interface.interface_id}">
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">所属项目</label>
@@ -61,9 +62,27 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <div class="layui-block">
+                        <label class="layui-form-label">接口前缀</label>
+                        <div class="layui-input-block">
+                            <select name="" id="" lay-filter="apiurl_prefix" lay-verify="">
+                                {foreach $interface.apiurl_prefix as $key=>$vo}
+                                <option value="{$vo.apiurl_prefix_name}" {if $vo.apiurl_frefix_default==0}selected{/if>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">接口URL</label>
                     <div class="layui-input-block">
-                        <input type="text" name="url" value="" lay-verify="required" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
+                        <input type="text" name="url" value="{$interface.url}" lay-verify="" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <div class="layui-input-block">
+                        {$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -81,6 +100,33 @@
                                 </tr>
                             </thead>
                             <tbody id="request_param">
+                                {if $interface.request}
+                                {foreach $interface.request as $key=>$vo}
+                                <tr>
+                                    <td><input class="layui-input" type="text" name="request_param_name[]" value="{$vo.request_param_name}" placeholder="参数名称"></td>
+                                    <td><input class="layui-input" type="text" name="request_param_explain[]" value="{$vo.request_param_explain}" placeholder="参数说明"></td>
+                                    <td><input class="layui-input" type="text" name="request_param_example[]" value="{$vo.request_param_example}" placeholder="示例值"></td>
+                                    <td>
+                                        <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">
+                                            <option value="0" {if $vo.request_param_must == 0}selected{/if}>是</option>
+                                            <option value="1" {if $vo.request_param_must == 1}selected{/if}>否</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">
+                                            <option value="String">String</option>
+                                            <option value="Integer">Integer</option>
+                                            <option value="Float">Float</option>
+                                            <option value="Boolean">Boolean</option>
+                                            <option value="Array">Array</option>
+                                            <option value="Object">Object</option>
+                                            <option value="NULL">NULL</option>
+                                        </select>
+                                    </td>
+                                    <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button></td>
+                                </tr>
+                                {/foreach}
+                                {/if}
                             </tbody>
                         </table>
                     </div>
@@ -94,18 +140,24 @@
                                     <th>参数名称</th>
                                     <th>参数值</th>
                                     <th>参数说明</th>
-                                    <th><button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button></th>
+                                    <th>
+                                        <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button>
+                                        <button type="button" id="response_param_template" class="layui-btn layui-btn-sm">模板</button>
+                                        <button type="button" id="response_param_empty" class="layui-btn layui-btn-sm">清空</button>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="response_param">
-                                {foreach $response as $key=>$vo}
+                                {if $interface.response}
+                                {foreach $interface.response as $key=>$vo}
                                 <tr>
-                                    <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_name}" placeholder="参数名称"></td>
-                                    <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_example}" placeholder="参数值"></td>
-                                    <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_explain}" placeholder="参数说明"></td>
+                                    <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_param_name}" placeholder="参数名称"></td>
+                                    <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_param_example}" placeholder="参数值"></td>
+                                    <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_param_explain}" placeholder="参数说明"></td>
                                     <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>
                                 </tr>
                                 {/foreach}
+                                {/if}
                             </tbody>
                         </table>
                     </div>
@@ -144,6 +196,43 @@
         var form = layui.form; //表单
         var layer = layui.layer; //弹出层
 
+        // 返回参数模板
+        $('#response_param_template').click(function(){
+            $.ajax({
+                type:'post',
+                url: "{:url('response_param_template')}",
+                success: function(res){
+                    if (res.code == 0) {
+                        var data = res.data;
+                        for (var i = 0; i < data.length; i++) {
+                            // 添加
+                            $("#response_param").append('<tr>\
+                                <td><input class="layui-input" type="text" name="response_param_name[]" value="'+data[i]['response_name']+'" placeholder="参数名称"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_example[]" value="'+data[i]['response_example']+'" placeholder="参数值"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_explain[]" value="'+data[i]['response_explain']+'" placeholder="参数说明"></td>\
+                                <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>\
+                            </tr>');
+                            // 删除
+                            $(".response_param_dele").click(function() {
+                                $(this).parents('tr').remove();
+                                form.render('select');
+                            });
+                            // form.render();
+                        };
+                    } else {
+                        layer.msg(res.msg);
+                    }
+                },
+                error: function(){
+                    layer.msg(res.msg);
+                }
+            })
+        })
+        // 清空返回参数模板
+        $('#response_param_empty').click(function(){
+            $("#response_param").empty();
+        });
+
         // submit form
         form.on('submit(submit-btn)', function(data) {
             var data = data.field;
@@ -174,26 +263,26 @@
             return false;
         });
 
-        // classify
+        // interface
         form.on('select(project_id)', function(data) {
-            classify(data.value);
+            interface(data.value);
         });
 
-        function classify(project_id) {
+        function interface(project_id) {
             if (project_id) {
                 $.ajax({
                     type: 'post',
-                    url: "{:url('classify')}",
+                    url: "{:url('interface_tree')}",
                     data: { project_id: project_id },
                     success: function(res) {
                         $('#classify_id').empty();
                         if (res.code == 0) {
                             var data = res.data;
                             for (var i = 0; i < data.length; i++) {
-                                $('#classify_id').append('<option value="' + data[i]['classify_id'] + '">' + data[i]['classify_name'] + '</option>');
+                                $('#interface_id').append('<option value="' + data[i]['interface_id'] + '">' + data[i]['name'] + '</option>');
                             };
                         } else {
-                            layer.msg('出错了！');
+                            layer.msg(res.msg);
                         }
                         form.render('select');
                     },
@@ -212,8 +301,8 @@
                 <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例值"></td>\
                 <td>\
                     <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">\
-                        <option value="是">是</option>\
-                        <option value="否">否</option>\
+                        <option value="0">是</option>\
+                        <option value="1">否</option>\
                     </select>\
                 </td>\
                 <td>\
@@ -242,7 +331,7 @@
             form.render('select');
         })
 
-        // 请求参数
+        // 返回参数
         $("#response_param_add").click(function() {
             // 添加
             $("#response_param").append('<tr>\

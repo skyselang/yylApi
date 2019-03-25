@@ -65,6 +65,18 @@
                                 </div>
                             </div>
                             <div class="layui-form-item">
+                                <div class="layui-block">
+                                    <label class="layui-form-label">接口前缀</label>
+                                    <div class="layui-input-block">
+                                        <select name="" id="" lay-filter="apiurl_prefix" lay-verify="">
+                                            {foreach $project.0.apiurl_prefix as $key=>$vo}
+                                            <option value="{$vo.apiurl_prefix_name}" {if $vo.apiurl_frefix_default==0}selected{/if>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
                                 <label class="layui-form-label">接口URL</label>
                                 <div class="layui-input-block">
                                     <input type="text" name="url" value="" lay-verify="" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
@@ -179,7 +191,7 @@
                 }
             })
             return false;
-        });
+        });       
 
         // interface
         form.on('select(project_id)', function(data) {
@@ -200,7 +212,7 @@
                                 $('#interface_id').append('<option value="' + data[i]['interface_id'] + '">' + data[i]['name'] + '</option>');
                             };
                         } else {
-                            // layer.msg('出错了！');
+                            layer.msg(res.msg);
                         }
                         form.render('select');
                     },
@@ -219,8 +231,8 @@
                 <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例值"></td>\
                 <td>\
                     <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">\
-                        <option value="是">是</option>\
-                        <option value="否">否</option>\
+                        <option value="0">是</option>\
+                        <option value="1">否</option>\
                     </select>\
                 </td>\
                 <td>\
@@ -249,7 +261,7 @@
             form.render('select');
         })
 
-        // 请求参数
+        // 返回参数
         $("#response_param_add").click(function() {
             // 添加
             $("#response_param").append('<tr>\
@@ -269,7 +281,9 @@
         $(".response_param_dele").click(function() {
             $(this).parents('tr').remove();
             form.render('select');
-        })
+        });
+
+        form.render();//重新渲染表单
 
     });
     </script>

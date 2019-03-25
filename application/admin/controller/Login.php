@@ -103,7 +103,7 @@ class Login extends Controller {
 	 * 退出系统
 	 * @return
 	 */
-	public function exit() {
+	public function sysexit() {
 		$admin_id = Session::get('admin_id');
 
 		if ($admin_id) {

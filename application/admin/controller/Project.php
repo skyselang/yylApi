@@ -87,6 +87,19 @@ class Project extends Common
             $data['create_time'] = date('Y-m-d H:i:s');
             $data['update_time'] = date('Y-m-d H:i:s');
 
+            // 接口前缀
+            $apiurl_prefix_name = Request::param('apiurl_prefix_name/a',array());
+            $apiurl_prefix_url = Request::param('apiurl_prefix_url/a',array());
+            $apiurl_prefix_default = Request::param('apiurl_prefix_default/a',array(),false);
+            $apiurl_prefix = array();
+            foreach ($apiurl_prefix_name as $k => $v) {
+                $apiurl_prefix[$k]['apiurl_prefix_name'] = $v;
+                $apiurl_prefix[$k]['apiurl_prefix_url'] = $apiurl_prefix_url[$k];
+                $apiurl_prefix[$k]['apiurl_prefix_default'] = 1;
+            }
+            $apiurl_prefix[key($apiurl_prefix_default)]['apiurl_prefix_default'] = 0;
+            $data['apiurl_prefix'] = serialize($apiurl_prefix);
+
             $check = Db::name('project')
                 ->where('is_delete',0)
             	->where('project_name',$data['project_name'])
@@ -122,6 +135,7 @@ class Project extends Common
         $project = Db::name('project')
             ->where('project_id',$project_id)
             ->find();
+        $project['apiurl_prefix'] = unserialize($project['apiurl_prefix']);
         $this->assign('project',$project);
 
         if (Request::isAjax()) {
@@ -134,6 +148,19 @@ class Project extends Common
             $data['sort'] = Request::param('sort');
             $data['update_time'] = date('Y-m-d H:i:s');
 
+            // 接口前缀
+            $apiurl_prefix_name = Request::param('apiurl_prefix_name/a',array());
+            $apiurl_prefix_url = Request::param('apiurl_prefix_url/a',array());
+            $apiurl_prefix_default = Request::param('apiurl_prefix_default/a',array(),false);
+            $apiurl_prefix = array();
+            foreach ($apiurl_prefix_name as $k => $v) {
+                $apiurl_prefix[$k]['apiurl_prefix_name'] = $v;
+                $apiurl_prefix[$k]['apiurl_prefix_url'] = $apiurl_prefix_url[$k];
+                $apiurl_prefix[$k]['apiurl_prefix_default'] = 1;
+            }
+            $apiurl_prefix[key($apiurl_prefix_default)]['apiurl_prefix_default'] = 0;
+            $data['apiurl_prefix'] = serialize($apiurl_prefix);
+            
             $check = Db::name('project')
                 ->where('project_id','<>',$project_id)
                 ->where('project_name',$project_name)

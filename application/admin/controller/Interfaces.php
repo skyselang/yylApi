@@ -40,7 +40,7 @@ class Interfaces extends Common
                 $order_field = $order_field == 'id' ? 'interface_id' : $order_field;
                 $order = "{$order_field} {$order_type}";
             } else {
-                $order = 'update_time desc, sort desc, interface_id desc';
+                $order = 'sort desc, interface_id asc';
             }
 
             // 数据分页
@@ -81,6 +81,7 @@ class Interfaces extends Common
             ->where('is_delete',0)
             ->order(['sort'=>'desc','update_time'=>'desc'])
             ->select();
+        $project[0]['apiurl_prefix'] = unserialize($project[0]['apiurl_prefix']);
         $this->assign('project',$project);
 
         // 接口
@@ -180,11 +181,23 @@ class Interfaces extends Common
     // 接口编辑
     public function interfaces_edit()
     {
+        // 接口详情
         $interface_id = Request::param('interface_id');
         $interface = Db::name('interface')
             ->where('interface_id',$interface_id)
             ->find();
+        $apiurl_prefix = Db::name('project')->where('project_id',$interface['project_id'])->value('apiurl_prefix');
+        $interface['apiurl_prefix'] = unserialize($apiurl_prefix);
+        $interface['request'] = unserialize($interface['request']);
+        $interface['response'] = unserialize($interface['response']);
         $this->assign('interface',$interface);
+
+        // 该项目所有接口
+        $interfaces = Db::name('interface')
+            ->where('project_id',$interface['project_id'])
+            ->select();
+        $interfaces = $this->getTree($interfaces);
+        $this->assign('interfaces',$interfaces);
 
         // 项目
         $project = Db::name('project')
@@ -192,13 +205,6 @@ class Interfaces extends Common
             ->order(['sort'=>'desc','update_time'=>'desc'])
             ->select();
         $this->assign('project',$project);
-
-        // 接口
-        $interfaces = Db::name('interface')
-            ->where('project_id',$interface['project_id'])
-            ->select();
-        $interfaces = $this->getTree($interfaces);
-        $this->assign('interfaces',$interfaces);
 
         // 返回参数
         $response = Db::name('interface_response')
@@ -209,7 +215,9 @@ class Interfaces extends Common
 
         if (Request::isAjax()) {
             
+            $data['interface_id'] = Request::param('interface_id');
             $data['project_id'] = Request::param('project_id');
+            $data['interface_pid'] = Request::param('interface_pid',0);
             $data['admin_id'] = Session::get('admin_id');
             $data['name'] = Request::param('name');
             $data['explain'] = Request::param('explain');
@@ -218,9 +226,9 @@ class Interfaces extends Common
             $data['sort'] = Request::param('sort');
             $data['is_disable'] = Request::param('is_disable',0);
             $data['is_delete'] = Request::param('is_delete',0);
-            $data['create_time'] = date('Y-m-d H:i:s');
             $data['update_time'] = date('Y-m-d H:i:s');
 
+            // 请求参数
             $request_param_name = Request::param('request_param_name/a',array());
             $request_param_example = Request::param('request_param_example/a',array());
             $request_param_explain = Request::param('request_param_explain/a',array());
@@ -234,7 +242,9 @@ class Interfaces extends Common
                 $request[$k]['request_param_must'] = $request_param_must[$k];
                 $request[$k]['request_param_type'] = $request_param_type[$k];
             }
+            $data['request'] = serialize($request);
 
+            // 返回参数
             $response_param_name = Request::param('response_param_name/a',array());
             $response_param_example = Request::param('response_param_example/a',array());
             $response_param_explain = Request::param('response_param_explain/a',array());
@@ -244,18 +254,20 @@ class Interfaces extends Common
                 $response[$k]['response_param_example'] = $response_param_example[$k];
                 $response[$k]['response_param_explain'] = $response_param_explain[$k];
             }
-
-            $data['request'] = serialize($request);
             $data['response'] = serialize($response);
 
             $name = $data['name'];
-            $url = $data['url'];
             $project_id = $data['project_id'];
-            $classify_id = $data['classify_id'];
+            $interface_pid = $data['interface_pid'];
+            if ($interface_pid) {
+                $where = ['project_id'=>$project_id,'interface_pid'=>$interface_pid];
+            } else {
+                $where = ['project_id'=>$project_id];
+            }
 
             $check = Db::name('interface')
-                ->where('project_id',$project_id)
-                ->where('classify_id',$classify_id)
+                ->where('interface_id','<>',$interface_id)
+                ->where($where)
                 ->where('name',$name)
                 ->find();
 
@@ -264,15 +276,14 @@ class Interfaces extends Common
                 $res['msg'] = '接口名称已存在';
             } else {
                 $insert = Db::name('interface')
-                    ->data($data)
-                    ->insert();
+                    ->update($data);
 
                 if ($insert) {
                     $res['code'] = 0;
-                    $res['msg'] = '添加成功';
+                    $res['msg'] = '修改成功';
                 } else {
                     $res['code'] = 1;
-                    $res['msg'] = '添加失败';
+                    $res['msg'] = '修改失败';
                 }
             }
 
@@ -283,8 +294,72 @@ class Interfaces extends Common
     }
 
     /**
-     * 根据项目id获取分类
-     * @return json 分类
+     * @Author   yyl
+     * @DateTime 2019-03-25
+     * 获取返回参数模板
+     * @return json  返回参数模板 
+     */
+    public function response_param_template()
+    {
+        if (Request::isAjax()) {
+            $response = Db::name('interface_response')
+                ->where('is_delete',0)
+                ->order(['response_sort'=>'desc','response_id'=>'asc'])
+                ->select();
+            if ($response) {
+                $res['code'] = 0;
+                $res['msg'] = '返回参数模板获取成功';
+                $res['data'] = $response;
+            } else {
+                $res['code'] = 1;
+                $res['msg'] = '返回参数模板获取失败';
+            }
+
+            return json($res);
+        }
+    }
+
+    /**
+     * 接口删除
+     * @return json 删除结果
+     */
+    public function interfaces_dele()
+    {
+        if (Request::isAjax()) {
+            $id = Request::param('id');
+
+            $strpos = strpos($id, ',');
+            if ($strpos > 0) {
+                $id_arr = explode(',', $id);
+            } else {
+                $id_arr = ['0'=>$id];
+            }
+
+            $success = $fail = 0;
+            foreach ($id_arr as $k => $v) {
+                $delete = Db::name('interface')
+                    ->where('interface_id', $v)
+                    ->update(['is_delete' => 1]);
+                if ($delete) {
+                    $success += 1;
+                    Db::name('interface')
+                        ->where('interface_id', $v)
+                        ->update(['delete_time' => time()]);
+                } else {
+                    $fail += 1;
+                }
+            }
+
+            $res['code'] = 0;
+            $res['msg'] = "成功删除{$success}条，失败{$fail}条数据";
+            
+            return json($res);
+        }
+    }
+
+    /**
+     * 根据项目id获取所有接口
+     * @return json 该项目所有接口
      */
     public function interface_tree()
     {
@@ -300,7 +375,7 @@ class Interfaces extends Common
                 $res['data'] = $this->getTree($interface);
             } else {
                 $res['code'] = 1;
-                $res['msg'] = '没有查到相关数据';
+                $res['msg'] = '没有查到相关接口';
             }
 
             return json($res);

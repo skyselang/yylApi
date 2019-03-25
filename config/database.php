@@ -17,9 +17,9 @@ return [
     // 数据库名
     'database'        => 'yylapi',
     // 用户名
-    'username'        => 'root',
+    'username'        => 'yylapi',
     // 密码
-    'password'        => 'root',
+    'password'        => 'yylapi',
     // 端口
     'hostport'        => '',
     // 连接dsn

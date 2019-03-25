@@ -30,6 +30,33 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">接口前缀</label>
+                    <div class="layui-input-block">
+                        <table class="layui-table" lay-size="sm">
+                            <thead>
+                                <tr>
+                                    <th>环境</th>
+                                    <th>URL</th>
+                                    <th>默认</th>
+                                    <th><button type="button" id="apiurl_prefix_add" class="layui-btn layui-btn-sm">添加</button></th>
+                                </tr>
+                            </thead>
+                            <tbody id="url_profix_tr">
+                                {if $project.apiurl_prefix}
+                                {foreach $project.apiurl_prefix as $key=>$vo}
+                                <tr>
+                                    <td><input class="layui-input" type="text" name="apiurl_prefix_name[]" value="{$vo.apiurl_prefix_name}" placeholder="名称"></td>
+                                    <td><input class="layui-input" type="text" name="apiurl_prefix_url[]" value="{$vo.apiurl_prefix_url}" placeholder="URL"></td>
+                                    <td><input type="radio" name="apiurl_prefix_default[]" value="1" lay-filter="apiurl_prefix_default" {if $vo.apiurl_prefix_default == 0}checked{/if}></td>
+                                    <td><!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-danger apiurl_prefix_dele">删除</button> --></td>
+                                </tr>
+                                {/foreach}
+                                {/if}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">是否禁用</label>
                     <div class="layui-input-block">
                         <input type="checkbox" name="is_disable" value="1" lay-skin="switch" {if $project.is_disable == 1}checked{/if}>
@@ -85,6 +112,28 @@
             })
             return false;
         });
+
+        // 接口前缀
+        $("#apiurl_prefix_add").click(function() {
+            // 添加
+            $("#url_profix_tr").append('<tr>\
+                <td><input class="layui-input" type="text" name="apiurl_prefix_name[]" value="" placeholder="名称"></td>\
+                <td><input class="layui-input" type="text" name="apiurl_prefix_url[]" placeholder="url"></td>\
+                <td><input type="radio" name="apiurl_prefix_default[]" value="1" lay-filter="apiurl_prefix_default" checked></td>\
+                <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger apiurl_prefix_dele">删除</button></td>\
+            </tr>');
+            // 删除
+            $(".apiurl_prefix_dele").click(function() {
+                $(this).parents('tr').remove();
+                form.render();
+            });
+            form.render();
+        });
+        // 删除
+        $(".apiurl_prefix_dele").click(function() {
+            $(this).parents('tr').remove();
+            form.render();//更新表单渲染
+        }) 
 
     });
     </script>
