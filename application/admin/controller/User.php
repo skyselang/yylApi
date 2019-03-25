@@ -31,7 +31,7 @@ class User extends Common
                 $end_time = strtotime($end_date.' 23:59:59');
                 $where[] = [$date_type, ['>=', $start_time], ['<=', $end_time], 'and'];
             }
-            $where = [];
+            $where['is_delete'] = 0;
 
             // 排序
             $order_field = Request::param('order_field'); // 排序字段
@@ -117,4 +117,93 @@ class User extends Common
 
 		return $this->fetch();
 	}
+
+    // 用户修改
+    public function user_edit() 
+    {
+        $user_id = Request::param('user_id');
+        $user = Db::name('user')
+            ->where('user_id',$user_id)
+            ->find();
+        $this->assign('user',$user);
+
+        if (Request::isAjax()) {
+            $user_id = Request::param('user_id');
+            $username = Request::param('username');
+            $password = Request::param('password');
+
+            $res['code'] = 1;
+            if ($username == '' || $username == null || $username == 'undefined') {
+                $res['msg'] = '请输入账号！';
+            } elseif ($password == '' || $password == null || $password == 'undefined') {
+                $res['msg'] = '请输入密码！';
+            } else {
+                $check = Db::name('user')
+                    ->where('user_id','<>',$user_id)
+                    ->where('username',$username)
+                    ->find();
+
+                if ($check) {
+                    $res['msg'] = '账号已存在！';
+                } else {
+                    $data['user_id'] = $user_id;
+                    $data['username'] = $username;
+                    $data['password'] = md5($password);
+                    $data['update_time'] = date('Y-m-d H:i:s');
+
+                    $update = Db::name('user')
+                        ->update($data);
+
+                    if ($update) {
+                        $res['code'] = 0;
+                        $res['msg'] = '编辑成功';
+                    } else {
+                        $res['msg'] = '编辑失败';
+                    }
+                }
+            }
+
+            return json($res);
+        }
+
+        return $this->fetch();
+    }
+
+    /**
+     * 用户删除
+     * @return json 删除结果
+     */
+    public function user_dele()
+    {
+        if (Request::isAjax()) {
+            $id = Request::param('id');
+
+            $strpos = strpos($id, ',');
+            if ($strpos > 0) {
+                $id_arr = explode(',', $id);
+            } else {
+                $id_arr = ['0'=>$id];
+            }
+
+            $success = $fail = 0;
+            foreach ($id_arr as $k => $v) {
+                $delete = Db::name('user')
+                    ->where('user_id', $v)
+                    ->update(['is_delete' => 1]);
+                if ($delete) {
+                    $success += 1;
+                    Db::name('user')
+                        ->where('user_id', $v)
+                        ->update(['delete_time' => time()]);
+                } else {
+                    $fail += 1;
+                }
+            }
+
+            $res['code'] = 0;
+            $res['msg'] = "成功删除{$success}条，失败{$fail}条数据";
+            
+            return json($res);
+        }
+    }
 }

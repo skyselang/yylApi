@@ -383,6 +383,31 @@ class Interfaces extends Common
     }
 
     /**
+     * 根据项目id获取接口前缀
+     * @return json 项目接口前缀
+     */
+    public function apiurl_prefix()
+    {
+        if (Request::isAjax()) {
+            $project_id = Request::param('project_id',0);
+
+            $apiurl_prefix = Db::name('project')
+                ->where('project_id',$project_id)
+                ->value('apiurl_prefix');
+
+            if ($apiurl_prefix) {
+                $res['code'] = 0;
+                $res['data'] = unserialize($apiurl_prefix);
+            } else {
+                $res['code'] = 1;
+                $res['msg'] = '没有查到相关接口前缀';
+            }
+
+            return json($res);
+        }
+    }
+
+    /**
      * 递归获取无限极分类
      * @param  array  $array 分类
      * @param  integer $pid  父级id

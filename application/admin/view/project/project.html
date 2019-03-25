@@ -75,7 +75,7 @@
                         <!-- 操作栏 -->
                         <script type="text/html" id="operate">
                             <div class="layui-btn-group">
-                            <a class="layui-btn layui-btn-sm" lay-event="detail">查看</a>
+                            <a class="layui-btn layui-btn-sm" lay-event="relation">关联</a>
                             <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
                             <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dele">删除</a>
                         </div>
@@ -204,8 +204,22 @@
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var title = obj.data.project_name;
             var id = obj.data.id;
-            // 查看编辑
-            if (layEvent === 'detail' || layEvent === 'edit') {
+            // 用户
+            if (layEvent === 'relation') {
+                layer.open({
+                    type: 2,
+                    title: '项目关联：' + title,
+                    content: '{:url("relation/relation")}?project_id=' + id,
+                    area: ['80%', '80%'],
+                    maxmin: true,
+                    move: false,
+                    end: function() {
+                        table.reload('table'); //重载表格
+                    }
+                })
+            }
+            // 编辑
+            if (layEvent === 'detail') {
                 layer.open({
                     type: 2,
                     title: '项目编辑：' + title,

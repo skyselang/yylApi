@@ -9,12 +9,20 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::group('admin', function(){
-	// login
-	Route::get('login', 'admin/login/login');
-	Route::post('login', 'admin/login/check');
-	Route::get('exit','admin/login/exit');
-	// index
-	Route::get('/', 'admin/index/index');
-	Route::get('indexs', 'admin/index/indexs');
-});
+// +----------------------------------------------------------------------
+// | 会话设置
+// +----------------------------------------------------------------------
+
+return [
+    'id'             => '',
+    // SESSION_ID的提交变量,解决flash上传跨域
+    'var_session_id' => '',
+    // SESSION 前缀
+    'prefix'         => 'index',
+    // 驱动方式 支持redis memcache memcached
+    'type'           => '',
+    // 是否自动开启 SESSION
+    'auto_start'     => true,
+    // session过期时间
+    'expire' => 12*60*60
+];

@@ -12,69 +12,78 @@
 </head>
 
 <body>
-    <div class="layui-row">
-        <div class="layui-card">
-            <!-- 搜索 -->
-            <form class="layui-form">
-                <div class="more-div layui-hide">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">日期类型</label>
-                            <div class="layui-input-inline">
-                                <select name="date_type">
-                                    <option value="create_time">添加时间</option>
-                                    <option value="update_time">修改时间</option>
+    <div class="layui-fluid">
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">
+                        <!-- 搜索 -->
+                        <form class="layui-form">
+                            <div class="more-div layui-hide">
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">日期类型</label>
+                                        <div class="layui-input-inline">
+                                            <select name="date_type">
+                                                <option value="create_time">添加时间</option>
+                                                <option value="update_time">修改时间</option>
+                                                <option value="login_time">登录时间</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <div class="layui-inline">
+                                        <label class="layui-form-label">日期范围</label>
+                                        <div class="layui-input-inline" style="width: 100px">
+                                            <input type="text" class="layui-input" name="start_date" id="start-date" placeholder="开始日期">
+                                        </div>
+                                        <div class="layui-form-mid">-</div>
+                                        <div class="layui-input-inline" style="width: 100px">
+                                            <input type="text" class="layui-input" name="end_date" id="end-date" placeholder="结束日期">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <select name="field">
+                                    <option value="username">账号</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">日期范围</label>
-                            <div class="layui-input-inline" style="width: 100px">
-                                <input type="text" class="layui-input" name="start_date" id="start-date" placeholder="开始日期">
+                            <div class="layui-inline">
+                                <input class="layui-input" name="field_val" autocomplete="off">
                             </div>
-                            <div class="layui-form-mid">-</div>
-                            <div class="layui-input-inline" style="width: 100px">
-                                <input type="text" class="layui-input" name="end_date" id="end-date" placeholder="结束日期">
+                            <div class="layui-inline">
+                                <a href="javascript:;" class="layui-btn layui-btn-primary more-btn" title="点击选择更多搜索条件">更多</a>
+                                <button class="layui-btn" lay-submit lay-filter="search-btn" title="按填写和更多的条件搜索">搜索</button>
+                                <button class="layui-btn layui-btn-primary reload-btn" title="刷新页面和重置搜索条件">重置</button>
+                                <button class="layui-btn layui-btn-primary layui-hide reset-btn" type="reset">重置</button>
                             </div>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="layui-card-body">
+                        <!-- 工具栏 -->
+                        <script type="text/html" id="toolbar">
+                            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deles" title="删除所选记录">删除</button>
+                            <button class="layui-btn layui-btn-sm" lay-event="add" title="添加新记录">添加</button>
+                        </script>
+                        <!-- 表格 -->
+                        <table class="layui-hide" id="table" lay-filter="table"></table>
+                        <!-- 是否禁用 -->
+                        <script type="text/html" id="is_disable">
+                            <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="is_disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable == 1 ? 'checked' : '' }}>
+                        </script>
+                        <!-- 操作栏 -->
+                        <script type="text/html" id="operate">
+                            <div class="layui-btn-group">
+                                <a class="layui-btn layui-btn-sm" lay-event="detail">查看</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
+                                <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dele">删除</a>
+                            </div>
+                        </script>
                     </div>
                 </div>
-                <div class="layui-inline">
-                    <select name="field">
-                        <option value="username">账号</option>
-                    </select>
-                </div>
-                <div class="layui-inline">
-                    <input class="layui-input" name="field_val" autocomplete="off">
-                </div>
-                <div class="layui-inline">
-                    <a href="javascript:;" class="layui-btn layui-btn-primary more-btn" title="点击选择更多搜索条件">更多</a>
-                    <button class="layui-btn" lay-submit lay-filter="search-btn" title="按填写和更多的条件搜索">搜索</button>
-                    <button class="layui-btn layui-btn-primary reload-btn" title="刷新页面和重置搜索条件">重置</button>
-                    <button class="layui-btn layui-btn-primary layui-hide reset-btn" type="reset">重置</button>
-                </div>
-            </form>
-            <!-- 工具栏 -->
-            <script type="text/html" id="toolbar">
-                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="deles" title="删除所选记录">删除</button>
-                <button class="layui-btn layui-btn-sm" lay-event="add" title="添加新记录">添加</button>
-            </script>
-            <!-- 表格 -->
-            <table class="layui-hide" id="table" lay-filter="table"></table>
-            <!-- 是否禁用 -->
-            <script type="text/html" id="is_disable">
-                <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="is_disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable == 1 ? 'checked' : '' }}>
-            </script>
-            <!-- 操作栏 -->
-            <script type="text/html" id="operate">
-                <div class="layui-btn-group">
-                    <a class="layui-btn layui-btn-sm" lay-event="detail">查看</a>
-                    <a class="layui-btn layui-btn-sm layui-btn-normal" lay-event="edit">编辑</a>
-                    <a class="layui-btn layui-btn-sm layui-btn-danger" lay-event="dele">删除</a>
-                </div>
-            </script>
+            </div>
         </div>
     </div>
     <script src="__LAYUI__/layui/layui.js"></script>
@@ -88,8 +97,8 @@
         var laydate = layui.laydate; //日期
 
         // 日期
-        laydate.render({elem: '#start-date'});
-        laydate.render({elem: '#end-date'});
+        laydate.render({ elem: '#start-date' });
+        laydate.render({ elem: '#end-date' });
 
         // 更多
         $('.more-btn').click(function() {
@@ -101,7 +110,7 @@
                 offset: '40px',
                 title: '更多搜索条件',
                 content: content,
-                end: function(){
+                end: function() {
                     content.addClass('layui-hide');
                 }
             });
@@ -123,7 +132,7 @@
         // 重置
         $('.reload-btn').click(function() {
             var load = layer.msg('正在重置...', { icon: 16, shade: 0.3 });
-            $('.reset-btn').trigger('click');//重置表单
+            $('.reset-btn').trigger('click'); //重置表单
             table.reload('table', {
                 page: {
                     curr: 1 //重新从第 1 页开始
@@ -148,7 +157,7 @@
         });
 
         // 工具栏事件(删除、添加)
-        table.on('toolbar(table)', function(obj){
+        table.on('toolbar(table)', function(obj) {
             var layEvent = obj.event;
             if (layEvent === 'deles') {
                 var data = table.checkStatus('table').data;
@@ -159,42 +168,57 @@
                     type: 2,
                     title: '用户添加',
                     content: '{:url("user_add")}',
-                    area: ['800px','450px'],
+                    area: ['800px', '450px'],
                     maxmin: true,
                     move: false,
-                    end: function(){
-                        table.reload('table');//重载表格
+                    end: function() {
+                        table.reload('table'); //重载表格
                     }
                 })
             }
         });
 
         // 单元格编辑
-        table.on('edit(table)', function(obj){
-            var load = layer.open({type: 3,icon: 2,content: '正在修改'});
+        table.on('edit(table)', function(obj) {
+            var load = layer.open({ type: 3, icon: 2, content: '正在修改' });
             var id = obj.data.id; //得到所在行id
             var field = obj.field; //得到字段
             var value = obj.value; //得到修改后的值
             $.ajax({
                 type: 'post',
                 url: '{:url("edit")}',
-                data: {id: id, field: field, value: value},
-                success: function(res){
+                data: { id: id, field: field, value: value },
+                success: function(res) {
                     layer.close(load);
                     layer.msg(res.msg);
                 },
-                error: function(){
+                error: function() {
                     layer.close(load);
                     layer.msg('网络错误！');
                 }
             })
         });
 
-        // 工具条事件
-        table.on('tool(table)', function(obj){ //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+        // 工具条事件（删除，编辑）
+        table.on('tool(table)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
             var data = obj.data; //获得当前行数据
             var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
             var title = obj.data.title;
+            var id = obj.data.id;
+            // 编辑
+            if (layEvent === 'edit') {
+                layer.open({
+                    type: 2,
+                    title: '用户编辑',
+                    content: '{:url("user_edit")}?user_id=' + id,
+                    area: ['800px', '450px'],
+                    maxmin: true,
+                    move: false,
+                    end: function() {
+                        table.reload('table'); //重载表格
+                    }
+                })
+            }
 
             // 删除
             if (layEvent === 'dele') {
@@ -204,31 +228,31 @@
         });
 
         // 删除
-        function dele(data){
+        function dele(data) {
             var length = data.length;
             if (length > 0) {
-                var content = '确定要删除这'+length+'条数据吗？';
+                var content = '确定要删除这' + length + '条数据吗？';
                 var id_str = '';
                 for (var i = 0; i < length; i++) {
-                    id_str +=',' + data[i]["id"];
+                    id_str += ',' + data[i]["id"];
                 }
-                var id = id_str.substring(1);//去掉第一个字符
-                layer.confirm(content,{icon: 3, title:'提示'},
-                    function(index){
+                var id = id_str.substring(1); //去掉第一个字符
+                layer.confirm(content, { icon: 3, title: '提示' },
+                    function(index) {
                         layer.close(index);
-                        var load = layer.open({type: 3,icon: 2, content: '正在删除'});
+                        var load = layer.open({ type: 3, icon: 2, content: '正在删除' });
                         $.ajax({
                             type: 'post',
-                            url: '{:url("dele")}',
-                            data: {id: id},
-                            success: function(res){
+                            url: '{:url("user_dele")}',
+                            data: { id: id },
+                            success: function(res) {
                                 if (res.code == 0) {
-                                    table.reload('table');//重载表格
+                                    table.reload('table'); //重载表格
                                 }
                                 layer.close(load);
                                 layer.msg(res.msg);
                             },
-                            error: function(res){
+                            error: function(res) {
                                 layer.close(load);
                                 layer.msg('网络错误！');
                             }
@@ -242,7 +266,7 @@
                     content: '请选择需要删除的数据！',
                     icon: 5
                 });
-            }           
+            }
         }
 
         // 渲染表格
@@ -257,17 +281,19 @@
             cellMinWidth: 100, //全局定义常规单元格的最小宽度
             toolbar: '#toolbar', //开启表格头部工具栏区域
             autoSort: false, //禁用前端自动排序
-            cols: [[ //表头
-                {type: 'checkbox', fixed: 'left'}, 
-                {field: 'id', title: '用户ID', sort: true, width: 100},
-                {field: 'username', title: '账号', edit: 'text' },
-                {field: 'login_ip', title: '登录IP', edit: 'text'},
-                {field: 'device', title: '登录设备', edit: 'text'},
-                {field: 'login_time', title: '登录时间', sort: true, width: 160},
-                {field: 'create_time', title: '添加时间', sort: true, width: 160}, 
-                {field: 'update_time', title: '修改时间', sort: true, width: 160},  
-                {field: 'operate', title: '操作', toolbar: '#operate', width: 166}
-            ]]
+            cols: [
+                [ //表头
+                    { type: 'checkbox', fixed: 'left' },
+                    { field: 'id', title: 'ID', sort: true, width: 100 },
+                    { field: 'username', title: '账号', edit: 'text' },
+                    { field: 'login_ip', title: '登录IP', edit: 'text' },
+                    { field: 'device', title: '登录设备', edit: 'text' },
+                    { field: 'login_time', title: '登录时间', sort: true, width: 160 },
+                    { field: 'create_time', title: '添加时间', sort: true, width: 160 },
+                    { field: 'update_time', title: '修改时间', sort: true, width: 160 },
+                    { field: 'operate', title: '操作', toolbar: '#operate', width: 166 }
+                ]
+            ]
         });
 
     });
