@@ -8,11 +8,3 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
-
-Route::group('admin', function(){
-	// login
-	Route::get('login', 'admin/login/login');
-	Route::post('login', 'admin/login/check');
-	// index
-	Route::get('/', 'admin/index/index');
-});

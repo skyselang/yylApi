@@ -15,7 +15,7 @@
 
 return [
 	// 应用名称
-	'app_name' => 'yylApi接口管理工具',
+	'app_name' => '接口文档',
 	// 应用版本
 	'app_version' => 'v1.0.0',
 	// 应用地址

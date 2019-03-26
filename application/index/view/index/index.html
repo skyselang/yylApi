@@ -20,29 +20,25 @@
                         <div class="layui-card-header"><h3 style="text-align: center;">{:config('app_name')}</h3>
                         </div>
                         <div class="layui-card-body">
+                            {foreach $interface as $key=>$vo}
                             <div style="padding: 15px; background-color: #F2F2F2;">
-                                <blockquote class="layui-elem-quote layui-quote-nm">醒目</blockquote>
+                                <a href="{:url('interfaces/interfaces')}" target="_blank">
+                                <blockquote class="layui-elem-quote layui-quote-nm">{$vo.project_name}</blockquote>
                                 <div class="layui-row layui-col-space15">
+                                    {foreach $vo.interface as $k=>$v}
                                     <div class="layui-col-md3">
                                         <div class="layui-card">
-                                            <div class="layui-card-header">卡片面板</div>
+                                            <div class="layui-card-header">{$v.name}</div>
                                             <div class="layui-card-body">
-                                                卡片式面板面板通常用于非白色<br>
-                                                从而映衬出边框投影
+                                                {$v.create_time}<br>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="layui-col-md3">
-                                        <div class="layui-card">
-                                            <div class="layui-card-header">卡片面板</div>
-                                            <div class="layui-card-body">
-                                                结合 layui 的栅格系统<br>
-                                                轻松实现响应式布局
-                                            </div>
-                                        </div>
-                                    </div>
+                                    {/foreach}
                                 </div>
+                                </a>
                             </div>
+                            {/foreach}
                         </div>
                     </div>
                 </div>

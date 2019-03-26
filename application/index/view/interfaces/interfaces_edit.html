@@ -17,7 +17,7 @@
             <form class="layui-form" action="">
                 <br>
                 <input type="hidden" name="interface_id" value="{$interface.interface_id}">
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">所属项目</label>
                         <div class="layui-input-inline">
@@ -40,13 +40,14 @@
                         </div>
                         <div class="layui-form-mid layui-word-aux">未选则为顶级</div>
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <label class="layui-form-label">接口名称</label>
                     <div class="layui-input-block">
                         <input type="text" name="name" value="{$interface.name}" lay-verify="required" placeholder="请输入接口名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
+                {if $interface.url}
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">请求方式</label>
@@ -67,7 +68,7 @@
                         <div class="layui-input-block">
                             <select name="" id="apiurl_prefix" lay-filter="apiurl_prefix" lay-verify="">
                                 {foreach $interface.apiurl_prefix as $key=>$vo}
-                                <option value="{$vo.apiurl_prefix_name}" {if $vo.apiurl_prefix_default==0}selected{/if>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
+                                <option value="{$vo.apiurl_prefix_name}" {eq name="vo.apiurl_prefix_default" value="0" }selected{/eq}>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -82,7 +83,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">完整URL</label>
                     <div class="layui-input-block">
-                    <input type="text" id="apiurl_show" class="layui-input" value="{$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}">
+                        <input type="text" id="apiurl_show" class="layui-input" value="{$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}">    
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -96,7 +97,7 @@
                                     <th>示例值</th>
                                     <th>是否必填</th>
                                     <th>数据类型</th>
-                                    <th><button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button></th>
+                                    <th><!-- <button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button> --></th>
                                 </tr>
                             </thead>
                             <tbody id="request_param">
@@ -123,7 +124,7 @@
                                             <option value="NULL">NULL</option>
                                         </select>
                                     </td>
-                                    <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button></td>
+                                    <td><!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button> --></td>
                                 </tr>
                                 {/foreach}
                                 {/if}
@@ -141,9 +142,9 @@
                                     <th>参数值</th>
                                     <th>参数说明</th>
                                     <th>
-                                        <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button>
-                                        <button type="button" id="response_param_template" class="layui-btn layui-btn-sm layui-btn-primary" title="添加返回参数模板">模板</button>
-                                        <button type="button" id="response_param_empty" class="layui-btn layui-btn-sm layui-btn-primary" title="清空返回参数">清空</button>
+                                        <!-- <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button> -->
+                                        <!-- <button type="button" id="response_param_template" class="layui-btn layui-btn-sm layui-btn-primary" title="添加返回参数模板">模板</button> -->
+                                        <!-- <button type="button" id="response_param_empty" class="layui-btn layui-btn-sm layui-btn-primary" title="清空返回参数">清空</button> -->
                                     </th>
                                 </tr>
                             </thead>
@@ -154,7 +155,7 @@
                                     <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_param_name}" placeholder="参数名称"></td>
                                     <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_param_example}" placeholder="参数值"></td>
                                     <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_param_explain}" placeholder="参数说明"></td>
-                                    <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>
+                                    <td><!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button> --></td>
                                 </tr>
                                 {/foreach}
                                 {/if}
@@ -162,29 +163,32 @@
                         </table>
                     </div>
                 </div>
+                {if $interface.explain}
                 <div class="layui-form-item">
                     <label class="layui-form-label">接口说明</label>
                     <div class="layui-input-block">
                         <textarea name="explain" placeholder="" class="layui-textarea">{$interface.explain}</textarea>
                     </div>
                 </div>
-                <div class="layui-form-item">
+                {/if}
+                <!-- <div class="layui-form-item">
                     <label class="layui-form-label">是否禁用</label>
                     <div class="layui-input-block">
                         <input type="checkbox" name="is_disable" value="1" lay-skin="switch">
                     </div>
-                </div>
-                <div class="layui-form-item">
+                </div> -->
+                <!-- <div class="layui-form-item">
                     <label class="layui-form-label">排序</label>
                     <div class="layui-input-block">
                         <input type="number" name="sort" value="200" placeholder="请输入排序" autocomplete="off" class="layui-input">
                     </div>
-                </div>
-                <div class="layui-form-item">
+                </div> -->
+                <!-- <div class="layui-form-item">
                     <div class="layui-input-block">
                         <button class="layui-btn" lay-submit="" lay-filter="submit-btn">提交</button>
                     </div>
-                </div>
+                </div> -->
+                {/if}
             </form>
         </div>
     </div>
