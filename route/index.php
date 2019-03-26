@@ -10,3 +10,10 @@
 // +----------------------------------------------------------------------
 
 // index
+Route::group('index', function(){
+	// login
+	Route::get('login', 'index/login/login');
+	Route::post('check', 'index/login/check');
+	// index
+	Route::get('index', 'index/index/index');
+});

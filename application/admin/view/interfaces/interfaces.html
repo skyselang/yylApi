@@ -87,7 +87,7 @@
                 cols: [
                     [
                         { type: 'numbers', title: '序号' },
-                        { field: 'name', title: '名称', minWidth:120},
+                        { field: 'name', title: '名称', minWidth: 300},
                         { field: 'id', title: 'ID' },
                         { field: 'pid', title: 'PID' },
                         { field: 'admin_id', title: '创建者', width: 120, edit: 'text' },
@@ -200,7 +200,7 @@
             } else if (layEvent === 'edit') {
                 layer.open({
                     type: 2,
-                    title: '接口修改',
+                    title: '接口修改：' + data.name,
                     content: '{:url("interfaces_edit")}?interface_id=' + data.id,
                     area: ['80%', '80%'],
                     shade: 0,

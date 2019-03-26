@@ -13,8 +13,6 @@ Route::group('admin', function(){
 	// login
 	Route::get('login', 'admin/login/login');
 	Route::post('login', 'admin/login/check');
-	Route::get('exit','admin/login/exit');
 	// index
 	Route::get('/', 'admin/index/index');
-	Route::get('indexs', 'admin/index/indexs');
 });

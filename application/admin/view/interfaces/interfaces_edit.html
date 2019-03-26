@@ -34,7 +34,7 @@
                             <select name="interface_pid" id="interface_pid" lay-filter="interface_pid" lay-verify="">
                                 <option value="0">请选择上级</option>
                                 {foreach $interfaces as $key=>$vo}
-                                <option value="{$vo.interface_id}" {if $interface.interface_id == $vo.interface_id}selected{/if}>{$vo.name}</option>
+                                <option value="{$vo.interface_id}" {if $interface.interface_pid == $vo.interface_id}selected{/if}>{$vo.name}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -52,11 +52,11 @@
                         <label class="layui-form-label">请求方式</label>
                         <div class="layui-input-inline">
                             <select name="method" id="method" lay-filter="method" lay-verify="">
-                                <option value="POST">POST</option>
-                                <option value="GET">GET</option>
-                                <option value="PUT">PUT</option>
-                                <option value="PATCH">PATCH</option>
-                                <option value="DELETE">DELETE</option>
+                                <option value="POST" {if $interface.method=='POST'}selected{/if}>POST</option>
+                                <option value="GET" {if $interface.method=='GET'}selected{/if}>GET</option>
+                                <option value="PUT" {if $interface.method=='PUT'}selected{/if}>PUT</option>
+                                <option value="PATCH" {if $interface.method=='PATCH'}selected{/if}>PATCH</option>
+                                <option value="DELETE" {if $interface.method=='DELETE'}selected{/if}>DELETE</option>
                             </select>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="layui-block">
                         <label class="layui-form-label">接口前缀</label>
                         <div class="layui-input-block">
-                            <select name="" id="" lay-filter="apiurl_prefix" lay-verify="">
+                            <select name="" id="apiurl_prefix" lay-filter="apiurl_prefix" lay-verify="">
                                 {foreach $interface.apiurl_prefix as $key=>$vo}
                                 <option value="{$vo.apiurl_prefix_name}" {if $vo.apiurl_frefix_default==0}selected{/if>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
                                 {/foreach}
@@ -81,7 +81,7 @@
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label"></label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-block" id="apiurl_show">
                         {$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}
                     </div>
                 </div>
@@ -195,6 +195,19 @@
         var $ = layui.jquery; //jquery
         var form = layui.form; //表单
         var layer = layui.layer; //弹出层
+
+        // 拼接接口url
+        form.on('select(apiurl_prefix)', function(data){
+            apiurl();
+        });
+        $("input[name='url']").keyup(function(){
+            apiurl();
+        });   
+        function apiurl(){
+            var prefix = $("#apiurl_prefix option:selected").text();
+            var url = $("input[name='url']").val();
+            $('#apiurl_show').empty().html(prefix + url);
+        }
 
         // 返回参数模板
         $('#response_param_template').click(function(){
