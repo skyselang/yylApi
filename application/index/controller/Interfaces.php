@@ -13,6 +13,7 @@ class Interfaces extends Common
 	public function interfaces() 
 	{
 		if (Request::isAjax()) {
+            $project_id = Request::param('project_id');
             // 分页
             $page = Request::param('page');
             $limit = Request::param('limit');
@@ -32,7 +33,8 @@ class Interfaces extends Common
                 $where[] = [$date_type, ['>=', $start_time], ['<=', $end_time], 'and'];
             }
             $where['is_delete'] = 0;
-
+            $where['project_id'] = $project_id;
+            
             // 排序
             $order_field = Request::param('order_field'); // 排序字段
             $order_type = Request::param('order_type'); // 排序方式
@@ -47,7 +49,6 @@ class Interfaces extends Common
             $data = Db::name('interface')
                 ->where($where)
                 ->order($order)
-                ->page($page,$limit)
                 ->select(); 
             // 总记录数
             $count = Db::name('interface')

@@ -71,6 +71,8 @@
         var laydate = layui.laydate;
         var treetable = layui.treetable;
 
+        var project_id = "{:request()->param('project_id')}";
+
         // 渲染表格
         var renderTable = function() {
             layer.load(2);
@@ -79,10 +81,10 @@
                 treeSpid: 0,
                 treeIdName: 'id',
                 treePidName: 'interface_pid',
-                treeDefaultClose: true,
+                treeDefaultClose: false,
                 treeLinkage: false,
                 elem: '#treetable',
-                url: "{:url()}",
+                url: "{:url()}?project_id=" + project_id,
                 page: false,
                 cols: [
                     [
@@ -96,7 +98,7 @@
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 ,hide:true},
                         { field: 'create_time', title: '创建时间', sort: true, width: 160 },
                         { field: 'update_time', title: '更新时间', sort: true, width: 160 },
-                        { templet: '#oper-col', title: '操作',width: 160  }
+                        { templet: '#oper-col', title: '操作',width: 170}
                     ]
                 ]
             });

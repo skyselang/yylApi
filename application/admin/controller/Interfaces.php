@@ -47,7 +47,6 @@ class Interfaces extends Common
             $data = Db::name('interface')
                 ->where($where)
                 ->order($order)
-                ->page($page,$limit)
                 ->select(); 
             // 总记录数
             $count = Db::name('interface')
@@ -81,6 +80,10 @@ class Interfaces extends Common
 	// 接口添加
 	public function interfaces_add()
 	{
+        $pid['project_id'] = Request::param('project_id');
+        $pid['interface_id'] = Request::param('interface_id');
+        $this->assign('pid',$pid);
+
         // 项目
         $project = Db::name('project')
             ->where('is_delete',0)
@@ -298,6 +301,32 @@ class Interfaces extends Common
         return $this->fetch();
     }
 
+    // 接口单元格编辑
+    public function interfacesedit()
+    {
+        if (Request::isAjax()) {
+            $id = Request::param('id');
+            $field_name = Request::param('field_name');
+            $field_value = Request::param('field_value');
+
+            if ($id && $field_name && $field_value) {
+                $res['code'] = 1;
+                $data[$field_name] = $field_value;
+                $update = Db::name('interface')
+                    ->where('interface_id',$id)
+                    ->update($data);
+                if ($update) {
+                    $res['code'] = 0;
+                    $res['msg'] = '编辑成功';
+                } else {
+                    $res['code'] = 1;
+                    $res['msg'] = '编辑失败';
+                }
+                return json($res);
+            }
+        }
+    }
+
     /**
      * @Author   yyl
      * @DateTime 2019-03-25
@@ -373,6 +402,7 @@ class Interfaces extends Common
 
             $interface = Db::name('interface')
                 ->where('project_id',$project_id)
+                ->order('sort,interface_id')
                 ->select();
 
             if ($interface) {

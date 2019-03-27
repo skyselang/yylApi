@@ -22,7 +22,7 @@
                         <div class="layui-card-body">
                             {foreach $interface as $key=>$vo}
                             <div style="padding: 15px; background-color: #F2F2F2;">
-                                <a href="{:url('interfaces/interfaces')}" target="_blank">
+                                <a href="{:url('interfaces/interfaces',['project_id'=>$vo['project_id']])}" target="_blank">
                                 <blockquote class="layui-elem-quote layui-quote-nm">{$vo.project_name}</blockquote>
                                 <div class="layui-row layui-col-space15">
                                     {foreach $vo.interface as $k=>$v}

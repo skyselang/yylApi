@@ -50,8 +50,11 @@
                         </script>
                         <!-- 操作列 -->
                         <script type="text/html" id="oper-col">
-                            <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">修改</button>
-                            <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</button>
+                            <div class="layui-btn-group">
+                                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add">添加</button>
+                                <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">修改</button>
+                                <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="dele">删除</button>
+                            </div>
                         </script>
                     </div>
                 </div>
@@ -83,20 +86,21 @@
                 treeLinkage: false,
                 elem: '#treetable',
                 url: "{:url()}",
-                page: false,
+                page: true,
                 cols: [
                     [
                         { type: 'numbers', title: '序号' },
                         { field: 'name', title: '名称', minWidth: 300},
-                        { field: 'id', title: 'ID' },
-                        { field: 'pid', title: 'PID' },
+                        { field: 'id', title: 'ID'},
+                        { field: 'interface_pid', title: 'PID' },
                         { field: 'project_name', title: '项目', minWidth: 100},
-                        { field: 'admin_id', title: '创建者', width: 120, edit: 'text' },
+                        { field: 'admin_id', title: '创建者', width: 120, hide:true, edit: 'text' },
                         { field: 'sort', title: '排序', sort: true, width: 120, edit: 'text' },
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
-                        { field: 'create_time', title: '创建时间', sort: true, width: 160 },
-                        { field: 'update_time', title: '更新时间', sort: true, width: 160 },
-                        { templet: '#oper-col', title: '操作',width: 160  }
+                        { field: 'create_time', title: '创建时间', sort: true, width: 160, hide:true,},
+                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide:true,},
+                        { field: 'id', title: 'ID' },
+                        { templet: '#oper-col', title: '操作',width: 170}
                     ]
                 ]
             });
@@ -111,12 +115,12 @@
                 type: 2,
                 title: '接口添加',
                 content: '{:url("interfaces_add")}',
-                area: ['88%', '88%'],
+                area: ['86%', '96%'],
                 shade: 0,
                 maxmin: true,
                 move: false,
                 end: function() {
-                    renderTable();
+                    // renderTable();
                 }
             })
         });
@@ -162,15 +166,47 @@
         $('.reload-btn').click(function() {
             $('.reset-btn').trigger('click'); //重置表单
             renderTable(); //表格重载
+            treetable.expandAll('#treetable');
             return false; //阻止表单跳转
         });
 
-        // 删除、修改
+        // 添加、修改、删除
         table.on('tool(treetable)', function(obj) {
             var data = obj.data;
             var layEvent = obj.event;
 
-            if (layEvent === 'del') {
+            if (layEvent === 'add') {
+                var project_id = obj.data.project_id;
+                layer.open({
+                    type: 2,
+                    title: '接口添加：',
+                    content: '{:url("interfaces_add")}?project_id='+project_id+'&interface_id=' + data.id,
+                    area: ['86%', '96%'],
+                    shade: 0,
+                    maxmin: true,
+                    move: false,
+                    end: function() {
+                        // renderTable();
+                    }
+                })
+                return false;
+            }
+            if (layEvent === 'edit') {
+                layer.open({
+                    type: 2,
+                    title: '接口修改：' + data.name,
+                    content: '{:url("interfaces_edit")}?interface_id=' + data.id,
+                    area: ['86%', '96%'],
+                    shade: 0,
+                    maxmin: true,
+                    move: false,
+                    end: function() {
+                        renderTable();
+                    }
+                })
+                return false;
+            }
+            if (layEvent === 'dele') {
                 layer.confirm('确定要删除吗？', { icon: 3, title: '提示' }, function(index) {
                     $.ajax({
                         type: 'post',
@@ -198,21 +234,28 @@
                     layer.close(index);
                 });
                 return false;
-            } else if (layEvent === 'edit') {
-                layer.open({
-                    type: 2,
-                    title: '接口修改：' + data.name,
-                    content: '{:url("interfaces_edit")}?interface_id=' + data.id,
-                    area: ['86%', '96%'],
-                    shade: 0,
-                    maxmin: true,
-                    move: false,
-                    end: function() {
-                        // renderTable();
-                    }
-                })
-                return false;
-            }
+            } 
+        });
+
+        // 单元格编辑
+        table.on('edit(treetable)', function(obj){
+            var id = obj.data.id;
+            var field_name = obj.field;
+            var field_value = obj.value;
+            $.ajax({
+                async: false,
+                url: '{:url("interfacesedit")}',
+                data: { id: id, field_name: field_name, field_value: field_value},
+                success: function(res) {
+                    layer.msg(res.msg);
+                },
+                error: function(xhr, status, error) {
+                    layer.msg('网络错误！');
+                },
+                complete: function(xhr, status) {
+                    renderTable(); //表格重载
+                }
+            })
         });
 
         // 是否禁用
@@ -223,7 +266,7 @@
             var is_disable = value[1];
             $.ajax({
                 async: false,
-                url: '{:url("interfaces_disable")}',
+                url: '{:url("interfaces_sort")}',
                 data: { id: id, is_disable: is_disable },
                 success: function(res) {
                     layer.close(load);
