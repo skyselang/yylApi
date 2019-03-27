@@ -76,7 +76,7 @@
             $.ajax({
                 data:data,
                 type:"POST",
-                url:"{:url('check')}",
+                url:"{:url('login/check')}",
                 success:function(res){
                     layer.close(load);
                     if (res.code == 0) {

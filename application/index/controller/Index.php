@@ -26,9 +26,9 @@ class Index extends Common
     		$create_time = Db::name('interface')
     			->where('is_delete',0)
     			->where('project_id',$v['project_id'])
-    			->order('create_time desc')
+    			->order('update_time desc')
     			->find();
-    		$interface[$k]['interface'][$k]['create_time'] = $create_time['create_time'];
+    		$interface[$k]['interface'][$k]['create_time'] = $create_time['update_time'];
     		$interface[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
     	}
     	// dump($interface);
