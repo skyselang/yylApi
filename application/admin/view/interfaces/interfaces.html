@@ -15,31 +15,27 @@
     <div class="layui-fluid">
         <div class="layui-row">
             <div class="layui-col-md12">
-                <div class="layui-card">
-                    <div class="layui-card-header">
+                <div class="layui-card" style="padding-bottom: 3rem">
+                    <div class="layui-card-header" style="text-align: center;position: fixed;background-color: #eee;left: 0;top: 0;z-index: 10000;width: 100%;height: 50px;">
                         <!-- 搜索 -->
                         <div class="table-reload-btn">
                             <form class="layui-form">
                                 <div class="layui-inline">
-                                    <div class="layui-btn-group">
-                                        <button type="button" class="layui-btn" id="btn-add">添加接口</button>
-                                        <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
-                                        <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
-                                    </div>
-                                </div>
-                                <div class="layui-inline">
                                     <input type="hidden" name="field_name" value="name">
-                                    <input type="text" name="field_value" class="layui-input" autocomplete="off" placeholder="输入名称搜索">
+                                    <input type="text" name="field_value" class="layui-input" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
                                 </div>
                                 <div class="layui-inline">
                                     <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
-                                    <button class="layui-btn layui-btn-primary reload-btn">重置</button>
-                                    <button class="layui-btn layui-btn-primary layui-hide reset-btn" type="reset">重置</button>
+                                    <button class="layui-btn reload-btn">重置</button>
+                                    <button class="layui-btn layui-hide reset-btn" type="reset">重置</button>
+                                    <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
+                                    <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
+                                    <button type="button" class="layui-btn" id="btn-add">添加接口</button>
                                 </div>
                             </form>
                         </div>
                     </div>
-                    <div class="layui-card-body">
+                    <div class="layui-card-body" style="position: relative;top: 40px">
                         <!-- 表格 -->
                         <div class="">
                             <table class="layui-hidden" id="treetable" lay-filter="treetable"></table>
@@ -90,17 +86,17 @@
                 cols: [
                     [
                         { type: 'numbers', title: '序号' },
-                        { field: 'name', title: '名称', minWidth: 300},
-                        { field: 'id', title: 'ID'},
+                        { field: 'name', title: '名称', minWidth: 300 },
+                        { field: 'id', title: 'ID' },
                         { field: 'interface_pid', title: 'PID' },
-                        { field: 'project_name', title: '项目', minWidth: 100},
-                        { field: 'admin_id', title: '创建者', width: 120, hide:true, edit: 'text' },
+                        { field: 'project_name', title: '项目', minWidth: 100 },
+                        { field: 'admin_id', title: '创建者', width: 120, hide: true, edit: 'text' },
                         { field: 'sort', title: '排序', sort: true, width: 120, edit: 'text' },
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
-                        { field: 'create_time', title: '创建时间', sort: true, width: 160, hide:true,},
-                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide:true,},
+                        { field: 'create_time', title: '创建时间', sort: true, width: 160, hide: true, },
+                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: true, },
                         { field: 'id', title: 'ID' },
-                        { templet: '#oper-col', title: '操作',width: 170}
+                        { templet: '#oper-col', title: '操作', width: 170 }
                     ]
                 ]
             });
@@ -180,7 +176,7 @@
                 layer.open({
                     type: 2,
                     title: '接口添加：',
-                    content: '{:url("interfaces_add")}?project_id='+project_id+'&interface_id=' + data.id,
+                    content: '{:url("interfaces_add")}?project_id=' + project_id + '&interface_id=' + data.id,
                     area: ['86%', '96%'],
                     shade: 0,
                     maxmin: true,
@@ -234,18 +230,18 @@
                     layer.close(index);
                 });
                 return false;
-            } 
+            }
         });
 
         // 单元格编辑
-        table.on('edit(treetable)', function(obj){
+        table.on('edit(treetable)', function(obj) {
             var id = obj.data.id;
             var field_name = obj.field;
             var field_value = obj.value;
             $.ajax({
                 async: false,
                 url: '{:url("interfacesedit")}',
-                data: { id: id, field_name: field_name, field_value: field_value},
+                data: { id: id, field_name: field_name, field_value: field_value },
                 success: function(res) {
                     layer.msg(res.msg);
                 },

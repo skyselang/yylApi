@@ -19,6 +19,7 @@
                     <div class="layui-card">
                         <div class="layui-card-header"><h3 style="text-align: center;">{:config('app_name')}</h3>
                         </div>
+                        {notempty name="$interface"}
                         <div class="layui-card-body">
                             {foreach $interface as $key=>$vo}
                             <div style="padding: 15px; background-color: #F2F2F2;">
@@ -40,6 +41,7 @@
                             </div>
                             {/foreach}
                         </div>
+                        {/notempty}
                     </div>
                 </div>
             </div>

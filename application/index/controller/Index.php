@@ -16,24 +16,25 @@ class Index extends Common
     	$relation = Db::name('relation')
     		->where('user_id',$user_id)
     		->select();
-
-    	foreach ($relation as $k => $v) {
-    		$interface[$k]['interface'] = Db::name('interface')
-    			->where('is_delete',0)
-    			->where('interface_pid',0)
-    			->where('project_id',$v['project_id'])
-    			->select();
-    		$create_time = Db::name('interface')
-    			->where('is_delete',0)
-    			->where('project_id',$v['project_id'])
-    			->order('update_time desc')
-    			->find();
-    		$interface[$k]['interface'][$k]['create_time'] = $create_time['update_time'];
-            $interface[$k]['project_id'] = $v['project_id'];
-    		$interface[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
-    	}
-    	// dump($interface);
-    	$this->assign('interface',$interface);
+        if ($relation) {
+            foreach ($relation as $k => $v) {
+                $interface[$k]['interface'] = Db::name('interface')
+                    ->where('is_delete',0)
+                    ->where('interface_pid',0)
+                    ->where('project_id',$v['project_id'])
+                    ->select();
+                $create_time = Db::name('interface')
+                    ->where('is_delete',0)
+                    ->where('project_id',$v['project_id'])
+                    ->order('update_time desc')
+                    ->find();
+                $interface[$k]['interface'][$k]['create_time'] = $create_time['update_time'];
+                $interface[$k]['project_id'] = $v['project_id'];
+                $interface[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
+            }
+            // dump($interface);
+            $this->assign('interface',$interface);
+        }
 
         return $this->fetch();
     }
