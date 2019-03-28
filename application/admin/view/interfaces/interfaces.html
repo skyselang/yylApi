@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="__LAYUI__/layui/css/layui.css">
     <link rel="stylesheet" href="__LAYUI__/style/admin.css">
 </head>
-
+<style>
+    .layui-table-hover{background-color:#dddddd !important}
+</style>
 <body>
     <div class="layui-fluid">
         <div class="layui-row">
@@ -111,10 +113,9 @@
                 type: 2,
                 title: '接口添加',
                 content: '{:url("interfaces_add")}',
-                area: ['86%', '96%'],
+                area: ['88%', '92%'],
                 shade: 0,
                 maxmin: true,
-                move: false,
                 end: function() {
                     // renderTable();
                 }
@@ -177,10 +178,9 @@
                     type: 2,
                     title: '接口添加：',
                     content: '{:url("interfaces_add")}?project_id=' + project_id + '&interface_id=' + data.id,
-                    area: ['86%', '96%'],
+                    area: ['88%', '92%'],
                     shade: 0,
                     maxmin: true,
-                    move: false,
                     end: function() {
                         // renderTable();
                     }
@@ -192,12 +192,11 @@
                     type: 2,
                     title: '接口修改：' + data.name,
                     content: '{:url("interfaces_edit")}?interface_id=' + data.id,
-                    area: ['86%', '96%'],
+                    area: ['88%', '92%'],
                     shade: 0,
                     maxmin: true,
-                    move: false,
                     end: function() {
-                        renderTable();
+                        // renderTable();
                     }
                 })
                 return false;

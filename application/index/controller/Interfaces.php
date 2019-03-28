@@ -33,6 +33,7 @@ class Interfaces extends Common
                 $where[] = [$date_type, ['>=', $start_time], ['<=', $end_time], 'and'];
             }
             $where['is_delete'] = 0;
+            $where['is_disable'] = 0;
             $where['project_id'] = $project_id;
             
             // 排序
@@ -61,9 +62,11 @@ class Interfaces extends Common
                     if ($is_delete == 1) {
                         unset($data[$k]);
                     }
+                    
                     $data[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
                     $data[$k]['id'] = $v['interface_id'];
                     $data[$k]['admin_id'] = Db::name('admin')->where('admin_id',$v['admin_id'])->value('username');
+
                 }
 
                 $res['code'] = 0;
