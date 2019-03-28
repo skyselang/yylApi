@@ -60,6 +60,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit="" lay-filter="submit-btn">保存</button>
+                        </div>
+                    </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-block">
@@ -182,7 +188,7 @@
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit="" lay-filter="submit-btn">提交</button>
+                        <button class="layui-btn" lay-submit="" lay-filter="submit-btn">保存</button>
                     </div>
                 </div>
             </form>
@@ -256,15 +262,7 @@
                 data: data,
                 success: function(res) {
                     if (res.code == 0) {
-                        layer.open({
-                            type: 0,
-                            icon: 1,
-                            content: res.msg,
-                            end: function() {
-                                var index = parent.layer.getFrameIndex(window.name);
-                                parent.layer.close(index);
-                            }
-                        });
+                        layer.msg(res.msg, { icon: 1 });
                     } else {
                         layer.alert(res.msg, { icon: 2 });
                     }

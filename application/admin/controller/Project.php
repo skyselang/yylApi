@@ -31,7 +31,9 @@ class Project extends Common
                 $end_time = strtotime($end_date.' 23:59:59');
                 $where[] = [$date_type, ['>=', $start_time], ['<=', $end_time], 'and'];
             }
+            $admin_id = Session::get('admin_id');
             $where['is_delete'] = 0;
+            $where['admin_id'] = $admin_id;
 
             // 排序
             $order_field = Request::param('order_field'); // 排序字段
@@ -57,7 +59,7 @@ class Project extends Common
             if ($data) {
                 foreach ($data as $k => $v) {
                     $data[$k]['id'] = $v['project_id'];
-                    $data[$k]['admin_id'] = Db::name('admin')->where('admin_id',Session::get('admin_id'))->value('username');
+                    $data[$k]['admin_id'] = Db::name('admin')->where('admin_id',$admin_id)->value('username');
                 }
 
                 $res['code'] = 0;

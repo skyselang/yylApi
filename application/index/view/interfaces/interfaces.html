@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>{:config('app_name')}_接口</title>
+    <title>{$project_name}_接口文档</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -203,7 +203,7 @@
             } else if (layEvent === 'edit') {
                 layer.open({
                     type: 2,
-                    title: '接口文档：' + data.name,
+                    title: data.name,
                     content: '{:url("interfaces_edit")}?interface_id=' + data.id,
                     area: ['80%', '90%'],
                     shade: 0,

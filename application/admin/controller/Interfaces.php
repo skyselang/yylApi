@@ -288,10 +288,10 @@ class Interfaces extends Common
 
                 if ($insert) {
                     $res['code'] = 0;
-                    $res['msg'] = '修改成功';
+                    $res['msg'] = '保存成功';
                 } else {
                     $res['code'] = 1;
-                    $res['msg'] = '修改失败';
+                    $res['msg'] = '保存失败';
                 }
             }
 

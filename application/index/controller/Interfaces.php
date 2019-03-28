@@ -79,6 +79,13 @@ class Interfaces extends Common
             return json($res);
         }
 
+        $project_id = Request::param('project_id');
+        $project_name = Db::name('interface')
+            ->where('project_id',$project_id)
+            ->where('interface_pid',0)
+            ->value('name');
+        $this->assign('project_name',$project_name);
+
 		return $this->fetch();
 	}
 
