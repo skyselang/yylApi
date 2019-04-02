@@ -90,7 +90,7 @@ class Interfaces extends Common
 	}
 
 	// 接口添加
-	public function interfaces_add()
+	public function interfaces_add_dis()
 	{
         // 项目
         $project = Db::name('project')
@@ -339,7 +339,7 @@ class Interfaces extends Common
      * 接口删除
      * @return json 删除结果
      */
-    public function interfaces_dele()
+    public function interfaces_dele_dis()
     {
         if (Request::isAjax()) {
             $id = Request::param('id');

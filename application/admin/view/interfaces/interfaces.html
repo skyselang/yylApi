@@ -85,19 +85,19 @@
                 elem: '#treetable',
                 url: "{:url()}",
                 page: true,
+                toolbar: true,
                 cols: [
                     [
                         { type: 'numbers', title: '序号' },
                         { field: 'name', title: '名称', minWidth: 300 },
-                        { field: 'id', title: 'ID' },
-                        { field: 'interface_pid', title: 'PID' },
-                        { field: 'project_name', title: '项目', minWidth: 100 },
-                        { field: 'admin_id', title: '创建者', width: 120, hide: true, edit: 'text' },
-                        { field: 'sort', title: '排序', sort: true, width: 120, edit: 'text' },
+                        { field: 'id', title: 'ID' ,width:80},
+                        { field: 'interface_pid', title: 'PID' ,width:80},
+                        { field: 'project_name', title: '项目', width: 100 },
+                        { field: 'admin_id', title: '创建者', width: 100, hide: true, edit: 'text' },
+                        { field: 'sort', title: '排序', sort: true, width: 100, edit: 'text' },
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
-                        { field: 'create_time', title: '创建时间', sort: true, width: 160, hide: true, },
-                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: true, },
-                        { field: 'id', title: 'ID' },
+                        { field: 'create_time', title: '创建时间', sort: true, width: 160, hide: false, },
+                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: false, },
                         { templet: '#oper-col', title: '操作', width: 170 }
                     ]
                 ]
@@ -182,7 +182,7 @@
                     shade: 0,
                     maxmin: true,
                     end: function() {
-                        // renderTable();
+                        renderTable();
                     }
                 })
                 return false;
