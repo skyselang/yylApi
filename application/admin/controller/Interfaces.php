@@ -328,6 +328,32 @@ class Interfaces extends Common
         }
     }
 
+    // 接口是否禁用
+    public function interfaces_disable()
+    {
+        if (Request::isAjax()) {
+            $res['code'] = 1;
+
+            $id = Request::param('id');
+            $is_disable = Request::param('is_disable');
+
+            if ($id) {
+                $data['interface_id'] = $id;
+                $data['is_disable'] = $is_disable == 1 ? 0 : 1;
+                $update = Db::name('interface')
+                    ->update($data);
+                if ($update) {
+                    $res['code'] = 0;
+                    $res['msg'] = '编辑成功';
+                } else {
+                    $res['msg'] = '编辑失败';
+                }
+            }
+
+            return json($res);
+        }
+    }
+
     /**
      * @Author   yyl
      * @DateTime 2019-03-25

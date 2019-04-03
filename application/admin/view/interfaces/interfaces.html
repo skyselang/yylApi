@@ -44,7 +44,7 @@
                         </div>
                         <!-- 是否禁用 -->
                         <script type="text/html" id="is_disable">
-                            <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable = 1 ? '' : 'checked' }}>
+                            <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable == 0 ? '' : 'checked' }}>
                         </script>
                         <!-- 操作列 -->
                         <script type="text/html" id="oper-col">
@@ -261,7 +261,7 @@
             var is_disable = value[1];
             $.ajax({
                 async: false,
-                url: '{:url("interfaces_sort")}',
+                url: '{:url("interfaces_disable")}',
                 data: { id: id, is_disable: is_disable },
                 success: function(res) {
                     layer.close(load);
