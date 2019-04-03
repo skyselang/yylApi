@@ -275,6 +275,7 @@ class Interfaces extends Common
 
             $check = Db::name('interface')
                 ->where('interface_id','<>',$interface_id)
+                ->where('is_delete',0)
                 ->where($where)
                 ->where('name',$name)
                 ->find();
