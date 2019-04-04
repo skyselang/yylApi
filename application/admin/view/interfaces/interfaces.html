@@ -24,7 +24,7 @@
                             <form class="layui-form">
                                 <div class="layui-inline">
                                     <input type="hidden" name="field_name" value="name">
-                                    <input type="text" name="field_value" class="layui-input" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
+                                    <input type="text" name="field_value" class="layui-input" autocomplete="off" placeholder="输入名称搜索({$count})" style="margin-top: 3px">
                                 </div>
                                 <div class="layui-inline">
                                     <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
@@ -92,6 +92,7 @@
                         { field: 'name', title: '名称', minWidth: 300 },
                         { field: 'id', title: 'ID' ,width:80},
                         { field: 'interface_pid', title: 'PID' ,width:80},
+                        { field: 'url', title: 'url' ,width:30},
                         { field: 'project_name', title: '项目', width: 100 },
                         { field: 'admin_id', title: '创建者', width: 100, hide: true, edit: 'text' },
                         { field: 'sort', title: '排序', sort: true, width: 100, edit: 'text' },

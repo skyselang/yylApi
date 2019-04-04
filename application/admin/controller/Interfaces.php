@@ -74,6 +74,10 @@ class Interfaces extends Common
             return json($res);
         }
 
+        // 总记录数
+        $count = Db::name('interface')->where('is_delete',0)->count();
+        $this->assign('count',$count);
+        
 		return $this->fetch();
 	}
 
