@@ -19,6 +19,7 @@ class Index extends Common
         if ($relation) {
             foreach ($relation as $k => $v) {
                 $interface[$k]['interface'] = Db::name('interface')
+                    ->where('is_disable',0)
                     ->where('is_delete',0)
                     ->where('interface_pid',0)
                     ->where('project_id',$v['project_id'])
@@ -26,13 +27,15 @@ class Index extends Common
                 $create_time = Db::name('interface')
                     ->where('is_delete',0)
                     ->where('project_id',$v['project_id'])
+                    ->field('update_time')
                     ->order('update_time desc')
                     ->find();
                 $interface[$k]['interface'][$k]['create_time'] = $create_time['update_time'];
+                $interface[$k]['interface'][$k]['create_time_ago'] = format_date(strtotime($create_time['update_time']));
                 $interface[$k]['project_id'] = $v['project_id'];
                 $interface[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
             }
-            // dump($interface);
+            
             $this->assign('interface',$interface);
         }
 

@@ -63,7 +63,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label"></label>
                         <div class="layui-input-inline">
-                            <button class="layui-btn" lay-submit="" lay-filter="submit-btn">保存</button>
+                            <button class="layui-btn" lay-submit lay-filter="submit-btn">保存</button>
                         </div>
                     </div>
                 </div>
@@ -177,18 +177,18 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">是否禁用</label>
                     <div class="layui-input-block">
-                        <input type="checkbox" name="is_disable" value="1" lay-skin="switch">
+                        <input type="checkbox" name="is_disable" value="{$interface.is_disable}" lay-skin="switch">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">排序</label>
                     <div class="layui-input-block">
-                        <input type="number" name="sort" value="200" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        <input type="number" name="sort" value="{$interface.sort}" placeholder="请输入排序" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit="" lay-filter="submit-btn">保存</button>
+                        <button class="layui-btn" lay-submi lay-filter="submit-btn">保存</button>
                     </div>
                 </div>
             </form>
@@ -234,9 +234,9 @@
                             // 删除
                             $(".response_param_dele").click(function() {
                                 $(this).parents('tr').remove();
-                                form.render('select');
+                                form.render();
                             });
-                            // form.render();
+                            form.render();
                         };
                     } else {
                         layer.msg(res.msg);
@@ -247,15 +247,14 @@
                 }
             })
         })
-        // 清空返回参数模板
+        // 返回参数模板清空
         $('#response_param_empty').click(function(){
             $("#response_param").empty();
         });
 
-        // submit form
+        // 提交表单
         form.on('submit(submit-btn)', function(data) {
             var data = data.field;
-            console.log(data)
             $.ajax({
                 type: 'post',
                 url: '{:url()}',
@@ -295,7 +294,7 @@
                         } else {
                             layer.msg(res.msg);
                         }
-                        form.render('select');
+                        form.render();
                     },
                     error: function() {
                         layer.msg('网络错误！');
@@ -332,14 +331,14 @@
             // 删除
             $(".request_param_dele").click(function() {
                 $(this).parents('tr').remove();
-                form.render('select');
+                form.render();
             });
-            form.render('select');
+            form.render();
         });
         // 删除
         $(".request_param_dele").click(function() {
             $(this).parents('tr').remove();
-            form.render('select');
+            form.render();
         })
 
         // 返回参数
@@ -354,14 +353,14 @@
             // 删除
             $(".response_param_dele").click(function() {
                 $(this).parents('tr').remove();
-                form.render('select');
+                form.render();
             });
-            form.render('select');
+            form.render();
         });
         // 删除
         $(".response_param_dele").click(function() {
             $(this).parents('tr').remove();
-            form.render('select');
+            form.render();
         })
 
     });
