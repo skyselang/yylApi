@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="__LAYUI__/style/admin.css">
 </head>
 <style>
-    .layui-table-hover{background-color:#dddddd !important}
+    .layui-table-hover{background-color:#e2e2e2 !important}
 </style>
 <body>
     <div class="layui-container">
@@ -208,7 +208,10 @@
                     area: ['80%', '90%'],
                     shade: 0,
                     maxmin: true,
-                    move: false,
+                    zIndex: layer.zIndex,
+                    success: function(layero){
+                        layer.setTop(layero);
+                    },
                     end: function() {
                         // renderTable();
                     }

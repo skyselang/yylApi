@@ -92,7 +92,7 @@
                         { field: 'name', title: '名称', minWidth: 300 },
                         { field: 'id', title: 'ID' ,width:80},
                         { field: 'interface_pid', title: 'PID' ,width:80},
-                        { field: 'url', title: 'url' ,width:30},
+                        { field: 'url', title: 'URL' ,width:30},
                         { field: 'project_name', title: '项目', width: 100 },
                         { field: 'admin_id', title: '创建者', width: 100, hide: true, edit: 'text' },
                         { field: 'sort', title: '排序', sort: true, width: 100, edit: 'text' },
@@ -196,6 +196,10 @@
                     area: ['88%', '92%'],
                     shade: 0,
                     maxmin: true,
+                    zIndex: layer.zIndex,
+                    success: function(layero){
+                        layer.setTop(layero);
+                    },
                     end: function() {
                         // renderTable();
                     }
