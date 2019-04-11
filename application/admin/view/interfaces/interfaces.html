@@ -99,7 +99,7 @@
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
                         { field: 'create_time', title: '创建时间', sort: true, width: 160, hide: false, },
                         { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: false, },
-                        { templet: '#oper-col', title: '操作', width: 170 }
+                        { templet: '#oper-col', title: '操作', width: 166, align: 'right' }
                     ]
                 ]
             });
@@ -181,7 +181,12 @@
                     content: '{:url("interfaces_add")}?project_id=' + project_id + '&interface_id=' + data.id,
                     area: ['88%', '92%'],
                     shade: 0,
+                    offset: 'lt',
                     maxmin: true,
+                    zIndex: layer.zIndex,
+                    success: function(layero){
+                        layer.setTop(layero);
+                    },
                     end: function() {
                         renderTable();
                     }
@@ -195,6 +200,7 @@
                     content: '{:url("interfaces_edit")}?interface_id=' + data.id,
                     area: ['88%', '92%'],
                     shade: 0,
+                    offset: 'lt',
                     maxmin: true,
                     zIndex: layer.zIndex,
                     success: function(layero){
