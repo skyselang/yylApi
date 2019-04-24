@@ -98,7 +98,9 @@ class Interfaces extends Common
 
         // 接口
         $interface = Db::name('interface')
+            ->where('is_delete',0)
             ->where('project_id',$project[0]['project_id'])
+            ->order('sort desc')
             ->select();
         $interface = $this->getTree($interface);
         $this->assign('interface',$interface);
@@ -157,19 +159,20 @@ class Interfaces extends Common
             $project_id = $data['project_id'];
             $interface_pid = $data['interface_pid'];
             if ($interface_pid) {
-                $where = ['project_id'=>$project_id,'interface_id'=>$interface_pid];
+                $where = ['project_id'=>$project_id,'interface_pid'=>$interface_pid];
             } else {
                 $where = ['project_id'=>$project_id];
             }
             
             $check = Db::name('interface')
                 ->where($where)
+                ->where('is_delete', 0)
             	->where('name',$name)
             	->find();
 
             if ($check) {
                 $res['code'] = 1;
-                $res['msg'] = '接口名称已存在';
+                $res['msg'] = '接口名称已存在'.$check['interface_id'];
             } else {
                 $insert = Db::name('interface')
             		->data($data)
@@ -206,7 +209,9 @@ class Interfaces extends Common
 
         // 该项目所有接口
         $interfaces = Db::name('interface')
+            ->where('is_delete',0)
             ->where('project_id',$interface['project_id'])
+            ->order('sort desc')
             ->select();
         $interfaces = $this->getTree($interfaces);
         $this->assign('interfaces',$interfaces);
