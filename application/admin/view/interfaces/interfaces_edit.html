@@ -129,7 +129,13 @@
                                             <option value="NULL">NULL</option>
                                         </select>
                                     </td>
-                                    <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button></td>
+                                    <td>
+                                        <div class="layui-btn-group">
+                                            <button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button>
+                                            <button type="button" class="layui-btn layui-btn-sm request_param_up">+U</button>
+                                            <button type="button" class="layui-btn layui-btn-sm request_param_do">+D</button>
+                                        </div>
+                                    </td>
                                 </tr>
                                 {/foreach}
                                 {/if}
@@ -147,9 +153,11 @@
                                     <th>参数值</th>
                                     <th>参数说明</th>
                                     <th>
-                                        <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button>
-                                        <button type="button" id="response_param_template" class="layui-btn layui-btn-sm layui-btn-primary" title="添加返回参数模板">模板</button>
-                                        <button type="button" id="response_param_empty" class="layui-btn layui-btn-sm layui-btn-primary" title="清空返回参数">清空</button>
+                                        <div class="layui-btn-group">
+                                            <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button>
+                                            <button type="button" id="response_param_template" class="layui-btn layui-btn-sm layui-btn-primary" title="添加返回参数模板">模板</button>
+                                            <button type="button" id="response_param_empty" class="layui-btn layui-btn-sm layui-btn-danger" title="清空返回参数">清空</button>
+                                        </div>
                                     </th>
                                 </tr>
                             </thead>
@@ -303,31 +311,58 @@
             }
         }
         // 请求参数
+        var request_param = '<tr>\
+            <td><input class="layui-input" type="text" name="request_param_name[]" value="" placeholder="参数名称"></td>\
+            <td><input class="layui-input" type="text" name="request_param_explain[]" placeholder="参数说明"></td>\
+            <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例值"></td>\
+            <td>\
+                <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">\
+                    <option value="0">是</option>\
+                    <option value="1">否</option>\
+                </select>\
+            </td>\
+            <td>\
+                <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">\
+                    <option value="String">String</option>\
+                    <option value="Integer">Integer</option>\
+                    <option value="Float">Float</option>\
+                    <option value="Boolean">Boolean</option>\
+                    <option value="Array">Array</option>\
+                    <option value="Object">Object</option>\
+                    <option value="NULL">NULL</option>\
+                </select>\
+            </td>\
+            <td>\
+                <div class="layui-btn-group">\
+                    <button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button>\
+                    <button type="button" class="layui-btn layui-btn-sm request_param_up">+U</button>\
+                    <button type="button" class="layui-btn layui-btn-sm request_param_do">+D</button>\
+                </div>\
+            </td>\
+        </tr>';
         $("#request_param_add").click(function() {
             // 添加
-            $("#request_param").append('<tr>\
-                <td><input class="layui-input" type="text" name="request_param_name[]" value="" placeholder="参数名称"></td>\
-                <td><input class="layui-input" type="text" name="request_param_explain[]" placeholder="参数说明"></td>\
-                <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例值"></td>\
-                <td>\
-                    <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">\
-                        <option value="0">是</option>\
-                        <option value="1">否</option>\
-                    </select>\
-                </td>\
-                <td>\
-                    <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">\
-                        <option value="String">String</option>\
-                        <option value="Integer">Integer</option>\
-                        <option value="Float">Float</option>\
-                        <option value="Boolean">Boolean</option>\
-                        <option value="Array">Array</option>\
-                        <option value="Object">Object</option>\
-                        <option value="NULL">NULL</option>\
-                    </select>\
-                </td>\
-                <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button></td>\
-            </tr>');
+            $("#request_param").append(request_param);
+            // 删除
+            $(".request_param_dele").click(function() {
+                $(this).parents('tr').remove();
+                form.render();
+            });
+            form.render();
+        });
+        $(".request_param_up").click(function() {
+            // 添加
+            $(this).parents('tr').before(request_param);
+            // 删除
+            $(".request_param_dele").click(function() {
+                $(this).parents('tr').remove();
+                form.render();
+            });
+            form.render();
+        });
+        $(".request_param_do").click(function() {console.log($(this).parents('tr'))
+            // 添加
+            $(this).parents('tr').after(request_param);
             // 删除
             $(".request_param_dele").click(function() {
                 $(this).parents('tr').remove();
