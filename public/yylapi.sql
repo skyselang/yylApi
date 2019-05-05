@@ -11,7 +11,7 @@
  Target Server Version : 50553
  File Encoding         : 65001
 
- Date: 29/04/2019 09:31:50
+ Date: 30/04/2019 10:07:47
 */
 
 SET NAMES utf8mb4;
@@ -65,7 +65,7 @@ CREATE TABLE `ya_interface`  (
   INDEX `project_id`(`project_id`) USING BTREE,
   INDEX `admin_id`(`admin_id`) USING BTREE,
   INDEX `name`(`name`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 164 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口' ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 177 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '接口' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for ya_interface_response
@@ -128,9 +128,9 @@ CREATE TABLE `ya_user`  (
   `login_ip` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0.0.0.0' COMMENT '登录ip',
   `login_num` int(11) NULL DEFAULT 0 COMMENT '登录次数',
   `device` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '登录设备',
+  `is_delete` tinyint(1) NULL DEFAULT 0 COMMENT '0正常1删除',
   `login_time` datetime NULL DEFAULT NULL COMMENT '登录时间',
   `exit_time` datetime NULL DEFAULT NULL COMMENT '退出时间',
-  `is_delete` tinyint(4) NULL DEFAULT 0 COMMENT '0正常1删除',
   `create_time` datetime NULL DEFAULT NULL COMMENT '添加时间',
   `update_time` datetime NULL DEFAULT NULL COMMENT '修改时间',
   `delete_time` datetime NULL DEFAULT NULL COMMENT '删除时间',

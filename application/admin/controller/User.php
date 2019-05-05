@@ -194,7 +194,7 @@ class User extends Common
                     $success += 1;
                     Db::name('user')
                         ->where('user_id', $v)
-                        ->update(['delete_time' => time()]);
+                        ->update(['delete_time' => date('Y-m-d H:i:s')]);
                 } else {
                     $fail += 1;
                 }

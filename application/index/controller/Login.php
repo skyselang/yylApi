@@ -57,17 +57,17 @@ class Login extends Controller {
 			$where['username'] = $username;
 			$where['password'] = md5($password);
 
-			$admin = Db::name('user')
+			$user = Db::name('user')
 				->where($where)
 				->find();
 
-			if ($admin) {
-				$user_id = $admin['user_id'];
+			if ($user) {
+				$user_id = $user['user_id'];
 				$login_ip = $this->request->ip();
 				$this->update($user_id, $login_ip, $device);
 
 				Session::set('user_id', $user_id);
-				Session::set('username', $admin['username']);
+				Session::set('username', $user['username']);
 
 				$res['code'] = 0;
 				$res['msg'] = '登录成功！';
@@ -92,7 +92,7 @@ class Login extends Controller {
 		if ($user_id) {
 			$data['login_ip'] = $login_ip;
 			$data['device'] = $device;
-			$data['login_time'] = time();
+			$data['login_time'] = date('Y-m-d H:i:s');
 			$update = Db::name('user')
 				->where('user_id', $user_id)
 				->update($data);
@@ -111,7 +111,7 @@ class Login extends Controller {
 		$user_id = Session::get('user_id');
 
 		if ($user_id) {
-			$data['exit_time'] = time();
+			$data['exit_time'] = date('Y-m-d H:i:s');
 
 			$exit_time = Db::name('user')
 				->where('user_id', $user_id)
