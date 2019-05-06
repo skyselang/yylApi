@@ -88,6 +88,7 @@ class Interfaces extends Common
         $project = Db::name('project')
             ->where('is_delete',0)
             ->order(['sort'=>'desc','update_time'=>'desc'])
+            ->field('project_id, project_name, apiurl_prefix')
             ->select();
         $project[0]['apiurl_prefix'] = unserialize($project[0]['apiurl_prefix']);
         $this->assign('project',$project);
@@ -96,6 +97,7 @@ class Interfaces extends Common
         $interface = Db::name('interface')
             ->where('is_delete',0)
             ->where('project_id',$project[0]['project_id'])
+            ->field('interface_id, interface_pid, name, project_id')
             ->order('sort desc')
             ->select();
         $interface = $this->getTree($interface);
@@ -488,7 +490,7 @@ class Interfaces extends Common
         foreach ($array as $k => $v) {
             if ($v['interface_pid'] == $pid) {
                 $v['lv'] = $lv;
-                $v['name'] = str_repeat('----', $lv).$v['name'];
+                $v['name'] = str_repeat('----|', $lv).$v['name'];
                 $tree[] = $v;
                 $this->getTree($array, $v['interface_id'], $lv + 1);
             }

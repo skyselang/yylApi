@@ -18,6 +18,12 @@
                 <input type="hidden" name="interface_id" value="{$interface.interface_id}">
                 <div class="layui-form-item">
                     <div class="layui-inline">
+                        <label class="layui-form-label">接口名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" value="{$interface.name}" lay-verify="required" placeholder="请输入接口名称" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">所属项目</label>
                         <div class="layui-input-inline">
                             <select name="project_id" id="project_id" lay-filter="project_id" lay-verify="required">
@@ -40,12 +46,7 @@
                         <div class="layui-form-mid layui-word-aux">未选则为顶级</div>
                     </div>
                 </div>
-                <!-- <div class="layui-form-item">
-                    <label class="layui-form-label">接口名称</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="name" value="{$interface.name}" lay-verify="required" placeholder="请输入接口名称" autocomplete="off" class="layui-input">
-                    </div>
-                </div> -->
+                
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">请求方式</label>
