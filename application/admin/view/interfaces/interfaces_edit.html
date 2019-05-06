@@ -15,7 +15,6 @@
     <div class="layui-row">
         <div class="layui-card">
             <form class="layui-form" action="">
-                <br>
                 <input type="hidden" name="interface_id" value="{$interface.interface_id}">
                 <div class="layui-form-item">
                     <div class="layui-inline">
@@ -29,7 +28,7 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">上级</label>
+                        <label class="layui-form-label">接口上级</label>
                         <div class="layui-input-inline">
                             <select name="interface_pid" id="interface_pid" lay-filter="interface_pid" lay-verify="">
                                 <option value="0">请选择上级</option>
@@ -41,12 +40,12 @@
                         <div class="layui-form-mid layui-word-aux">未选则为顶级</div>
                     </div>
                 </div>
-                <div class="layui-form-item">
+                <!-- <div class="layui-form-item">
                     <label class="layui-form-label">接口名称</label>
                     <div class="layui-input-block">
                         <input type="text" name="name" value="{$interface.name}" lay-verify="required" placeholder="请输入接口名称" autocomplete="off" class="layui-input">
                     </div>
-                </div>
+                </div> -->
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">请求方式</label>
@@ -61,16 +60,8 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label"></label>
+                        <label class="layui-form-label">接口环境</label>
                         <div class="layui-input-inline">
-                            <button class="layui-btn" lay-submit lay-filter="submit-btn">保存</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-block">
-                        <label class="layui-form-label">接口前缀</label>
-                        <div class="layui-input-block">
                             <select name="" id="apiurl_prefix" lay-filter="apiurl_prefix" lay-verify="">
                                 {foreach $interface.apiurl_prefix as $key=>$vo}
                                 <option value="{$vo.apiurl_prefix_name}" {if $vo.apiurl_prefix_default==0}selected{/if>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
@@ -78,17 +69,25 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">接口URL</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="url" value="{$interface.url}" lay-verify="" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
+                    <div class="layui-inline">
+                        <label class="layui-form-label"></label>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn" lay-submit lay-filter="submit-btn">保存</button>
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">完整URL</label>
-                    <div class="layui-input-block">
-                    <input type="text" id="apiurl_show" class="layui-input" value="{$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">接口URL</label>
+                        <div class="layui-input-inline" style="width: 330px;">
+                            <input type="text" name="url" value="{$interface.url}" lay-verify="" placeholder="请输入接口URL(不包含接口环境)" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">完整URL</label>
+                        <div class="layui-input-inline" style="width: 600px;">
+                            <input type="text" id="apiurl_show" class="layui-input" value="{$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -183,20 +182,22 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">是否禁用</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="is_disable" value="{$interface.is_disable}" lay-skin="switch">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否禁用</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" name="is_disable" value="{$interface.is_disable}" lay-skin="switch">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="sort" value="{$interface.sort}" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">排序</label>
-                    <div class="layui-input-block">
-                        <input type="number" name="sort" value="{$interface.sort}" placeholder="请输入排序" autocomplete="off" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submi lay-filter="submit-btn">保存</button>
+                    <div class="layui-input-block" style="text-align: center;">
+                        <button class="layui-btn" lay-filter="submit-btn">刷新</button>
                     </div>
                 </div>
             </form>
@@ -360,7 +361,7 @@
             });
             form.render();
         });
-        $(".request_param_do").click(function() {console.log($(this).parents('tr'))
+        $(".request_param_do").click(function() {
             // 添加
             $(this).parents('tr').after(request_param);
             // 删除

@@ -41,17 +41,17 @@
                         <div class="layui-form-mid layui-word-aux">未选则为顶级</div>
                     </div>
                 </div> -->
-                <div class="layui-form-item">
+                <!-- <div class="layui-inline">
                     <label class="layui-form-label">接口名称</label>
-                    <div class="layui-input-block">
+                    <div class="layui-input-inline">
                         <input type="text" name="name" value="{$interface.name}" lay-verify="required" placeholder="请输入接口名称" autocomplete="off" class="layui-input">
                     </div>
-                </div>
+                </div> -->
                 {if $interface.url}
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">请求方式</label>
-                        <div class="layui-input-inline">
+                        <div class="layui-input-inline" style="width: 100px;">
                             <select name="method" id="method" lay-filter="method" lay-verify="">
                                 <option value="POST" {if $interface.method=='POST'}selected{/if}>POST</option>
                                 <option value="GET" {if $interface.method=='GET'}selected{/if}>GET</option>
@@ -61,11 +61,9 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <div class="layui-block">
-                        <label class="layui-form-label">接口前缀</label>
-                        <div class="layui-input-block">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">接口环境</label>
+                        <div class="layui-input-inline">
                             <select name="" id="apiurl_prefix" lay-filter="apiurl_prefix" lay-verify="">
                                 {foreach $interface.apiurl_prefix as $key=>$vo}
                                 <option value="{$vo.apiurl_prefix_name}" {eq name="vo.apiurl_prefix_default" value="0" }selected{/eq}>[{$vo.apiurl_prefix_name}] {$vo.apiurl_prefix_url}</option>
@@ -73,11 +71,11 @@
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">接口URL</label>
-                    <div class="layui-input-block">
-                        <input type="text" name="url" value="{$interface.url}" lay-verify="" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
+                    <div class="layui-inline" style="width: 440px;">
+                        <label class="layui-form-label">接口URL</label>
+                        <div class="layui-input-inline" style="width: 300px;">
+                            <input type="text" name="url" value="{$interface.url}" lay-verify="" placeholder="请输入接口URL" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">

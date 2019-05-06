@@ -24,12 +24,12 @@
                             <form class="layui-form">
                                 <div class="layui-inline">
                                     <input type="hidden" name="field_name" value="name">
-                                    <input type="text" name="field_value" class="layui-input" autocomplete="off" placeholder="输入名称搜索({$count})" style="margin-top: 3px">
+                                    <input type="text" name="field_value" class="layui-input field_value" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
                                 </div>
                                 <div class="layui-inline">
                                     <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
-                                    <button class="layui-btn reload-btn">重置</button>
-                                    <button class="layui-btn layui-hide reset-btn" type="reset">重置</button>
+                                    <button class="layui-btn reload-btn">刷新</button>
+                                    <button class="layui-btn layui-hide reset-btn" type="reset">刷新</button>
                                     <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
                                     <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
                                     <button type="button" class="layui-btn" id="btn-add">添加接口</button>
@@ -102,7 +102,11 @@
                         { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: false, },
                         { templet: '#oper-col', title: '操作', width: 166, align: 'right' }
                     ]
-                ]
+                ],
+                done: function(res, curr, count){
+                    // 得到数据总量
+                    $('.field_value').attr('placeholder', '输入名称搜索('+count+')');
+                }
             });
             layer.closeAll('loading');
         };
@@ -117,9 +121,14 @@
                 content: '{:url("interfaces_add")}',
                 area: ['88%', '92%'],
                 shade: 0,
+                offset: 'lt',
                 maxmin: true,
+                zIndex: layer.zIndex,
+                success: function(layero){
+                    layer.setTop(layero);
+                },
                 end: function() {
-                    // renderTable();
+                    renderTable();
                 }
             })
         });

@@ -15,7 +15,6 @@
     <div class="layui-row">
         <div class="layui-card">
             <form class="layui-form" action="">
-                <br>
                 <div class="layui-form-item">
                     <label class="layui-form-label">项目名称</label>
                     <div class="layui-input-block">
@@ -29,12 +28,12 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">接口前缀</label>
+                    <label class="layui-form-label">接口环境</label>
                     <div class="layui-input-block">
                         <table class="layui-table" lay-size="sm">
                             <thead>
                                 <tr>
-                                    <th>环境</th>
+                                    <th>名称</th>
                                     <th>URL</th>
                                     <th>默认</th>
                                     <th><button type="button" id="apiurl_prefix_add" class="layui-btn layui-btn-sm">添加</button></th>
@@ -52,15 +51,17 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">是否禁用</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="is_disable" value="1" lay-skin="switch">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否禁用</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" name="is_disable" value="1" lay-skin="switch">
+                        </div>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">排序</label>
-                    <div class="layui-input-block">
-                        <input type="number" name="sort" value="200" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="sort" value="200" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">

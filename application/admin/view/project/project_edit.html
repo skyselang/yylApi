@@ -15,7 +15,6 @@
     <div class="layui-row">
         <div class="layui-card">
             <form class="layui-form" action="">
-                <br>
                 <input type="hidden" name="project_id" value="{$project.project_id}">
                 <div class="layui-form-item">
                     <label class="layui-form-label">项目名称</label>
@@ -57,15 +56,17 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">是否禁用</label>
-                    <div class="layui-input-block">
-                        <input type="checkbox" name="is_disable" value="1" lay-skin="switch" {if $project.is_disable == 1}checked{/if}>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">是否禁用</label>
+                        <div class="layui-input-inline">
+                            <input type="checkbox" name="is_disable" value="1" lay-skin="switch" {if $project.is_disable == 1}checked{/if}>
+                        </div>
                     </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label">排序</label>
-                    <div class="layui-input-block">
-                        <input type="number" name="sort" value="{$project.sort|default='200'}" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">排序</label>
+                        <div class="layui-input-inline">
+                            <input type="number" name="sort" value="{$project.sort|default='200'}" placeholder="请输入排序" autocomplete="off" class="layui-input">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
