@@ -12,6 +12,9 @@ class Interfaces extends Common
 	// 接口
 	public function interfaces() 
 	{
+        $project = Db::name('project')->where('is_delete',0)->order('sort desc')->select();
+        $this->assign('project',$project);
+        
 		if (Request::isAjax()) {
             // 分页
             $page = Request::param('page');

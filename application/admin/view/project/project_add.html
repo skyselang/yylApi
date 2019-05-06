@@ -41,8 +41,8 @@
                             </thead>
                             <tbody id="url_profix_tr">
                                 <tr>
-                                    <td><input class="layui-input" type="text" name="apiurl_prefix_name[]" value="开发" placeholder="名称"></td>
-                                    <td><input class="layui-input" type="text" name="apiurl_prefix_url[]" value="http://192.168.0.125:8080/index.php/" placeholder="URL"></td>
+                                    <td><input class="layui-input" type="text" name="apiurl_prefix_name[]" value="本地" placeholder="名称"></td>
+                                    <td><input class="layui-input" type="text" name="apiurl_prefix_url[]" value="http://<?php echo $_SERVER['HTTP_HOST'];?>/index.php/" placeholder="URL"></td>
                                     <td><input type="radio" name="apiurl_prefix_default[]" value="1" lay-filter="apiurl_prefix_default" checked></td>
                                     <td><!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-danger apiurl_prefix_dele">删除</button> --></td>
                                 </tr>

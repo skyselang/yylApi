@@ -23,6 +23,7 @@ class Project extends Common
             $date_type = Request::param('date_type');//日期类型
             $start_date = Request::param('start_date');//开始日期
             $end_date = Request::param('end_date');//结束日期
+            
             if ($field_val) {
                 $where[$field] = array('like',"%".$field_val."%");
             }
@@ -105,6 +106,7 @@ class Project extends Common
             $check = Db::name('project')
                 ->where('is_delete',0)
             	->where('project_name',$data['project_name'])
+                ->where('admin_id',$data['admin_id'])
             	->find();
 
             if ($check) {

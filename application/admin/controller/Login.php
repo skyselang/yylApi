@@ -36,13 +36,13 @@ class Login extends Controller {
 		$verify = $this->request->param('verify/s');
 		$device = $this->request->param('device/s');
 
-		if ($username == '' || $username == null || $username == 'undefined') {
+		if (empty($username)) {
 			$res['code'] = 1;
 			$res['msg'] = '请输入账号！';
-		} elseif ($password == '' || $password == null || $password == 'undefined') {
+		} elseif (empty($password)) {
 			$res['code'] = 1;
 			$res['msg'] = '请输入密码！';
-		} elseif (($is_verify) && ($verify == '' || $verify == null || $verify == 'undefined')) {
+		} elseif (($is_verify) && (empty($verify))) {
 			$res['code'] = 1;
 			$res['msg'] = '请输入验证码！';
 		} elseif (!captcha_check($verify) && $is_verify) {
