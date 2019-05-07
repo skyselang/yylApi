@@ -113,13 +113,13 @@
                                     </td>
                                     <td>
                                         <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">
-                                            <option value="String">String</option>
-                                            <option value="Integer">Integer</option>
-                                            <option value="Float">Float</option>
-                                            <option value="Boolean">Boolean</option>
-                                            <option value="Array">Array</option>
-                                            <option value="Object">Object</option>
-                                            <option value="NULL">NULL</option>
+                                            <option value="String" {if $vo.request_param_type == 'String'}selected{/if}>String</option>
+                                            <option value="Integer" {if $vo.request_param_type == 'Integer'}selected{/if}>Integer</option>
+                                            <option value="Float" {if $vo.request_param_type == 'Float'}selected{/if}>Float</option>
+                                            <option value="Boolean" {if $vo.request_param_type == 'Boolean'}selected{/if}>Boolean</option>
+                                            <option value="Array" {if $vo.request_param_type == 'Array'}selected{/if}>Array</option>
+                                            <option value="Object" {if $vo.request_param_type == 'Object'}selected{/if}>Object</option>
+                                            <option value="NULL" {if $vo.request_param_type == 'NULL'}selected{/if}>NULL</option>
                                         </select>
                                     </td>
                                     <td><!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-danger request_param_dele">删除</button> --></td>
