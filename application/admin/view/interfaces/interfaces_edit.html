@@ -13,7 +13,7 @@
 
 <body>
     <div class="layui-row">
-        <div class="layui-card">
+        <div class="layui-col-md12">
             <form class="layui-form" action="">
                 <input type="hidden" name="interface_id" value="{$interface.interface_id}">
                 <div class="layui-form-item">
@@ -46,7 +46,6 @@
                         <div class="layui-form-mid layui-word-aux">未选则为顶级</div>
                     </div>
                 </div>
-                
                 <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">请求方式</label>
@@ -204,7 +203,9 @@
             </form>
         </div>
     </div>
+    <!-- script src -->
     <script src="__LAYUI__/layui/layui.js"></script>
+    <!-- script code -->
     <script>
     layui.use(['form', 'layer', 'jquery'], function() {
 
@@ -399,6 +400,8 @@
             $(this).parents('tr').remove();
             form.render();
         })
+
+        form.render();//重新渲染表单
 
     });
     </script>

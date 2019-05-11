@@ -12,7 +12,7 @@ class Interfaces extends Common
 	// 接口
 	public function interfaces() 
 	{
-        $project = Db::name('project')->where('is_delete',0)->order('sort desc')->select();
+        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc')->select();
         $this->assign('project',$project);
         
 		if (Request::isAjax()) {
@@ -21,11 +21,15 @@ class Interfaces extends Common
             $limit = Request::param('limit');
 
             // 条件
+            $project_id = Request::param('project_id');//项目id
             $field = Request::param('field');//字段
             $field_val = Request::param('field_val');//字段值
             $date_type = Request::param('date_type');//日期类型
             $start_date = Request::param('start_date');//开始日期
             $end_date = Request::param('end_date');//结束日期
+            if ($project_id) {
+                $where['project_id'] = $project_id;
+            }
             if ($field_val) {
                 $where[$field] = array('like',"%".$field_val."%");
             }

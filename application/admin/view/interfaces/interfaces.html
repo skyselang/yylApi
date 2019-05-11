@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>接口</title>
+    <title>接口列表</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -13,53 +13,66 @@
 <style>
     .layui-table-hover{background-color:#dddddd !important}
 </style>
+
 <body>
-    <div class="layui-fluid">
-        <div class="layui-row">
-            <div class="layui-col-md12">
-                <div class="layui-card" style="padding-bottom: 3rem">
-                    <div class="layui-card-header" style="text-align: center;position: fixed;background-color: #eee;left: 0;top: 0;z-index: 10000;width: 100%;height: 50px;">
-                        <!-- 搜索 -->
-                        <div class="table-reload-btn">
-                            <form class="layui-form">
-                                <div class="layui-inline">
-                                    <input type="hidden" name="field_name" value="name">
-                                    <input type="text" name="field_value" class="layui-input field_value" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
-                                </div>
-                                <div class="layui-inline">
-                                    <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
-                                    <button class="layui-btn reload-btn">刷新</button>
-                                    <button class="layui-btn layui-hide reset-btn" type="reset">刷新</button>
-                                    <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
-                                    <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
-                                    <button type="button" class="layui-btn" id="btn-add">添加接口</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="layui-card-body" style="position: relative;top: 40px">
-                        <!-- 表格 -->
-                        <div class="">
-                            <table class="layui-hidden" id="treetable" lay-filter="treetable"></table>
-                        </div>
-                        <!-- 是否禁用 -->
-                        <script type="text/html" id="is_disable">
-                            <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable == 0 ? '' : 'checked' }}>
-                        </script>
-                        <!-- 操作列 -->
-                        <script type="text/html" id="oper-col">
-                            <div class="layui-btn-group">
-                                <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add">添加</button>
-                                <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">修改</button>
-                                <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="dele">删除</button>
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-card" style="padding-bottom: 3rem">
+                <div class="layui-card-header" style="text-align: center;position: fixed;padding: 0;background-color: #eee;left: 0;top: 0;z-index: 10000;width: 100%;height: 50px;">
+                    <!-- 搜索 -->
+                    <div class="table-reload-btn">
+                        <form class="layui-form">
+                            <div class="layui-input-inline">
+                                <select name="project_id" id="project_id" lay-filter="project_id">
+                                    <option value="">所有项目</option>
+                                    {notempty name="project"}
+                                    {foreach $project as $key=>$vo }
+                                    <option value="{$vo.project_id}">{$vo.project_name}</option>
+                                    {/foreach}
+                                    {/notempty}
+                                </select>
                             </div>
-                        </script>
+                            <div class="layui-inline">
+                                <input type="hidden" name="field_name" value="name">
+                                <input type="text" name="field_value" class="layui-input field_value" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
+                            </div>
+                            <div class="layui-inline">
+                                <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
+                                <button class="layui-btn reload-btn">刷新</button>
+                                <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
+                                <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
+                            </div>
+                        </form>
                     </div>
+                </div>
+                <div class="layui-card-body" style="position: relative;padding: 10px;top: 40px">
+                    <!-- 表格 -->
+                    <div class="">
+                        <table class="layui-hidden" id="treetable" lay-filter="treetable"></table>
+                    </div>
+                    <!-- 表格头部工具栏 -->
+                    <script type="text/html" id="toolbar">
+                        <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add">添加</button>
+                    </script>
+                    <!-- 是否禁用 -->
+                    <script type="text/html" id="is_disable">
+                        <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable == 0 ? '' : 'checked' }}>
+                    </script>
+                    <!-- 操作列 -->
+                    <script type="text/html" id="oper-col">
+                        <div class="layui-btn-group">
+                            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add">添加</button>
+                            <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">修改</button>
+                            <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="dele">删除</button>
+                        </div>
+                    </script>
                 </div>
             </div>
         </div>
     </div>
+    <!-- script src -->
     <script src="__LAYUI__/layui/layui.js"></script>
+    <!-- script code -->
     <script>
     layui.config({ base: '__LAYUI__/' }); //静态资源所在路径
     layui.extend({ index: 'lib/index', treetable: 'treetable-lay/treetable' }); //主入口模块
@@ -73,8 +86,8 @@
         var treetable = layui.treetable;
 
         // 渲染表格
-        var renderTable = function() {
-            layer.load(2);
+        var renderTable = function(where) {
+            layer.load(2, { time: 2 * 1000, shade: 0.1 });
             treetable.render({
                 treeColIndex: 1,
                 treeSpid: 0,
@@ -83,65 +96,69 @@
                 treeDefaultClose: true,
                 treeLinkage: false,
                 elem: '#treetable',
-                title: '接口文档',
+                title: '接口列表',
                 url: "{:url()}",
+                toolbar: '#toolbar',
+                where: where,
                 page: true,
-                toolbar: true,
                 cols: [
                     [
                         { type: 'numbers', title: '序号' },
                         { field: 'name', title: '名称', minWidth: 300 },
-                        { field: 'id', title: 'ID' ,width:80},
-                        { field: 'interface_pid', title: 'PID' ,width:80},
-                        { field: 'url', title: 'URL' ,width:30},
-                        { field: 'project_name', title: '项目', width: 100 },
+                        { field: 'id', title: 'ID', width: 80 },
+                        { field: 'interface_pid', title: 'PID', width: 80 },
+                        { field: 'method', title: 'Method', width: 86 },
+                        { field: 'url', title: 'URL', width: 380 },
+                        { field: 'project_name', title: '项目', width: 100, hide: true },
                         { field: 'admin_id', title: '创建者', width: 100, hide: true, edit: 'text' },
-                        { field: 'sort', title: '排序', sort: true, width: 100, edit: 'text' },
-                        { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120 },
-                        { field: 'create_time', title: '创建时间', sort: true, width: 160, hide: false, },
-                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: false, },
+                        { field: 'sort', title: '排序', sort: true, width: 80, edit: 'text' },
+                        { field: 'is_disable', title: '禁用', toolbar: '#is_disable', sort: true, width: 80 },
+                        { field: 'create_time', title: '添加时间', sort: true, width: 160, hide: true },
+                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: true },
                         { templet: '#oper-col', title: '操作', width: 166, align: 'right' }
                     ]
                 ],
-                done: function(res, curr, count){
-                    // 得到数据总量
-                    $('.field_value').attr('placeholder', '输入名称搜索('+count+')');
+                done: function(res, curr, count) {
+                    // 得到数据总数
+                    $('.field_value').attr('placeholder', '输入名称搜索(' + count + ')');
+                    layer.closeAll('loading');
                 }
             });
-            layer.closeAll('loading');
         };
 
         renderTable();
 
-        // 添加
-        $('#btn-add').click(function() {
-            layer.open({
-                type: 2,
-                title: '添加',
-                content: '{:url("interfaces_add")}',
-                area: ['88%', '92%'],
-                shade: 0,
-                offset: 'lt',
-                maxmin: true,
-                zIndex: layer.zIndex,
-                success: function(layero){
-                    layer.setTop(layero);
-                },
-                end: function() {
-                    renderTable();
-                }
-            })
+        // 表格头部工具栏事件
+        table.on('toolbar(treetable)', function(obj) {
+            var event = obj.event;
+            // 添加
+            if (event == 'add') {
+                layer.open({
+                    type: 2,
+                    title: '添加',
+                    content: '{:url("interfaces_add")}',
+                    area: ['88%', '92%'],
+                    shade: 0,
+                    offset: 'lt',
+                    maxmin: true,
+                    zIndex: layer.zIndex,
+                    success: function(layero) {
+                        layer.setTop(layero);
+                    },
+                    end: function() {
+                        renderTable();
+                    }
+                });
+            }
         });
 
-        // 全部展开
-        $('#btn-expand').click(function() {
-            treetable.expandAll('#treetable');
+        // 选择项目(重载表格）
+        form.on('select(project_id)', function(data) {
+            var project_id = data.value;//项目id
+            var where = { project_id: project_id};
+            renderTable(where);
         });
-        // 全部折叠
-        $('#btn-fold').click(function() {
-            treetable.foldAll('#treetable');
-        });
-
+        
         // 搜索
         form.on('submit(formSubmit)', function(data) {
             console.log(data);
@@ -169,13 +186,25 @@
             layer.close(load);
             return false; //阻止表单跳转
         });
-
-        // 重置
+        // 刷新
         $('.reload-btn').click(function() {
-            $('.reset-btn').trigger('click'); //重置表单
-            renderTable(); //表格重载
+            // $('.reset-btn').trigger('click'); //重置表单
+            
+                var project_id = $('#project_id').val();//项目id
+                var where = { project_id: project_id};
+                renderTable(where);
+            
+            // renderTable(); //表格重载
             treetable.expandAll('#treetable');
             return false; //阻止表单跳转
+        });
+        // 全部展开
+        $('#btn-expand').click(function() {
+            treetable.expandAll('#treetable');
+        });
+        // 全部折叠
+        $('#btn-fold').click(function() {
+            treetable.foldAll('#treetable');
         });
 
         // 添加、修改、删除
@@ -194,7 +223,7 @@
                     offset: 'lt',
                     maxmin: true,
                     zIndex: layer.zIndex,
-                    success: function(layero){
+                    success: function(layero) {
                         layer.setTop(layero);
                     },
                     end: function() {
@@ -213,7 +242,7 @@
                     offset: 'lt',
                     maxmin: true,
                     zIndex: layer.zIndex,
-                    success: function(layero){
+                    success: function(layero) {
                         layer.setTop(layero);
                     },
                     end: function() {
@@ -297,7 +326,7 @@
                 }
             })
         });
-        
+
     });
     </script>
 </body>
