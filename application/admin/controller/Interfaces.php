@@ -47,7 +47,7 @@ class Interfaces extends Common
                 $order_field = $order_field == 'id' ? 'interface_id' : $order_field;
                 $order = "{$order_field} {$order_type}";
             } else {
-                $order = 'sort desc, interface_id desc';
+                $order = 'sort desc, interface_id asc';
             }
 
             // 数据分页
