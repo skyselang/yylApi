@@ -185,7 +185,7 @@
             var value = obj.value; //得到修改后的值
             $.ajax({
                 type: 'post',
-                url: '{:url("project_edit")}',
+                url: '{:url("projectedit")}',
                 data: { id: id, field: field, value: value },
                 success: function(res) {
                     layer.close(load);

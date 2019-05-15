@@ -43,7 +43,7 @@ class Project extends Common
                 $order_field = $order_field == 'id' ? 'project_id' : $order_field;
                 $order = "{$order_field} {$order_type}";
             } else {
-                $order = 'update_time desc, sort desc, project_id desc';
+                $order = 'sort desc, project_id desc';
             }
 
             // 数据分页
@@ -190,6 +190,32 @@ class Project extends Common
         }
 
         return $this->fetch();
+    }
+
+    // 项目单元格编辑
+    public function projectedit()
+    {
+        if (Request::isAjax()) {
+            $res['code'] = 1;
+            $res['msg'] = '编辑失败';
+
+            $id = Request::param('id');
+            $field = Request::param('field');
+            $value = Request::param('value');
+
+            if ($id && $field && $value) {
+                
+                $data[$field] = $value;
+                $update = Db::name('project')
+                    ->where('project_id',$id)
+                    ->update($data);
+                if ($update) {
+                    $res['code'] = 0;
+                    $res['msg'] = '编辑成功';
+                }
+            }
+            return json($res);
+        }
     }
 
     /**

@@ -12,7 +12,7 @@ class Interfaces extends Common
 	// 接口
 	public function interfaces() 
 	{
-        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc,project_id asc')->select();
+        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc,project_id desc')->select();
         $this->assign('project',$project);
         
 		if (Request::isAjax()) {
@@ -47,7 +47,7 @@ class Interfaces extends Common
                 $order_field = $order_field == 'id' ? 'interface_id' : $order_field;
                 $order = "{$order_field} {$order_type}";
             } else {
-                $order = 'sort desc, interface_id asc';
+                $order = 'sort desc, interface_id desc';
             }
 
             // 数据分页
@@ -105,7 +105,7 @@ class Interfaces extends Common
             ->where('is_delete',0)
             ->where('project_id',$project[0]['project_id'])
             ->field('interface_id, interface_pid, name, project_id')
-            ->order('sort desc, interface_id asc')
+            ->order('sort desc, interface_id desc')
             ->select();
         $interface = $this->getTree($interface);
         $this->assign('interface',$interface);
@@ -210,15 +210,15 @@ class Interfaces extends Common
         $interface['apiurl_prefix'] = unserialize($apiurl_prefix);
         $interface['request'] = unserialize($interface['request']);
         $interface['response'] = unserialize($interface['response']);
-        $this->assign('interface',$interface);dump($interface);
+        $this->assign('interface',$interface);
 
         // 项目
         $project = Db::name('project')
             ->where('is_delete',0)
             ->where('project_id',$interface['project_id'])
-            ->order(['sort'=>'desc','project_id'=>'asc'])
+            ->order(['sort'=>'desc','project_id'=>'desc'])
             ->select();
-        $this->assign('project',$project);dump($project);
+        $this->assign('project',$project);
 
         // 该项目所有接口
         $interfaces = Db::name('interface')
@@ -227,7 +227,7 @@ class Interfaces extends Common
             ->order('sort desc,interface_id asc')
             ->select();
         $interfaces = $this->getTree($interfaces);
-        $this->assign('interfaces',$interfaces);dump($interfaces);
+        $this->assign('interfaces',$interfaces);
 
         // 返回参数
         $response = Db::name('interface_response')
