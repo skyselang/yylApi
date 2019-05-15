@@ -27,8 +27,8 @@
                         <label class="layui-form-label">所属项目</label>
                         <div class="layui-input-inline">
                             <select name="project_id" id="project_id" lay-filter="project_id" lay-verify="required">
-                                {foreach $project as $key=>$vo}
-                                <option value="{$vo.project_id}" {if $interface.project_id == $vo.project_id}selected{/if}>{$vo.project_name}</option>
+                                {foreach $project as $k=>$v}
+                                <option value="{$v.project_id}" {if $v.project_id == $interface.project_id}selected{/if}>{$v.project_name}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -38,8 +38,8 @@
                         <div class="layui-input-inline">
                             <select name="interface_pid" id="interface_pid" lay-filter="interface_pid" lay-verify="">
                                 <option value="0">请选择上级</option>
-                                {foreach $interfaces as $key=>$vo}
-                                <option value="{$vo.interface_id}" {if $interface.interface_pid == $vo.interface_id}selected{/if}>{$vo.name}</option>
+                                {foreach $interfaces as $ke=>$vo}
+                                <option value="{$vo.interface_id}" {if $vo.interface_id == $interface.interface_id}selected{/if}>{$vo.name}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -296,11 +296,11 @@
                     url: "{:url('interface_tree')}",
                     data: { project_id: project_id },
                     success: function(res) {
-                        $('#classify_id').empty();
+                        $('#interface_pid').empty();
                         if (res.code == 0) {
                             var data = res.data;
                             for (var i = 0; i < data.length; i++) {
-                                $('#interface_id').append('<option value="' + data[i]['interface_id'] + '">' + data[i]['name'] + '</option>');
+                                $('#interface_pid').append('<option value="' + data[i]['interface_id'] + '">' + data[i]['name'] + '</option>');
                             };
                         } else {
                             layer.msg(res.msg);

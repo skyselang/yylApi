@@ -249,11 +249,11 @@
                     url: "{:url('interface_tree')}",
                     data: { project_id: project_id },
                     success: function(res) {
-                        $('#classify_id').empty();
+                        $('#interface_pid').empty();
                         if (res.code == 0) {
                             var data = res.data;
                             for (var i = 0; i < data.length; i++) {
-                                $('#interface_id').append('<option value="' + data[i]['interface_id'] + '">' + data[i]['name'] + '</option>');
+                                $('#interface_pid').append('<option value="' + data[i]['interface_id'] + '">' + data[i]['name'] + '</option>');
                             };
                         } else {
                             console.log(res.msg);

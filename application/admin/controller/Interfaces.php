@@ -12,7 +12,7 @@ class Interfaces extends Common
 	// 接口
 	public function interfaces() 
 	{
-        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc')->select();
+        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc,project_id asc')->select();
         $this->assign('project',$project);
         
 		if (Request::isAjax()) {
@@ -94,7 +94,7 @@ class Interfaces extends Common
         // 项目
         $project = Db::name('project')
             ->where('is_delete',0)
-            ->order(['sort'=>'desc','update_time'=>'desc'])
+            ->order(['sort'=>'desc','project_id'=>'desc'])
             ->field('project_id, project_name, apiurl_prefix')
             ->select();
         $project[0]['apiurl_prefix'] = unserialize($project[0]['apiurl_prefix']);
@@ -105,7 +105,7 @@ class Interfaces extends Common
             ->where('is_delete',0)
             ->where('project_id',$project[0]['project_id'])
             ->field('interface_id, interface_pid, name, project_id')
-            ->order('sort desc')
+            ->order('sort desc, interface_id asc')
             ->select();
         $interface = $this->getTree($interface);
         $this->assign('interface',$interface);
@@ -210,23 +210,24 @@ class Interfaces extends Common
         $interface['apiurl_prefix'] = unserialize($apiurl_prefix);
         $interface['request'] = unserialize($interface['request']);
         $interface['response'] = unserialize($interface['response']);
-        $this->assign('interface',$interface);
+        $this->assign('interface',$interface);dump($interface);
+
+        // 项目
+        $project = Db::name('project')
+            ->where('is_delete',0)
+            ->where('project_id',$interface['project_id'])
+            ->order(['sort'=>'desc','project_id'=>'asc'])
+            ->select();
+        $this->assign('project',$project);dump($project);
 
         // 该项目所有接口
         $interfaces = Db::name('interface')
             ->where('is_delete',0)
             ->where('project_id',$interface['project_id'])
-            ->order('sort desc')
+            ->order('sort desc,interface_id asc')
             ->select();
         $interfaces = $this->getTree($interfaces);
-        $this->assign('interfaces',$interfaces);
-
-        // 项目
-        $project = Db::name('project')
-            ->where('is_delete',0)
-            ->order(['sort'=>'desc','update_time'=>'desc'])
-            ->select();
-        $this->assign('project',$project);
+        $this->assign('interfaces',$interfaces);dump($interfaces);
 
         // 返回参数
         $response = Db::name('interface_response')
@@ -369,8 +370,6 @@ class Interfaces extends Common
     }
 
     /**
-     * @Author   yyl
-     * @DateTime 2019-03-25
      * 获取返回参数模板
      * @return json  返回参数模板 
      */
@@ -443,7 +442,7 @@ class Interfaces extends Common
 
             $interface = Db::name('interface')
                 ->where('project_id',$project_id)
-                ->order('sort,interface_id')
+                ->order('sort desc,interface_id asc')
                 ->select();
 
             if ($interface) {

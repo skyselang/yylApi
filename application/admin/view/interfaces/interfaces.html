@@ -216,13 +216,13 @@
         table.on('tool(treetable)', function(obj) {
             var data = obj.data;
             var layEvent = obj.event;
-
+            var project_id = data.project_id;//项目id
+            var interface_id = data.interface_id;//接口id
             if (layEvent === 'add') {
-                var project_id = obj.data.project_id;
                 layer.open({
                     type: 2,
                     title: '添加：',
-                    content: '{:url("interfaces_add")}?project_id=' + project_id + '&interface_id=' + data.id,
+                    content: '{:url("interfaces_add")}?project_id=' + project_id + '&interface_id=' + interface_id,
                     area: ['88%', '92%'],
                     shade: 0,
                     offset: 'lt',
@@ -241,7 +241,7 @@
                 layer.open({
                     type: 2,
                     title: data.name,
-                    content: '{:url("interfaces_edit")}?interface_id=' + data.id,
+                    content: '{:url("interfaces_edit")}?interface_id=' + interface_id,
                     area: ['88%', '92%'],
                     shade: 0,
                     offset: 'lt',
