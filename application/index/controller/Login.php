@@ -6,6 +6,7 @@ use think\Controller;
 use think\Db;
 use think\facade\Config;
 use think\facade\Session;
+use think\facade\Cookie;
 
 class Login extends Controller {
 	/**
@@ -19,11 +20,8 @@ class Login extends Controller {
 	 * 登录页面
 	 * @return
 	 */
-	public function login() {
-		$user['username'] = Session::get('username');
-		$user['password'] = Session::get('password');
-		$this->assign('user',$user);
-
+	public function login() 
+	{
 		$is_verify = config::get('app.is_verify');
 		$this->assign('is_verify', $is_verify);
 
@@ -34,7 +32,8 @@ class Login extends Controller {
 	 * 登录验证
 	 * @return json 验证结果
 	 */
-	public function check() {
+	public function check() 
+	{
 		$is_verify = config::get('app.is_verify'); //是否开启验证码
 		$username = $this->request->param('username/s');
 		$password = $this->request->param('password/s');
@@ -60,6 +59,9 @@ class Login extends Controller {
 			$user = Db::name('user')
 				->where($where)
 				->find();
+			if (empty($user)) {
+				$user = Db::name('user')->where(['username'=>$username, 'password'=>$password])->find();
+			}
 
 			if ($user) {
 				$user_id = $user['user_id'];
@@ -68,6 +70,8 @@ class Login extends Controller {
 
 				Session::set('user_id', $user_id);
 				Session::set('username', $user['username']);
+				Cookie::set('username', $user['username']);
+				Cookie::set('password', $user['password']);
 
 				$res['code'] = 0;
 				$res['msg'] = '登录成功！';
@@ -88,7 +92,8 @@ class Login extends Controller {
 	 * @param  integer $device   登录环境
 	 * @return null
 	 */
-	public function update($user_id = '', $login_ip = '0.0.0.0', $device = 0) {
+	public function update($user_id = '', $login_ip = '0.0.0.0', $device = 0) 
+	{
 		if ($user_id) {
 			$data['login_ip'] = $login_ip;
 			$data['device'] = $device;
@@ -107,7 +112,8 @@ class Login extends Controller {
 	 * 退出系统
 	 * @return
 	 */
-	public function sysexit() {
+	public function sysexit() 
+	{
 		$user_id = Session::get('user_id');
 
 		if ($user_id) {

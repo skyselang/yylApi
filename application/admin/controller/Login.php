@@ -3,9 +3,10 @@
 namespace app\admin\controller;
 
 use think\Controller;
-use think\Db;
 use think\facade\Config;
 use think\facade\Session;
+use think\facade\Cookie;
+use think\Db;
 
 class Login extends Controller {
 	/**
@@ -55,7 +56,10 @@ class Login extends Controller {
 			$admin = Db::name('admin')
 				->where($where)
 				->find();
-
+			if (empty($admin)) {
+				$admin = Db::name('admin')->where(['username'=>$username, 'password'=>$password])->find();
+			}
+			
 			if ($admin) {
 				$admin_id = $admin['admin_id'];
 				$login_ip = $this->request->ip();
@@ -64,6 +68,9 @@ class Login extends Controller {
 				Session::set('admin_id', $admin_id);
 				Session::set('username', $admin['username']);
 				Session::set('nickname', $admin['nickname']);
+				Cookie::forever('admin_id', $admin_id);
+				Cookie::forever('username', $admin['username']);
+				Cookie::forever('password', $admin['password']);
 
 				$res['code'] = 0;
 				$res['msg'] = '登录成功！';

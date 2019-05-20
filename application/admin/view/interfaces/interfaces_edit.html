@@ -39,7 +39,7 @@
                             <select name="interface_pid" id="interface_pid" lay-filter="interface_pid" lay-verify="">
                                 <option value="0">请选择上级</option>
                                 {foreach $interfaces as $ke=>$vo}
-                                <option value="{$vo.interface_id}" {if $vo.interface_id == $interface.interface_id}selected{/if}>{$vo.name}</option>
+                                <option value="{$vo.interface_id}" {if $vo.interface_id == $interface.interface_pid}selected{/if}>{$vo.name}</option>
                                 {/foreach}
                             </select>
                         </div>

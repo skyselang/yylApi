@@ -12,20 +12,20 @@
 
 <body>
     <div class="layui-container">
-        <div class="layui-row " style="margin: 2rem 0">
+        <div class="layui-row" style="margin: 2rem 0">
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md12 layui-clear" style="text-align: center;margin: 2rem 0">
                 <image class="" style="margin: 2rem 0" src="__IMG__/logo.png"></image>
                 <h2>{:config('app.app_name')}</h2>
             </div>
         </div>
-        <div class="layui-row " style="margin: 2rem 0">
+        <div class="layui-row" style="margin: 2rem 0">
             <div class="layui-col-xs12 layui-col-sm12 layui-col-md4 layui-col-md-offset4">
                 <form class="layui-form yyl-text-center">
                     <div class="layui-form-item">
-                        <input type="text" name="username" lay-verify="required" placeholder="请输入账号" class="layui-input" maxlength="30">
+                        <input type="text" name="username" value="{:cookie('username')}" lay-verify="required" placeholder="请输入账号" class="layui-input" maxlength="30">
                     </div>
                     <div class="layui-form-item">
-                        <input type="password" name="password" lay-verify="required" placeholder="请输入密码" class="layui-input" maxlength="30">
+                        <input type="password" name="password" value="{:cookie('password')}" lay-verify="required" placeholder="请输入密码" class="layui-input" maxlength="30">
                     </div>
                     {if $is_verify}
                     <div class="layui-form-item">
@@ -36,7 +36,7 @@
                             <div class="layui-col-xs5">
                                 <div class="padding-left-sm">
                                     <img class="login-verify" src="{:captcha_src()}" height="50" alt="验证码" title="点击刷新">
-            					</div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -51,38 +51,39 @@
     </div>
     <script src="__LAYUI__/layui/layui.js"></script>
     <script>
-    layui.use(['form','layer'], function() {
+    layui.use(['form', 'layer'], function() {
         var $ = layui.$;
         var form = layui.form;
         var layer = layui.layer;
-        
+
         var device = JSON.stringify(layui.device());
         $('.device').val(device);
 
         // verify
-        $('.login-verify').click(function(){
-            var id = Math.floor(Math.random()*100);
+        $('.login-verify').click(function() {
+            var id = Math.floor(Math.random() * 100);
             var src = '{:captcha_src()}' + '?vid=' + id;
             $(this).attr('src', src);
         })
-        function verify(){
+
+        function verify() {
             $('.login-verify').trigger('click');
         }
 
         // login
-        form.on('submit(login)', function(data){
+        form.on('submit(login)', function(data) {
             var load = layer.load();
             var data = data.field;
             $.ajax({
-                data:data,
-                type:"POST",
-                url:"{:url('login/check')}",
-                success:function(res){
+                data: data,
+                type: "POST",
+                url: "{:url('login/check')}",
+                success: function(res) {
                     layer.close(load);
                     if (res.code == 0) {
                         layer.msg(res.msg);
-                        layer.msg('正在跳转...', {icon: 16,shade: 0.1});
-                        setTimeout(function(){
+                        layer.msg('正在跳转...', { icon: 16, shade: 0.1 });
+                        setTimeout(function() {
                             location.href = res.url;
                         }, 1000);
                     } else {
@@ -91,9 +92,9 @@
                     }
                     return false;
                 },
-                error:function(){
+                error: function() {
                     layer.close(load);
-                    layer.msg('登录失败！');
+                    layer.msg('网络错误！');
                     return false;
                 }
             });
