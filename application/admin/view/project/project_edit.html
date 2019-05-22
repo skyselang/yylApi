@@ -47,7 +47,7 @@
                                     <td><input class="layui-input" type="text" name="apiurl_prefix_name[]" value="{$vo.apiurl_prefix_name}" placeholder="名称"></td>
                                     <td><input class="layui-input" type="text" name="apiurl_prefix_url[]" value="{$vo.apiurl_prefix_url}" placeholder="URL"></td>
                                     <td><input type="radio" name="apiurl_prefix_default[]" value="1" lay-filter="apiurl_prefix_default" {if $vo.apiurl_prefix_default == 0}checked{/if}></td>
-                                    <td><!-- <button type="button" class="layui-btn layui-btn-sm layui-btn-danger apiurl_prefix_dele">删除</button> --></td>
+                                    <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger apiurl_prefix_dele {if $key==0}layui-hide{/if}">删除</button></td>
                                 </tr>
                                 {/foreach}
                                 {/if}

@@ -18,11 +18,11 @@ return [
     // SESSION_ID的提交变量,解决flash上传跨域
     'var_session_id' => '',
     // SESSION 前缀
-    'prefix'         => 'yylApiIndex',
+    'prefix'         => 'index',
     // 驱动方式 支持redis memcache memcached
     'type'           => '',
     // 是否自动开启 SESSION
     'auto_start'     => true,
     // session过期时间
-    'expire' => 12*60*60,
+    'expire' => 60*60*12,
 ];
