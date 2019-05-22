@@ -15,44 +15,42 @@
 </style>
 <body>
     <div class="layui-container">
-        <div class="layui-fluid">
-            <div class="layui-row">
-                <div class="layui-col-md12">
-                    <div class="layui-card" style="padding-bottom: 3rem">
-                        <div class="layui-card-header" style="text-align: center;position: fixed;background-color: #eee;left: 0;top: 0;z-index: 10000;width: 100%;height: 50px;">
-                            <!-- 搜索 -->
-                            <div class="table-reload-btn">
-                                <form class="layui-form">
-                                    <div class="layui-inline">
-                                        <input type="hidden" name="field_name" value="name">
-                                        <input type="text" name="field_value" class="layui-input field_value" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
-                                    </div>
-                                    <div class="layui-inline">
-                                        <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
-                                        <button class="layui-btn reload-btn">刷新</button>
-                                        <button class="layui-btn layui-hide reset-btn" type="reset">刷新</button>
-                                        <!-- <button type="button" class="layui-btn" id="btn-add">添加接口</button> -->
-                                        <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
-                                        <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
-                                    </div>
-                                </form>
-                            </div>
+        <div class="layui-row">
+            <div class="layui-col-sm12 layui-col-md12 layui-col-lg12">
+                <div class="layui-card" style="padding-bottom: 3rem">
+                    <div class="layui-card-header" style="text-align: center;position: fixed;background-color: #eee;left: 0;top: 0;z-index: 10000;width: 100%;height: 50px;">
+                        <!-- 搜索 -->
+                        <div class="table-reload-btn">
+                            <form class="layui-form">
+                                <div class="layui-inline">
+                                    <input type="hidden" name="field_name" value="name">
+                                    <input type="text" name="field_value" class="layui-input field_value" autocomplete="off" placeholder="输入名称搜索" style="margin-top: 3px">
+                                </div>
+                                <div class="layui-inline">
+                                    <button class="layui-btn" lay-submit lay-filter="formSubmit">搜索</button>
+                                    <button class="layui-btn reload-btn">刷新</button>
+                                    <button class="layui-btn layui-hide reset-btn" type="reset">刷新</button>
+                                    <!-- <button type="button" class="layui-btn" id="btn-add">添加接口</button> -->
+                                    <button type="button" class="layui-btn" id="btn-expand">全部展开</button>
+                                    <button type="button" class="layui-btn" id="btn-fold">全部折叠</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="layui-card-body" style="position: relative;top: 40px">
-                            <!-- 表格 -->
-                            <div class="">
-                                <table class="layui-hidden" id="treetable" lay-filter="treetable"></table>
-                            </div>
-                            <!-- 是否禁用 -->
-                            <script type="text/html" id="is_disable">
-                                <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable = 1 ? '' : 'checked' }}>
-                            </script>
-                            <!-- 操作列 -->
-                            <script type="text/html" id="oper-col">
-                                <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">查看</button>
-                                <!-- <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</button> -->
-                            </script>
+                    </div>
+                    <div class="layui-card-body" style="position: relative;top: 40px">
+                        <!-- 表格 -->
+                        <div class="">
+                            <table class="layui-hidden" id="treetable" lay-filter="treetable"></table>
                         </div>
+                        <!-- 是否禁用 -->
+                        <script type="text/html" id="is_disable">
+                            <input type="checkbox" value="{{ d.id }}|{{ d.is_disable }}" lay-filter="disable" lay-skin="switch" lay-text="是|否" {{ d.is_disable = 1 ? '' : 'checked' }}>
+                        </script>
+                        <!-- 操作列 -->
+                        <script type="text/html" id="oper-col">
+                            <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">查看</button>
+                            <!-- <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="del">删除</button> -->
+                        </script>
                     </div>
                 </div>
             </div>
@@ -92,13 +90,15 @@
                         { field: 'name', title: '名称', minWidth: 300 },
                         { field: 'id', title: 'ID', hide: true},
                         { field: 'interface_pid', title: 'PID', hide: true },
+                        { field: 'method', title: 'Method', width: 86 },
+                        { field: 'url', title: 'Url', width: 430 },
                         { field: 'project_name', title: '项目', minWidth: 100, hide: true },
                         { field: 'admin_id', title: '创建者', width: 120, edit: 'text', hide: true },
                         { field: 'sort', title: '排序', sort: true, width: 120, edit: 'text', hide: true },
                         { field: 'is_disable', title: '是否禁用', toolbar: '#is_disable', sort: true, width: 120, hide: true },
                         { field: 'create_time', title: '创建时间', sort: true, width: 160 , hide: true },
                         { field: 'update_time', title: '更新时间', sort: true, width: 160 , hide: true },
-                        { templet: '#oper-col', title: '操作', width: 170 }
+                        { templet: '#oper-col', title: '操作', width: 77 }
                     ]
                 ],
                 done: function(res, curr, count){
