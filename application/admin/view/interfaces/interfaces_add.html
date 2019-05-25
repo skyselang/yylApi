@@ -250,6 +250,7 @@
                     data: { project_id: project_id },
                     success: function(res) {
                         $('#interface_pid').empty();
+                        $('#interface_pid').append('<option value="' + 0 + '">' + '请选择上级' + '</option>');
                         if (res.code == 0) {
                             var data = res.data;
                             for (var i = 0; i < data.length; i++) {

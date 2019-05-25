@@ -442,6 +442,7 @@ class Interfaces extends Common
 
             $interface = Db::name('interface')
                 ->where('project_id',$project_id)
+                ->where('is_delete',0)
                 ->order('sort desc,interface_id asc')
                 ->select();
 
