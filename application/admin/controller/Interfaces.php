@@ -87,13 +87,14 @@ class Interfaces extends Common
 	// 接口添加
 	public function interfaces_add()
 	{
-        $pid['project_id'] = Request::param('project_id');
-        $pid['interface_id'] = Request::param('interface_id');
+        $pid['project_id'] = Request::param('project_id',0);
+        $pid['interface_id'] = Request::param('interface_id',0);
         $this->assign('pid',$pid);
-
+        $pid['project_id'] ? $project_where['project_id'] = $pid['project_id'] : $project_where = '';
         // 项目
         $project = Db::name('project')
             ->where('is_delete',0)
+            ->where($project_where)
             ->order(['sort'=>'desc','project_id'=>'desc'])
             ->field('project_id, project_name, apiurl_prefix')
             ->select();
