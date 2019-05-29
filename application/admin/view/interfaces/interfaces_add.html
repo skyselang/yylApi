@@ -74,10 +74,10 @@
                                 <table class="layui-table" lay-size="sm">
                                     <thead>
                                         <tr>
-                                            <th>参数名称</th>
-                                            <th>参数说明</th>
-                                            <th>示例值</th>
-                                            <th>是否必填</th>
+                                            <th width="25%">名称</th>
+                                            <th width="40%">说明</th>
+                                            <th>示例</th>
+                                            <th>是否必须</th>
                                             <th>数据类型</th>
                                             <th><button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button></th>
                                         </tr>
@@ -93,9 +93,9 @@
                                 <table class="layui-table" lay-size="sm">
                                     <thead>
                                         <tr>
-                                            <th>参数名称</th>
-                                            <th>参数值</th>
-                                            <th>参数说明</th>
+                                            <th width="25%">名称</th>
+                                            <th width="40%">说明</th>
+                                            <th>示例</th>
                                             <th>
                                                 <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button>
                                                 <button type="button" id="response_param_template" class="layui-btn layui-btn-sm layui-btn-primary" title="添加返回参数模板">模板</button>
@@ -106,9 +106,9 @@
                                     <tbody id="response_param">
                                         {foreach $response as $key=>$vo}
                                         <tr>
-                                            <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_name}" placeholder="参数名称"></td>
-                                            <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_example}" placeholder="参数值"></td>
-                                            <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_explain}" placeholder="参数说明"></td>
+                                            <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_name}" placeholder="名称"></td>
+                                            <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_explain}" placeholder="说明"></td>
+                                            <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_example}" placeholder="示例"></td>
                                             <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>
                                         </tr>
                                         {/foreach}
@@ -117,9 +117,9 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">返回示例</label>
+                            <label class="layui-form-label">返回说明</label>
                             <div class="layui-input-block">
-                                <script id="editor" name="response_data" type="text/plain" style="width:90%;height:500px;"></script>
+                                <script id="editor" name="response_data" type="text/plain" style="width:99%;height:100%;"></script>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -176,9 +176,9 @@
                         for (var i = 0; i < data.length; i++) {
                             // 添加
                             $("#response_param").append('<tr>\
-                                <td><input class="layui-input" type="text" name="response_param_name[]" value="' + data[i]['response_name'] + '" placeholder="参数名称"></td>\
-                                <td><input class="layui-input" type="text" name="response_param_example[]" value="' + data[i]['response_example'] + '" placeholder="参数值"></td>\
-                                <td><input class="layui-input" type="text" name="response_param_explain[]" value="' + data[i]['response_explain'] + '" placeholder="参数说明"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_name[]" value="' + data[i]['response_name'] + '" placeholder="名称"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_explain[]" value="' + data[i]['response_explain'] + '" placeholder="说明"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_example[]" value="' + data[i]['response_example'] + '" placeholder="示例"></td>\
                                 <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>\
                             </tr>');
                             // 删除
@@ -294,9 +294,9 @@
         $("#request_param_add").click(function() {
             // 添加
             $("#request_param").append('<tr>\
-                <td><input class="layui-input" type="text" name="request_param_name[]" value="" placeholder="参数名称"></td>\
-                <td><input class="layui-input" type="text" name="request_param_explain[]" placeholder="参数说明"></td>\
-                <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例值"></td>\
+                <td><input class="layui-input" type="text" name="request_param_name[]" value="" placeholder="名称"></td>\
+                <td><input class="layui-input" type="text" name="request_param_explain[]" placeholder="说明"></td>\
+                <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例"></td>\
                 <td>\
                     <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">\
                         <option value="0">是</option>\
@@ -333,9 +333,9 @@
         $("#response_param_add").click(function() {
             // 添加
             $("#response_param").append('<tr>\
-                <td><input class="layui-input" type="text" name="response_param_name[]" value="" placeholder="参数名称"></td>\
-                <td><input class="layui-input" type="text" name="response_param_example[]" placeholder="参数值"></td>\
-                <td><input class="layui-input" type="text" name="response_param_explain[]" placeholder="参数说明"></td>\
+                <td><input class="layui-input" type="text" name="response_param_name[]" value="" placeholder="名称"></td>\
+                <td><input class="layui-input" type="text" name="response_param_explain[]" placeholder="说明"></td>\
+                <td><input class="layui-input" type="text" name="response_param_example[]" placeholder="示例"></td>\
                 <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>\
             </tr>');
             // 删除

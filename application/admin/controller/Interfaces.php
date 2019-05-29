@@ -6,6 +6,7 @@ use think\Controller;
 use think\Db;
 use think\facade\Session;
 use think\facade\Request;
+use \think\facade\Url;
 
 class Interfaces extends Common
 {
@@ -69,6 +70,7 @@ class Interfaces extends Common
                     $data[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
                     $data[$k]['id'] = $v['interface_id'];
                     $data[$k]['admin_id'] = Db::name('admin')->where('admin_id',$v['admin_id'])->value('username');
+                    $data[$k]['share_url'] = Url::build('share/api/api',['id'=>$v['interface_id']],'',true);
                 }
 
                 $res['code'] = 0;
@@ -212,7 +214,7 @@ class Interfaces extends Common
         $interface['apiurl_prefix'] = unserialize($apiurl_prefix);
         $interface['request'] = unserialize($interface['request']);
         $interface['response'] = unserialize($interface['response']);
-        $interface['response_data'] = html_entity_decode($interface['response_data']);
+        $interface['share_url'] = Url::build('share/api/api',['id'=>$interface['interface_id']],'',true);
         $this->assign('interface',$interface);
 
         // 项目

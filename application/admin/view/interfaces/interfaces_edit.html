@@ -73,6 +73,10 @@
                         <label class="layui-form-label"></label>
                         <div class="layui-input-inline">
                             <button class="layui-btn" lay-submit lay-filter="submit-btn">保存</button>
+                            <a id="share-btn" type="buttom" class="layui-btn layui-btn-warm">分享</a>
+                        </div>
+                        <div class="layui-input-inline">
+                            <button class="layui-btn layui-btn-primary" lay-filter="submit-btn">刷新</button>
                         </div>
                     </div>
                 </div>
@@ -96,21 +100,21 @@
                         <table class="layui-table" lay-size="sm">
                             <thead>
                                 <tr>
-                                    <th>参数名称</th>
-                                    <th>参数说明</th>
-                                    <th>示例值</th>
-                                    <th>是否必填</th>
+                                    <th width="25%">名称</th>
+                                    <th width="40%">说明</th>
+                                    <th>示例</th>
+                                    <th>是否必须</th>
                                     <th>数据类型</th>
-                                    <th><button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button></th>
+                                    <th width="12%"><button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button></th>
                                 </tr>
                             </thead>
                             <tbody id="request_param">
                                 {if $interface.request}
                                 {foreach $interface.request as $key=>$vo}
                                 <tr>
-                                    <td><input class="layui-input" type="text" name="request_param_name[]" value="{$vo.request_param_name}" placeholder="参数名称"></td>
-                                    <td><input class="layui-input" type="text" name="request_param_explain[]" value="{$vo.request_param_explain}" placeholder="参数说明"></td>
-                                    <td><input class="layui-input" type="text" name="request_param_example[]" value="{$vo.request_param_example}" placeholder="示例值"></td>
+                                    <td><input class="layui-input" type="text" name="request_param_name[]" value="{$vo.request_param_name}" placeholder="名称"></td>
+                                    <td><input class="layui-input" type="text" name="request_param_explain[]" value="{$vo.request_param_explain}" placeholder="说明"></td>
+                                    <td><input class="layui-input" type="text" name="request_param_example[]" value="{$vo.request_param_example}" placeholder="示例"></td>
                                     <td>
                                         <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">
                                             <option value="0" {if $vo.request_param_must == 0}selected{/if}>是</option>
@@ -148,9 +152,9 @@
                         <table class="layui-table" lay-size="sm">
                             <thead>
                                 <tr>
-                                    <th>参数名称</th>
-                                    <th>参数值</th>
-                                    <th>参数说明</th>
+                                    <th width="25%">名称</th>
+                                    <th width="40%">说明</th>
+                                    <th>示例</th>
                                     <th>
                                         <div class="layui-btn-group">
                                             <button type="button" id="response_param_add" class="layui-btn layui-btn-sm">添加</button>
@@ -164,9 +168,9 @@
                                 {if $interface.response}
                                 {foreach $interface.response as $key=>$vo}
                                 <tr>
-                                    <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_param_name}" placeholder="参数名称"></td>
-                                    <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_param_example}" placeholder="参数值"></td>
-                                    <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_param_explain}" placeholder="参数说明"></td>
+                                    <td><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_param_name}" placeholder="名称"></td>
+                                    <td><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_param_explain}" placeholder="说明"></td>
+                                    <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_param_example}" placeholder="示例"></td>
                                     <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>
                                 </tr>
                                 {/foreach}
@@ -176,9 +180,9 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">返回示例</label>
+                    <label class="layui-form-label">返回说明</label>
                     <div class="layui-input-block">
-                        <script id="editor" name="response_data" type="text/plain" style="width:90%;height:500px;">{$interface.response_data}</script>
+                        <script id="editor" name="response_data" type="text/plain" style="width:99%;height:100%;">{$interface.response_data|raw}</script>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -209,11 +213,27 @@
             </form>
         </div>
     </div>
+    <!-- share -->
+    <div class="layui-form layui-hide" id="share-form">
+        <div class="layui-row">
+            <div class="layui-col-md12">
+                <br>
+                <input type="text" id="share-input" name="share" value="{$interface.share_url}" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+            <div class="layui-col-md12" style="text-align: center;">
+                <br>
+                <button id="share-open" type="button" class="layui-btn">打开</button>
+                <button id="share-copy" type="button" class="layui-btn layui-btn-normal" data-clipboard-target="#share-input">复制</button>
+                <button id="share-sure" type="button" class="layui-btn layui-btn-primary">确定</button>
+            </div>
+        </div>
+    </div>
     <!-- script src -->
     <script src="__LAYUI__/layui/layui.js"></script>
     <script src="__UE__/ueditor.config.js"></script>
     <script src="__UE__/ueditor.all.min.js"> </script>
     <script src="__UE__/lang/zh-cn/zh-cn.js"></script>
+    <script src="__JS__/clipboard.min.js"></script>
     <!-- script code -->
     <script>
     layui.use(['form', 'layer', 'jquery'], function() {
@@ -223,6 +243,37 @@
         var layer = layui.layer; //弹出层
         var loadOpen = layer.load(2, { shade: 0.1 });
         var ue = UE.getEditor('editor');
+
+        // 分享
+        $('#share-btn').click(function(){
+            var url = $('#share-input').val();
+            $('#share-form').removeClass('layui-hide');
+            $('#share-form').addClass('layui-show');
+            var share = layer.open({
+                type: 1,
+                title: '分享接口',
+                area: ['60%', '200px'],
+                content: $('#share-form'),
+                end:function(){
+                    $('#share-form').removeClass('layui-show');
+                    $('#share-form').addClass('layui-hide');
+                }
+            });
+            $('#share-open').click(function(){
+                window.open(url);
+            });
+            var clipboard = new ClipboardJS('#share-copy');
+            clipboard.on('success', function(e) {
+                layer.msg('复制成功')
+            });
+            clipboard.on('error', function(e) {
+                layer.msg('复制失败')
+            });
+            $('#share-sure').click(function(){
+                layer.close(share);
+            })
+        });
+        
 
         // 拼接接口url
         form.on('select(apiurl_prefix)', function(data){
@@ -248,9 +299,9 @@
                         for (var i = 0; i < data.length; i++) {
                             // 添加
                             $("#response_param").append('<tr>\
-                                <td><input class="layui-input" type="text" name="response_param_name[]" value="'+data[i]['response_name']+'" placeholder="参数名称"></td>\
-                                <td><input class="layui-input" type="text" name="response_param_example[]" value="'+data[i]['response_example']+'" placeholder="参数值"></td>\
-                                <td><input class="layui-input" type="text" name="response_param_explain[]" value="'+data[i]['response_explain']+'" placeholder="参数说明"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_name[]" value="'+data[i]['response_name']+'" placeholder="名称"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_explain[]" value="'+data[i]['response_explain']+'" placeholder="说明"></td>\
+                                <td><input class="layui-input" type="text" name="response_param_example[]" value="'+data[i]['response_example']+'" placeholder="示例"></td>\
                                 <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>\
                             </tr>');
                             // 删除
@@ -327,9 +378,9 @@
         }
         // 请求参数
         var request_param = '<tr>\
-            <td><input class="layui-input" type="text" name="request_param_name[]" value="" placeholder="参数名称"></td>\
-            <td><input class="layui-input" type="text" name="request_param_explain[]" placeholder="参数说明"></td>\
-            <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例值"></td>\
+            <td><input class="layui-input" type="text" name="request_param_name[]" value="" placeholder="名称"></td>\
+            <td><input class="layui-input" type="text" name="request_param_explain[]" placeholder="说明"></td>\
+            <td><input class="layui-input" type="text" name="request_param_example[]" placeholder="示例"></td>\
             <td>\
                 <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">\
                     <option value="0">是</option>\
@@ -395,9 +446,9 @@
         $("#response_param_add").click(function() {
             // 添加
             $("#response_param").append('<tr>\
-                <td><input class="layui-input" type="text" name="response_param_name[]" value="" placeholder="参数名称"></td>\
-                <td><input class="layui-input" type="text" name="response_param_example[]" placeholder="参数值"></td>\
-                <td><input class="layui-input" type="text" name="response_param_explain[]" placeholder="参数说明"></td>\
+                <td><input class="layui-input" type="text" name="response_param_name[]" value="" placeholder="名称"></td>\
+                <td><input class="layui-input" type="text" name="response_param_explain[]" placeholder="说明"></td>\
+                <td><input class="layui-input" type="text" name="response_param_example[]" placeholder="示例"></td>\
                 <td><button type="button" class="layui-btn layui-btn-sm layui-btn-danger response_param_dele">删除</button></td>\
             </tr>');
             // 删除

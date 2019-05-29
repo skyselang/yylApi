@@ -485,7 +485,7 @@ class Query
     /**
      * 获取数据库的配置参数
      * @access public
-     * @param  string $name 参数名称
+     * @param  string $name 名称
      * @return mixed
      */
     public function getConfig($name = '')
