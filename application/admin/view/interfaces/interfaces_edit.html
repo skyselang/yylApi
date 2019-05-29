@@ -176,6 +176,12 @@
                     </div>
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-form-label">返回示例</label>
+                    <div class="layui-input-block">
+                        <script id="editor" name="response_data" type="text/plain" style="width:90%;height:500px;">{$interface.response_data}</script>
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <label class="layui-form-label">接口说明</label>
                     <div class="layui-input-block">
                         <textarea name="explain" placeholder="" class="layui-textarea">{$interface.explain}</textarea>
@@ -205,6 +211,9 @@
     </div>
     <!-- script src -->
     <script src="__LAYUI__/layui/layui.js"></script>
+    <script src="__UE__/ueditor.config.js"></script>
+    <script src="__UE__/ueditor.all.min.js"> </script>
+    <script src="__UE__/lang/zh-cn/zh-cn.js"></script>
     <!-- script code -->
     <script>
     layui.use(['form', 'layer', 'jquery'], function() {
@@ -212,6 +221,8 @@
         var $ = layui.jquery; //jquery
         var form = layui.form; //表单
         var layer = layui.layer; //弹出层
+        var loadOpen = layer.load(2, { shade: 0.1 });
+        var ue = UE.getEditor('editor');
 
         // 拼接接口url
         form.on('select(apiurl_prefix)', function(data){
@@ -404,6 +415,7 @@
 
         form.render();//重新渲染表单
 
+        layer.close(loadOpen); 
     });
     </script>
 </body>

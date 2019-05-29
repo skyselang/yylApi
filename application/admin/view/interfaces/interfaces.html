@@ -63,6 +63,7 @@
                         <div class="layui-btn-group">
                             <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add">添加</button>
                             <button type="button" class="layui-btn layui-btn-sm" lay-event="edit">修改</button>
+                            <button type="button" class="layui-btn layui-btn-success layui-btn-sm" lay-event="share">分享</button>
                             <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" lay-event="dele">删除</button>
                         </div>
                     </script>
@@ -87,7 +88,7 @@
 
         // 渲染表格
         var renderTable = function(where) {
-            layer.load(2, { time: 2 * 1000, shade: 0.1 });
+            var loading = layer.load(2, { shade: 0.1 });
             treetable.render({
                 treeColIndex: 1,
                 treeSpid: 0,
@@ -115,13 +116,13 @@
                         { field: 'is_disable', title: '禁用', toolbar: '#is_disable', sort: true, width: 80 },
                         { field: 'create_time', title: '添加时间', sort: true, width: 160, hide: true },
                         { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: true },
-                        { templet: '#oper-col', title: '操作', width: 166, align: 'right' }
+                        { templet: '#oper-col', title: '操作', width: 210, align: 'right' }
                     ]
                 ],
                 done: function(res, curr, count) {
                     // 得到数据总数
                     $('.field_value').attr('placeholder', '输入名称搜索(' + count + ')');
-                    layer.closeAll('loading');
+                    layer.close(loading); 
                 }
             });
         };
@@ -254,6 +255,10 @@
                         // renderTableWhere();
                     }
                 })
+                return false;
+            }
+            if (layEvent === 'share') {
+                layer.alert("http://<?php echo $_SERVER['HTTP_HOST'];?>{:url('index/share/share')}?id=" + interface_id);
                 return false;
             }
             if (layEvent === 'dele') {

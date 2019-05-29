@@ -118,7 +118,7 @@ class Interfaces extends Common
             ->select();
         $this->assign('response',$response);
 
-    	if (Request::isAjax()) {
+    	if (Request::isPost()) {
     		
             $data['project_id'] = Request::param('project_id');
             $data['interface_pid'] = Request::param('interface_pid',0);
@@ -132,6 +132,7 @@ class Interfaces extends Common
             $data['is_delete'] = Request::param('is_delete',0);
             $data['create_time'] = date('Y-m-d H:i:s');
             $data['update_time'] = date('Y-m-d H:i:s');
+            $data['response_data'] = Request::param('response_data');
 
             // 请求参数
             $request_param_name = Request::param('request_param_name/a',array());
@@ -211,6 +212,7 @@ class Interfaces extends Common
         $interface['apiurl_prefix'] = unserialize($apiurl_prefix);
         $interface['request'] = unserialize($interface['request']);
         $interface['response'] = unserialize($interface['response']);
+        $interface['response_data'] = html_entity_decode($interface['response_data']);
         $this->assign('interface',$interface);
 
         // 项目
@@ -237,7 +239,7 @@ class Interfaces extends Common
             ->select();
         $this->assign('response',$response);
 
-        if (Request::isAjax()) {
+        if (Request::isPost()) {
             
             $data['interface_id'] = Request::param('interface_id');
             $data['project_id'] = Request::param('project_id');
@@ -251,6 +253,7 @@ class Interfaces extends Common
             $data['is_disable'] = Request::param('is_disable',0);
             $data['is_delete'] = Request::param('is_delete',0);
             $data['update_time'] = date('Y-m-d H:i:s');
+            $data['response_data'] = Request::param('response_data');
 
             // 请求参数
             $request_param_name = Request::param('request_param_name/a',array());
