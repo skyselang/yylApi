@@ -7,7 +7,7 @@ use think\Db;
 use think\facade\Session;
 use think\facade\Request;
 
-class Project extends Common 
+class Project extends Base 
 {
 	// 项目
 	public function project() 

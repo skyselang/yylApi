@@ -60,16 +60,13 @@
     <script>
     layui.config({ base: '__LAYUI__/' }); //静态资源所在路径
     layui.extend({ index: 'lib/index', treetable: 'treetable-lay/treetable' }); //主入口模块
-    layui.use(['index', 'jquery', 'table', 'layer', 'form', 'laydate', 'treetable'], function() {
+    layui.use(['index', 'jquery', 'table', 'layer', 'form', 'treetable'], function() {
 
         var $ = layui.jquery;
         var table = layui.table;
         var layer = layui.layer;
         var form = layui.form;
-        var laydate = layui.laydate;
         var treetable = layui.treetable;
-
-        var project_id = "{:request()->param('project_id')}";
 
         // 渲染表格
         var renderTable = function() {
@@ -82,7 +79,7 @@
                 treeDefaultClose: false,
                 treeLinkage: false,
                 elem: '#treetable',
-                url: "{:url()}?project_id=" + project_id,
+                url: "{:url('index/interfaces/interfaces',['project_id'=>Request::param('project_id')])}",
                 page: false,
                 cols: [
                     [
@@ -111,21 +108,6 @@
 
         renderTable();
 
-        // 添加
-        $('#btn-add').click(function() {
-            layer.open({
-                type: 2,
-                title: '接口添加',
-                content: '{:url("interfaces_add")}',
-                area: ['88%', '88%'],
-                shade: 0,
-                maxmin: true,
-                move: false,
-                end: function() {
-                    renderTable();
-                }
-            })
-        });
 
         // 全部展开
         $('#btn-expand').click(function() {
@@ -169,83 +151,6 @@
             $('.reset-btn').trigger('click'); //重置表单
             renderTable(); //表格重载
             return false; //阻止表单跳转
-        });
-
-        // 删除、修改
-        table.on('tool(treetable)', function(obj) {
-            var data = obj.data;
-            var layEvent = obj.event;
-
-            if (layEvent === 'del') {
-                layer.confirm('确定要删除吗？', { icon: 3, title: '提示' }, function(index) {
-                    $.ajax({
-                        type: 'post',
-                        url: '{:url("interfaces_dele")}',
-                        data: { id: data.id },
-                        success: function(res) {
-                            if (res.code == 0) {
-                                layer.open({
-                                    icon: 1,
-                                    content: res.msg,
-                                    end: function() {
-                                        renderTable();
-                                    }
-                                });
-                            } else {
-                                layer.open({
-                                    content: res.msg
-                                });
-                            }
-                        },
-                        error: function() {
-                            layer.msg('网络出错！');
-                        }
-                    });
-                    layer.close(index);
-                });
-                return false;
-            } else if (layEvent === 'edit') {
-                layer.open({
-                    type: 2,
-                    title: data.name,
-                    content: '{:url("interfaces_edit")}?interface_id=' + data.id,
-                    area: ['80%', '90%'],
-                    shade: 0,
-                    maxmin: true,
-                    zIndex: layer.zIndex,
-                    success: function(layero){
-                        layer.setTop(layero);
-                    },
-                    end: function() {
-                        // renderTable();
-                    }
-                })
-                return false;
-            }
-        });
-
-        // 是否禁用
-        form.on('switch(disable)', function(data) {
-            var load = layer.msg('正在修改...', { icon: 16, shade: 0.3 });
-            var value = data.value.split('|');
-            var id = value[0];
-            var is_disable = value[1];
-            $.ajax({
-                async: false,
-                url: '{:url("interfaces_disable")}',
-                data: { id: id, is_disable: is_disable },
-                success: function(res) {
-                    layer.close(load);
-                    layer.msg(res.msg);
-                },
-                error: function(xhr, status, error) {
-                    layer.close(load);
-                    layer.msg('网络错误！');
-                },
-                complete: function(xhr, status) {
-                    renderTable(); //表格重载
-                }
-            })
         });
 
     });

@@ -38,7 +38,6 @@ return [
         '__IMG__'   => '/static/img',
         '__JS__'    => '/static/js',
         '__LAYUI__' => '/static/layui',
-        '__UM__'    => '/static/umeditor',
         '__UE__'    => '/static/ueditor'
     ]
 ];

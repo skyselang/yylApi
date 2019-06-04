@@ -130,8 +130,8 @@
                         { field: 'admin_id', title: '创建者', width: 100, hide: true, edit: 'text' },
                         { field: 'sort', title: '排序', sort: true, width: 80, edit: 'text' },
                         { field: 'is_disable', title: '禁用', toolbar: '#is_disable', sort: true, width: 80 },
-                        { field: 'create_time', title: '添加时间', sort: true, width: 160, hide: true },
-                        { field: 'update_time', title: '更新时间', sort: true, width: 160, hide: true },
+                        { field: 'create_time', title: '添加时间', sort: true, width: 170, hide: true },
+                        { field: 'update_time', title: '更新时间', sort: true, width: 170, hide: true },
                         { templet: '#oper-col', title: '操作', width: 210, align: 'right' }
                     ]
                 ],
@@ -235,6 +235,7 @@
             var layEvent = obj.event;
             var project_id = data.project_id; //项目id
             var interface_id = data.interface_id; //接口id
+            // 添加
             if (layEvent === 'add') {
                 layer.open({
                     type: 2,
@@ -251,9 +252,10 @@
                     end: function() {
                         renderTableWhere();
                     }
-                })
+                });
                 return false;
             }
+            // 修改
             if (layEvent === 'edit') {
                 layer.open({
                     type: 2,
@@ -270,9 +272,10 @@
                     end: function() {
                         // renderTableWhere();
                     }
-                })
+                });
                 return false;
             }
+            // 分享
             if (layEvent === 'share') {
                 var url = data.share_url;
                 $('#share-input').val(url);
@@ -301,10 +304,10 @@
                 });
                 $('#share-sure').click(function(){
                     layer.close(share);
-                })
-                
+                });
                 return false;
             }
+            // 删除
             if (layEvent === 'dele') {
                 layer.confirm('确定要删除吗？', { icon: 3, title: '提示' }, function(index) {
                     $.ajax({
@@ -359,7 +362,7 @@
 
         // 是否禁用
         form.on('switch(disable)', function(data) {
-            var load = layer.msg('正在修改...', { icon: 16, shade: 0.3 });
+            var loading = layer.msg('正在修改...', { icon: 16, shade: 0.3 });
             var value = data.value.split('|');
             var id = value[0];
             var is_disable = value[1];
@@ -368,11 +371,11 @@
                 url: '{:url("interfaces_disable")}',
                 data: { id: id, is_disable: is_disable },
                 success: function(res) {
-                    layer.close(load);
+                    layer.close(loading);
                     layer.msg(res.msg);
                 },
                 error: function(xhr, status, error) {
-                    layer.close(load);
+                    layer.close(loading);
                     layer.msg('网络错误！');
                 },
                 complete: function(xhr, status) {

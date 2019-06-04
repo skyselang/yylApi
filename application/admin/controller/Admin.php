@@ -1,12 +1,12 @@
 <?php
-
 namespace app\admin\controller;
 
 use think\Controller;
 use think\Db;
 use think\facade\Session;
+use think\facade\Request;
 
-class Admin extends Common
+class Admin extends Base
 {
     /**
      * 修改资料
@@ -16,54 +16,48 @@ class Admin extends Common
     {
     	$admin_id = Session::get('admin_id');
 
-    	if ($admin_id) {
-    		$admin = Db::name('admin')
-    			->where('admin_id', $admin_id)
-    			->find();
+    	if (empty($admin_id)) {
+            $this->error('登录信息获取失败，请重新登录！');
     	} else {
-    		$this->error('登录信息获取失败，请重新登录！');
+    		$admin = Db::name('admin')->where('admin_id', $admin_id)->find();
     	}
 
-    	$is_ajax = $this->request->isAjax();
-    	if ($is_ajax) {
+    	if (Request::isAjax()) {
+            $res['code'] = 1;
             $admin_id = Session::get('admin_id');
-            if ($admin_id) {
-                $nickname = $this->request->param('nickname/s');
-                $email = $this->request->param('email/s');
+            if (empty($admin_id)) {
+                $res['msg'] = '登录信息获取失败，请重新登录！';
+            } else {
+                $nickname = Request::param('nickname/s');
+                $email = Request::param('email/s');
 
-                if ($nickname == '' || $nickname == null || $nickname == 'undefined') {
+                if (empty($nickname)) {
                     $res['code'] = 1;
                     $res['msg'] = '请输入昵称';
-                } elseif ($email == '' || $email == null || $email == 'undefined') {
+                } elseif (empty($email)) {
                     $res['code'] = 1;
                     $res['msg'] = '请输入邮箱';
                 } else {
-                    
                     $data['nickname'] = $nickname;
                     $data['email'] = $email;
                     $data['update_time'] = time();
 
-                    $update = Db::name('admin')
-                        ->where('admin_id', $admin_id)
-                        ->update($data);
+                    $update = Db::name('admin')->where('admin_id', $admin_id)->update($data);
 
                     if ($update) {
                         $res['code'] = 0;
                         $res['msg'] = '修改成功';
                     } else {
-                        $res['code'] = 1;
                         $res['msg'] = '修改失败';
                     }
                 }
-            } else {
-                $res['code'] = 1;
-                $res['msg'] = '修改失败';
             }
-    		
+
     		return json($res);
     	}
     	
     	$this->assign('info',$admin);
+
     	return $this->fetch();
     }
 
@@ -73,61 +67,50 @@ class Admin extends Common
      */
     public function pwd()
     {
-        $is_ajax = $this->request->isAjax();
-        if ($is_ajax) {
+        if (Request::isAjax()) {
+            $res['code'] = 1;
             $admin_id = Session::get('admin_id');
-            if ($admin_id) {
-                $oldpwd = $this->request->param('oldpwd/s');
-                $newpwd = $this->request->param('newpwd/s');
-                $newpwds = $this->request->param('newpwds/s');
-
-                if ($oldpwd == '' || $oldpwd == null || $oldpwd == 'undefined') {
-                    $res['code'] = 1;
+            if (empty($admin_id)) {
+                $res['msg'] = '请重新登录再修改';
+            } else {
+                $oldpwd = Request::param('oldpwd/s');
+                $newpwd = Request::param('newpwd/s');
+                $newpwds = Request::param('newpwds/s');
+                if (empty($oldpwd)) {
                     $res['msg'] = '请输入原密码';
-                } elseif ($newpwd == '' || $newpwd == null || $newpwd == 'undefined') {
-                    $res['code'] = 1;
+                } elseif (empty($newpwd)) {
                     $res['msg'] = '请输入新密码';
-                } elseif ($newpwds == '' || $newpwds == null || $newpwds == 'undefined') {
-                    $res['code'] = 1;
+                } elseif (empty($newpwds)) {
                     $res['msg'] = '请再次输入新密码';
                 } elseif ($newpwd !== $newpwds) {
-                    $res['code'] = 1;
-                    $res['msg'] = '请新密码与确认密码不一致';
+                    $res['msg'] = '新密码不一致';
                 } else {
                     $where['admin_id'] = $admin_id;
                     $where['password'] = md5($oldpwd);
 
-                    $oldpwd_check = Db::name('admin')
-                        ->where($where)
-                        ->find();
+                    $check = Db::name('admin')->where($where)->find();
 
-                    if ($oldpwd_check) {
+                    if ($check) {
                         $data['password'] = md5($newpwds);
                         $data['update_time'] = time();
 
-                        $update = Db::name('admin')
-                            ->where('admin_id', $admin_id)
-                            ->update($data);
+                        $update = Db::name('admin')->where('admin_id', $admin_id)->update($data);
 
                         if ($update) {
                             $res['code'] = 0;
                             $res['msg'] = '修改成功';
                         } else {
-                            $res['code'] = 1;
                             $res['msg'] = '修改失败';
                         }
                     } else {
-                        $res['code'] = 1;
                         $res['msg'] = '原密码错误';
                     }
                 }
-            } else {
-                $res['code'] = 1;
-                $res['msg'] = '修改失败';
             }
             
             return json($res);
         }
+
     	return $this->fetch();
     }
 }

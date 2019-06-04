@@ -8,7 +8,7 @@ use think\facade\Session;
 use think\facade\Request;
 use \think\facade\Url;
 
-class Interfaces extends Common
+class Interfaces extends Base
 {
 	// 接口
 	public function interfaces() 
@@ -70,7 +70,7 @@ class Interfaces extends Common
                     $data[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
                     $data[$k]['id'] = $v['interface_id'];
                     $data[$k]['admin_id'] = Db::name('admin')->where('admin_id',$v['admin_id'])->value('username');
-                    $data[$k]['share_url'] = Url::build('share/api/api',['id'=>$v['interface_id']],'',true);
+                    $data[$k]['share_url'] = Url::build('share/share/share',['interface_id'=>$v['interface_id']],'',true);
                 }
 
                 $res['code'] = 0;

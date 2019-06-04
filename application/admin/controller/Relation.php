@@ -7,7 +7,7 @@ use think\Db;
 use think\facade\Session;
 use think\facade\Request;
 
-class Relation extends Common 
+class Relation extends Base 
 {
 
 	public function relation()

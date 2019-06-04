@@ -7,7 +7,7 @@ use think\Db;
 use think\facade\Session;
 use think\facade\Request;
 
-class User extends Common 
+class User extends Base 
 {
 	// 用户
 	public function user() 

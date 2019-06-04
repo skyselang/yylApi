@@ -9,4 +9,4 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-Route::rule('api/:id','share/api/api');
+Route::rule('share/:interface_id','share/share/share');

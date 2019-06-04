@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\facade\Session;
 
-class Common extends Controller
+class Base extends Controller
 {
     public function initialize()
     {	

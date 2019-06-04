@@ -8,3 +8,6 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
+Route::rule('admin/','admin/index/index');
+Route::rule('admin/login','admin/login/login');

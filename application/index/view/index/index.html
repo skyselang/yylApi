@@ -17,26 +17,25 @@
             <div class="layui-row">
                 <div class="layui-col-md12">
                     <div class="layui-card">
-                        <div class="layui-card-header"><h3 style="text-align: center;">{:config('app_name')}</h3>
+                        <div class="layui-card-header">
+                            <h3 style="text-align: center;">{:config('app_name')}</h3>
                         </div>
-                        {notempty name="$interface"}
-                        <div class="layui-card-body">
-                            {foreach $interface as $key=>$vo}
-                            <div style="padding: 1px; background-color: #F2F2F2;">
-                                <blockquote class="layui-elem-quote">{$vo.project_name}</blockquote>
-                                <div class="layui-row layui-col-space15">
-                                    {foreach $vo.interface as $k=>$v}
-                                    <a href="{:url('interfaces/interfaces',['project_id'=>$vo['project_id']])}" target="_blank">
-                                    <div class="layui-col-md3">
-                                        <div class="layui-card">
-                                            <div class="layui-card-header">{$v.name}</div>
-                                            <div class="layui-card-body">
-                                                {$v.create_time}（{$v.create_time_ago}）<br>
+                        {notempty name="$project"}
+                        <div class="layui-card-body layui-row">
+                            {foreach $project as $key=>$val}
+                            <div class="layui-col-md6" style="padding: 1px; background-color: #F2F2F2;">
+                                <blockquote class="layui-elem-quote">{$val.project_name}</blockquote>
+                                <div class="layui-row">
+                                    <a href="{:url('index/interfaces/interfaces',['project_id'=>$val['project_id']])}" target="_blank">
+                                        <div class="layui-col-md12">
+                                            <div class="layui-card">
+                                                <div class="layui-card-header">{$val.project_desc}</div>
+                                                <div class="layui-card-body">
+                                                    {$val.count}个接口（{$val.last_time_ago}更新）<br>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
                                     </a>
-                                    {/foreach}
                                 </div>
                             </div>
                             {/foreach}

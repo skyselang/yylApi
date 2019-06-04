@@ -6,43 +6,9 @@ use think\Db;
 use think\facade\Config;
 use think\facade\Session;
 
-class Index extends Common
+class Index extends Base
 {	
-
     public function index()
-    {
-    	$user_id = Session::get('user_id');
-
-    	$relation = Db::name('relation')
-    		->where('user_id',$user_id)
-    		->select();
-        if ($relation) {
-            foreach ($relation as $k => $v) {
-                $interface[$k]['interface'] = Db::name('interface')
-                    ->where('is_disable',0)
-                    ->where('is_delete',0)
-                    ->where('interface_pid',0)
-                    ->where('project_id',$v['project_id'])
-                    ->select();
-                $create_time = Db::name('interface')
-                    ->where('is_delete',0)
-                    ->where('project_id',$v['project_id'])
-                    ->field('update_time')
-                    ->order('update_time desc')
-                    ->find();
-                $interface[$k]['interface'][$k]['create_time'] = $create_time['update_time'];
-                $interface[$k]['interface'][$k]['create_time_ago'] = format_date(strtotime($create_time['update_time']));
-                $interface[$k]['project_id'] = $v['project_id'];
-                $interface[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
-            }
-            
-            $this->assign('interface',$interface);
-        }
-
-        return $this->fetch();
-    }
-
-    public function indexs()
     {
         $user_id = Session::get('user_id');
 

@@ -5,7 +5,7 @@ namespace app\admin\controller;
 use think\Controller;
 use think\facade\Session;
 
-class Index extends Common
+class Index extends Base
 {
     public function index()
     {

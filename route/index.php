@@ -8,3 +8,7 @@
 // +----------------------------------------------------------------------
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
+
+Route::rule('index/login','index/login/login');
+Route::rule('index/index','index/index/index');
+Route::rule('project/:project_id','index/interfaces/interfaces');
