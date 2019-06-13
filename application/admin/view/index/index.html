@@ -73,19 +73,19 @@
                     </div>
                     <ul class="layui-nav layui-nav-tree" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
                         <li data-name="" class="layui-nav-item layui-nav-itemed">
-                            <a lay-href="{:url('admin/index/indexs')}"  lay-tips="首页" lay-direction="2">
+                            <a lay-href="{:url('admin/index/indexs')}" lay-tips="首页" lay-direction="2">
                                 <i class="layui-icon layui-icon-home"></i>
                                 <cite>首页</cite>
                             </a>
                         </li>
                         <li data-name="" class="layui-nav-item">
-                            <a lay-href="{:url('admin/project/project')}"  lay-tips="项目" lay-direction="2">
+                            <a lay-href="{:url('admin/project/project')}" lay-tips="项目" lay-direction="2">
                                 <i class="layui-icon layui-icon-app"></i>
                                 <cite>项目</cite>
                             </a>
                         </li>
                         <li data-name="" class="layui-nav-item">
-                            <a lay-href="{:url('admin/interfaces/interfaces')}"  lay-tips="接口" lay-direction="2">
+                            <a lay-href="{:url('admin/interfaces/interfaces')}" lay-tips="接口" lay-direction="2">
                                 <i class="layui-icon layui-icon-form"></i>
                                 <cite>接口</cite>
                             </a>
@@ -149,21 +149,20 @@
     </div>
     <script src="__LAYUI__/layui/layui.js"></script>
     <script>
-    layui.config({base: '__LAYUI__/'}); //静态资源所在路径
-    layui.extend({index: 'lib/index'}) //主入口模块
-    layui.use(['index','layer'], function(){
-        var $ = layui.$;
+    layui.config({ base: '__LAYUI__/' }); //静态资源路径
+    layui.extend({ index: 'lib/index' }) //扩展模块
+    layui.use(['index', 'jquery', 'layer'], function() {
+        var $ = layui.jquery;
         var layer = layui.layer;
 
-        // exit
-        $('.yyl-exit').click(function(){
-            layer.confirm('您确定要退出系统吗？', 
-                {icon: 3, title:'提示'},
-                function(){
+        // exit system
+        $('.yyl-exit').click(function() {
+            layer.confirm('您确定要退出系统吗？', { icon: 3, title: '提示' },
+                function() {
                     window.location.href = "{:url('admin/login/sysexit')}"
                 }
             )
-        })
+        });
     });
     </script>
 </body>

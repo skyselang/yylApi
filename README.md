@@ -1,4 +1,4 @@
-基于thinkphp5.1和layui2.4.5的接口管理系统
+基于thinkphp5.1和layui2.4.5的接口文档系统
 
 需要掌握thinkphp和layui
 

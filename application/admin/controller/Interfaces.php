@@ -6,16 +6,13 @@ use think\Controller;
 use think\Db;
 use think\facade\Session;
 use think\facade\Request;
-use \think\facade\Url;
+use think\facade\Url;
 
 class Interfaces extends Base
 {
 	// 接口
 	public function interfaces() 
 	{
-        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc,project_id desc')->select();
-        $this->assign('project',$project);
-        
 		if (Request::isAjax()) {
             // 分页
             $page = Request::param('page');
@@ -29,47 +26,43 @@ class Interfaces extends Base
             $start_date = Request::param('start_date');//开始日期
             $end_date = Request::param('end_date');//结束日期
             if ($project_id) {
-                $where['project_id'] = $project_id;
+                $where['i.project_id'] = $project_id;
             }
             if ($field_val) {
-                $where[$field] = array('like',"%".$field_val."%");
+                $where['i'.$field] = array('like',"%".$field_val."%");
             }
             if ($start_date && $end_date) {
                 $start_time = strtotime($start_date.' 00:00:00');
                 $end_time = strtotime($end_date.' 23:59:59');
-                $where[] = [$date_type, ['>=', $start_time], ['<=', $end_time], 'and'];
+                $where['i.'.$date_type] = ['>=',$start_time];
+                $where['i.'.$date_type] = ['<=',$end_time];
             }
-            $where['is_delete'] = 0;
+            $where['i.is_delete'] = 0;
+            $where['p.is_delete'] = 0;
 
             // 排序
             $order_field = Request::param('order_field'); // 排序字段
             $order_type = Request::param('order_type'); // 排序方式
             if ($order_type) {
                 $order_field = $order_field == 'id' ? 'interface_id' : $order_field;
-                $order = "{$order_field} {$order_type}";
+                $order = "i.{$order_field} {$order_type}";
             } else {
-                $order = 'sort desc, interface_id asc';
+                $order = 'i.sort desc, interface_id asc';
             }
-
-            // 数据分页
+            
             $data = Db::name('interface')
+                ->alias('i')
+                ->join('project p','i.project_id=p.project_id')
+                ->join('admin a','p.admin_id=a.admin_id')
+                ->field('i.interface_id, i.name, i.interface_pid, i.method, i.url, i.sort, i.is_delete, i.create_time, i.update_time, p.project_name, a.username')
                 ->where($where)
                 ->order($order)
-                ->select(); 
-            // 总记录数
-            $count = Db::name('interface')
-	            ->where($where)
-	            ->count();
+                ->select();
+            $count = count($data);// 总记录数
 
             if ($data) {
                 foreach ($data as $k => $v) {
-                    $is_delete = Db::name('project')->where('project_id',$v['project_id'])->value('is_delete');
-                    if ($is_delete == 1) {
-                        unset($data[$k]);
-                    }
-                    $data[$k]['project_name'] = Db::name('project')->where('project_id',$v['project_id'])->value('project_name');
                     $data[$k]['id'] = $v['interface_id'];
-                    $data[$k]['admin_id'] = Db::name('admin')->where('admin_id',$v['admin_id'])->value('username');
                     $data[$k]['share_url'] = Url::build('share/share/share',['interface_id'=>$v['interface_id']],'',true);
                 }
 
@@ -82,6 +75,9 @@ class Interfaces extends Base
 
             return json($res);
         }
+
+        $project = Db::name('project')->where('is_delete',0)->field('project_id, project_name')->order('sort desc,project_id desc')->select();
+        $this->assign('project',$project);
         
 		return $this->fetch();
 	}
@@ -121,7 +117,6 @@ class Interfaces extends Base
         $this->assign('response',$response);
 
     	if (Request::isPost()) {
-    		
             $data['project_id'] = Request::param('project_id');
             $data['interface_pid'] = Request::param('interface_pid',0);
             $data['admin_id'] = Session::get('admin_id');
@@ -164,28 +159,20 @@ class Interfaces extends Base
             }
             $data['response'] = serialize($response);
 
-            $name = $data['name'];
-            $project_id = $data['project_id'];
-            $interface_pid = $data['interface_pid'];
-            if ($interface_pid) {
-                $where = ['project_id'=>$project_id,'interface_pid'=>$interface_pid];
-            } else {
-                $where = ['project_id'=>$project_id];
+            if ($data['interface_pid']) {
+                $where['interface_pid'] = $data['interface_pid'];
             }
+            $where['project_id'] = $data['project_id'];
+            $where['name'] = $data['name'];
+            $where['is_delete'] = 0;
             
-            $check = Db::name('interface')
-                ->where($where)
-                ->where('is_delete', 0)
-            	->where('name',$name)
-            	->find();
+            $check = Db::name('interface')->where($where)->find();
 
             if ($check) {
                 $res['code'] = 1;
                 $res['msg'] = '接口名称已存在'.$check['interface_id'];
             } else {
-                $insert = Db::name('interface')
-            		->data($data)
-            		->insert();
+                $insert = Db::name('interface')->insert($data);
 
 	            if ($insert) {
 	                $res['code'] = 0;
@@ -214,7 +201,7 @@ class Interfaces extends Base
         $interface['apiurl_prefix'] = unserialize($apiurl_prefix);
         $interface['request'] = unserialize($interface['request']);
         $interface['response'] = unserialize($interface['response']);
-        $interface['share_url'] = Url::build('share/api/api',['id'=>$interface['interface_id']],'',true);
+        $interface['share_url'] = Url::build('share/share/share',['interface_id'=>$interface['interface_id']],'',true);
         $this->assign('interface',$interface);
 
         // 项目
