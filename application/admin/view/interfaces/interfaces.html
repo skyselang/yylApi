@@ -279,7 +279,8 @@
             }
             // 分享
             if (layEvent === 'share') {
-                var url = data.share_url;
+                var url = '';
+                url = data.share_url;
                 $('#share-input').val(url);
                 $('#share-form').removeClass('layui-hide');
                 $('#share-form').addClass('layui-show');
