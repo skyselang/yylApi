@@ -54,7 +54,8 @@ class Interfaces extends Base
                 ->alias('i')
                 ->join('project p','i.project_id=p.project_id')
                 ->join('admin a','p.admin_id=a.admin_id')
-                ->field('i.interface_id, i.name, i.interface_pid, i.method, i.url, i.sort, i.is_delete, i.create_time, i.update_time, p.project_name, a.username')
+                ->field('i.interface_id, i.name, i.interface_pid, i.method, i.url, i.sort, i.is_delete, i.create_time, i.update_time, p.project_id,
+                    p.project_name, a.username')
                 ->where($where)
                 ->order($order)
                 ->select();
