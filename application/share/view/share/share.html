@@ -31,17 +31,30 @@
                             <label class="layui-form-label">请求方式</label>
                             <div class="layui-input-inline" style="width: 100px;">
                                 <select name="method" id="method" lay-filter="method" lay-verify="">
-                                    <option value="POST" {if $interface.method=='POST' }selected{/if}>POST </option> <option value="GET" {if $interface.method=='GET' }selected{/if}>GET </option> <option value="PUT" {if $interface.method=='PUT' }selected{/if}>PUT </option> <option value="PATCH" {if $interface.method=='PATCH' }selected{/if}>PATCH </option> <option value="DELETE" {if $interface.method=='DELETE' }selected{/if}>DELETE </option> </select> </div> </div> <div class="layui-inline">
-                                        <label class="layui-form-label">接口环境</label>
-                                        <div class="layui-input-inline">
-                                            <select name="" id="apiurl_prefix" lay-filter="apiurl_prefix" lay-verify="">
-                                                {foreach $interface.apiurl_prefix as $key=>$vo}
-                                                <option value="{$vo.apiurl_prefix_name}" {eq name="vo.apiurl_prefix_default" value="1" }selected{/eq}>{$vo.apiurl_prefix_url} </option> {/foreach} </select> </div> </div> <div class="layui-inline" style="width: 440px;">
-                                                    <label class="layui-form-label">接口URL</label>
-                                                    <div class="layui-input-inline" style="width: 300px;">
-                                                        <input type="text" name="url" value="{$interface.url}" autocomplete="off" class="layui-input">
-                                                    </div>
-                                        </div>
+                                    <option value="POST" {if $interface.method=='POST' }selected{/if}>POST </option> 
+                                    <option value="GET" {if $interface.method=='GET' }selected{/if}>GET </option> 
+                                    <option value="PUT" {if $interface.method=='PUT' }selected{/if}>PUT </option> 
+                                    <option value="PATCH" {if $interface.method=='PATCH' }selected{/if}>PATCH </option> 
+                                    <option value="DELETE" {if $interface.method=='DELETE' }selected{/if}>DELETE </option> 
+                                </select> 
+                            </div> 
+                        </div> 
+                        <div class="layui-inline">
+                            <label class="layui-form-label">接口环境</label>
+                            <div class="layui-input-inline">
+                                <select name="" id="apiurl_prefix" lay-filter="apiurl_prefix" lay-verify="">
+                                    {foreach $interface.apiurl_prefix as $key=>$vo}
+                                    <option value="{$vo.apiurl_prefix_name}" {eq name="vo.apiurl_prefix_default" value="1" }selected{/eq}>{$vo.apiurl_prefix_url}</option>
+                                    {/foreach} 
+                                </select> 
+                            </div> 
+                        </div> 
+                            <div class="layui-inline" style="width: 440px;">
+                                <label class="layui-form-label">接口URL</label>
+                                <div class="layui-input-inline" style="width: 300px;">
+                                    <input type="text" name="url" value="{$interface.url}" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label">请求接口</label>
