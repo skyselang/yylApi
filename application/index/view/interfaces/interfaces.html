@@ -101,7 +101,7 @@
                 ],
                 done: function(res, curr, count){
                     // 得到数据总量
-                    $('.field_value').attr('placeholder', '输入名称搜索('+count+')');
+                    $('.field_value').attr('placeholder', '搜索({$project_name}'+count+')');
                 }
             });
             layer.closeAll('loading');

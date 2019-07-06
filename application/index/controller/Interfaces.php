@@ -36,7 +36,9 @@ class Interfaces extends Base
                 $where['i.'.$date_type] = ['>=',$start_time];
                 $where['i.'.$date_type] = ['<=',$end_time];
             }
+            $where['i.is_disable'] = 0;
             $where['i.is_delete'] = 0;
+            $where['p.is_disable'] = 0;
             $where['p.is_delete'] = 0;
 
             // 排序
@@ -92,7 +94,7 @@ class Interfaces extends Base
             ->join('project p','p.project_id=i.project_id')
             ->where('interface_id', $interface_id)
             ->find();//接口详情
-            
+        $interface['fullname'] = get_api_fullname($interface_id);
         if (!$interface) {
             $this->error('接口不存在！'.$interface_id);
         } else {

@@ -34,3 +34,40 @@ function format_date($time){
         }
     }
 }
+
+function get_api_fullname($interface_id = 0)
+{
+    if ($interface_id) {
+        $interface = Db::name('interface')
+            ->alias('i')
+            ->join('project p', 'i.project_id=p.project_id')
+            ->where('i.interface_id', $interface_id)
+            ->field('i.interface_id, i.interface_pid, i.name, i.project_id, p.project_name')
+            ->find();
+        if ($interface['interface_pid'] == 0) {
+            return $interface['project_name'].'>'.$interface['name'];
+        } else {
+            $interfaceArr = Db::name('interface')
+                ->field('interface_id, interface_pid, name')
+                ->where(['project_id'=>$interface['project_id'], 'is_disable'=>0, 'is_delete'=>0])
+                ->select();
+            $i = 0;
+            $pid = $interface_id;
+            $interface_ids = '';
+            while ($pid > 0) {
+                if ($interfaceArr[$i]['interface_pid'] == $pid) {
+                    $interface_ids .= $interfaceArr[$i]['interface_id'];
+                    $pid = $interfaceArr[$i]['interface_pid'];
+                    dump($interfaceArr[$i]['interface_id']).','.dump($interfaceArr[$i]['interface_pid']);exit;
+                }
+                $i += 1;
+            }
+            $interface_pid = Db::name('interface')->field('interface_id, interface_pid, name')->where('interface_id', 'in', $interface_ids)->order('interface_id asc')->select();
+            foreach ($interface_pid as $k => $v) {
+                $fullname .= '>'.$v['name'];
+            }
+            $fullname = $interface['project_name'].$fullname;
+            return $fullname;
+        }
+    }
+}
