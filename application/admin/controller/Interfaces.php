@@ -72,6 +72,8 @@ class Interfaces extends Base
                 $res['count'] = $count;
             } else {
                 $res['code'] = 0;
+                $res['data'] = [];
+                $res['count'] = 0;
             }
 
             return json($res);
