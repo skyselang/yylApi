@@ -1,4 +1,5 @@
 <?php
+
 namespace app\admin\controller;
 
 use think\Controller;
@@ -6,23 +7,29 @@ use think\Db;
 use think\facade\Session;
 use think\facade\Request;
 
+/**
+ * adminkongzhiqi
+ * @author yyl <215817969@qq.com>
+ */
+
 class Admin extends Base
 {
+
     /**
      * 修改资料
      * @return json
      */
     public function info()
     {
-    	$admin_id = Session::get('admin_id');
+        $admin_id = Session::get('admin_id');
 
-    	if (empty($admin_id)) {
+        if (empty($admin_id)) {
             $this->error('登录信息获取失败，请重新登录！');
-    	} else {
-    		$admin = Db::name('admin')->where('admin_id', $admin_id)->find();
-    	}
+        } else {
+            $admin = Db::name('admin')->where('admin_id', $admin_id)->find();
+        }
 
-    	if (Request::isAjax()) {
+        if (Request::isAjax()) {
             $res['code'] = 1;
             $admin_id = Session::get('admin_id');
             if (empty($admin_id)) {
@@ -53,17 +60,18 @@ class Admin extends Base
                 }
             }
 
-    		return json($res);
-    	}
-    	
-    	$this->assign('info',$admin);
+            return json($res);
+        }
 
-    	return $this->fetch();
+        $this->assign('info', $admin);
+
+        return $this->fetch();
     }
 
     /**
      * 修改密码
-     * @return json 
+     *
+     * @return void
      */
     public function pwd()
     {
@@ -73,8 +81,8 @@ class Admin extends Base
             if (empty($admin_id)) {
                 $res['msg'] = '请重新登录再修改';
             } else {
-                $oldpwd = Request::param('oldpwd/s');
-                $newpwd = Request::param('newpwd/s');
+                $oldpwd  = Request::param('oldpwd/s');
+                $newpwd  = Request::param('newpwd/s');
                 $newpwds = Request::param('newpwds/s');
                 if (empty($oldpwd)) {
                     $res['msg'] = '请输入原密码';
@@ -107,10 +115,10 @@ class Admin extends Base
                     }
                 }
             }
-            
+
             return json($res);
         }
 
-    	return $this->fetch();
+        return $this->fetch();
     }
 }
