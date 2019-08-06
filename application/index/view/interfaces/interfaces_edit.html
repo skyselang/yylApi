@@ -84,10 +84,21 @@
                                                 <td><input class="layui-input" type="text" name="request_param_example[]" value="{$vo.request_param_example}" placeholder="示例"></td>
                                                 <td>
                                                     <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">
-                                                        <option value="0" {if $vo.request_param_must==0}selected{/if}>是 </option> <option value="1" {if $vo.request_param_must==1}selected{/if}>否 </option> </select> </td> <td>
-                                                            <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">
-                                                                <option value="String" {if $vo.request_param_type=='String' }selected{/if}>String </option> <option value="Integer" {if $vo.request_param_type=='Integer' }selected{/if}>Integer </option> <option value="Float" {if $vo.request_param_type=='Float' }selected{/if}>Float </option> <option value="Boolean" {if $vo.request_param_type=='Boolean' }selected{/if}>Boolean </option> <option value="Array" {if $vo.request_param_type=='Array' }selected{/if}>Array </option> <option value="Object" {if $vo.request_param_type=='Object' }selected{/if}>Object </option> <option value="NULL" {if $vo.request_param_type=='NULL' }selected{/if}>NULL </option> </select> </td>
-                                                
+                                                        <option value="0" {if $vo.request_param_must==0}selected{/if}>是 </option> 
+                                                        <option value="1" {if $vo.request_param_must==1}selected{/if}>否 </option> 
+                                                    </select> 
+                                                </td> 
+                                                <td>
+                                                    <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">
+                                                        <option value="String" {if $vo.request_param_type=='String' }selected{/if}>String </option> 
+                                                        <option value="Integer" {if $vo.request_param_type=='Integer' }selected{/if}>Integer </option> 
+                                                        <option value="Float" {if $vo.request_param_type=='Float' }selected{/if}>Float </option> 
+                                                        <option value="Boolean" {if $vo.request_param_type=='Boolean' }selected{/if}>Boolean </option> 
+                                                        <option value="Array" {if $vo.request_param_type=='Array' }selected{/if}>Array </option> 
+                                                        <option value="Object" {if $vo.request_param_type=='Object' }selected{/if}>Object </option> 
+                                                        <option value="NULL" {if $vo.request_param_type=='NULL' }selected{/if}>NULL </option> 
+                                                    </select> 
+                                                </td>
                                             </tr>
                                             {/foreach}
                                             {/if}
@@ -120,12 +131,14 @@
                                     </table>
                                 </div>
                             </div>
+                            {if $interface.response_data}
                             <div class="layui-form-item">
                                 <label class="layui-form-label">返回说明</label>
                                 <div class="layui-input-block">
                                     <script id="editor" name="response_data" type="text/plain" style="width:100%;height:100%;">{$interface.response_data|raw}</script>
                                 </div>
                             </div>
+                            {/if}
                             {if $interface.explain}
                             <div class="layui-form-item">
                                 <label class="layui-form-label">接口说明</label>
