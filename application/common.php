@@ -54,15 +54,16 @@ function get_api_fullname($interface_id = 0)
             $i = 0;
             $pid = $interface_id;
             $interface_ids = '';
-            while ($pid > 0) {
+            while ($pid > 0) {dump($i);exit;
                 if ($interfaceArr[$i]['interface_pid'] == $pid) {
                     $interface_ids .= $interfaceArr[$i]['interface_id'];
                     $pid = $interfaceArr[$i]['interface_pid'];
-                    dump($interfaceArr[$i]['interface_id']).','.dump($interfaceArr[$i]['interface_pid']);exit;
+                    // dump($interfaceArr[$i]['interface_id']).','.dump($interfaceArr[$i]['interface_pid']);exit;
                 }
                 $i += 1;
             }
             $interface_pid = Db::name('interface')->field('interface_id, interface_pid, name')->where('interface_id', 'in', $interface_ids)->order('interface_id asc')->select();
+            $fullname = '';
             foreach ($interface_pid as $k => $v) {
                 $fullname .= '>'.$v['name'];
             }
