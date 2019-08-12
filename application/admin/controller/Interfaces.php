@@ -281,7 +281,7 @@ class Interfaces extends Base
             if ($interface_pid) {
                 $where = ['project_id'=>$project_id,'interface_pid'=>$interface_pid];
             } else {
-                $where = ['project_id'=>$project_id];
+                $where = ['project_id'=>$project_id,'interface_pid'=>$interface_pid];
             }
 
             $check = Db::name('interface')
