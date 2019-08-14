@@ -116,7 +116,10 @@ class Login extends Controller
 			Db::name('admin')->where('admin_id', $admin_id)->update($data);
 		}
 
-		Session::clear(); //清除session（当前作用域）
+		// Session::clear(); //清除session（当前作用域）
+		Session::delete('admin_id');
+		Session::delete('username');
+		Session::delete('nickname');
 		echo "<script>parent.location.href='" . url('admin/login/login') . "'</script>"; //js父级页面跳转
 	}
 }

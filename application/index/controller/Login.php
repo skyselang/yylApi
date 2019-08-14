@@ -24,10 +24,6 @@ class Login extends Controller
 	 */
 	public function login()
 	{
-		Session::clear();
-		Cookie::clear('aa_');
-		Cookie::clear('ai_');
-
 		$is_verify = config::get('app.is_verify');
 
 		$this->assign('is_verify', $is_verify);
@@ -118,7 +114,8 @@ class Login extends Controller
 			Db::name('user')->where('user_id', $user_id)->update($data);
 		}
 
-		Session::clear(); //清除session（当前作用域）
+		// Session::clear(); //清除session（当前作用域）
+		Session::delete('user_id');
 		echo "<script>parent.location.href='" . url('index/login/login') . "'</script>"; //js父级页面跳转
 	}
 }
