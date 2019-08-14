@@ -9,13 +9,13 @@ use think\facade\Cookie;
 use think\facade\Request;
 use think\Db;
 
-class Login extends Controller 
+class Login extends Controller
 {
 	/**
 	 * 跳转到登录页面
 	 * @return
 	 */
-	public function index() 
+	public function index()
 	{
 		$this->redirect('admin/login/login');
 	}
@@ -23,7 +23,7 @@ class Login extends Controller
 	 * 登录页面
 	 * @return
 	 */
-	public function login() 
+	public function login()
 	{
 		$is_verify = config::get('app.is_verify');
 
@@ -36,7 +36,7 @@ class Login extends Controller
 	 * 登录验证
 	 * @return json 验证结果
 	 */
-	public function check() 
+	public function check()
 	{
 		$res['code'] = 1;
 
@@ -60,9 +60,9 @@ class Login extends Controller
 
 			$admin = Db::name('admin')->where($where)->find();
 			if (empty($admin)) {
-				$admin = Db::name('admin')->where(['username'=>$username, 'password'=>$password])->find();
+				$admin = Db::name('admin')->where(['username' => $username, 'password' => $password])->find();
 			}
-			
+
 			if (empty($admin)) {
 				$res['msg'] = '账号或密码错误！';
 			} else {
@@ -72,9 +72,6 @@ class Login extends Controller
 				Session::set('admin_id', $admin_id);
 				Session::set('username', $admin['username']);
 				Session::set('nickname', $admin['nickname']);
-				Cookie::forever('admin_id', $admin_id);
-				Cookie::forever('username', $admin['username']);
-				Cookie::forever('password', $admin['password']);
 
 				$res['code'] = 0;
 				$res['msg'] = '登录成功！';
@@ -94,7 +91,7 @@ class Login extends Controller
 	 * @param  integer $device   登录环境
 	 * @return null
 	 */
-	public function update($admin_id = '', $login_ip = '0.0.0.0', $device = 0) 
+	public function update($admin_id = '', $login_ip = '0.0.0.0', $device = 0)
 	{
 		if ($admin_id) {
 			$data['login_ip'] = $login_ip;
@@ -110,7 +107,7 @@ class Login extends Controller
 	 * 退出系统
 	 * @return
 	 */
-	public function sysexit() 
+	public function sysexit()
 	{
 		$admin_id = Session::get('admin_id');
 

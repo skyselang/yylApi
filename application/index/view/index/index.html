@@ -18,7 +18,14 @@
                 <div class="layui-col-md12">
                     <div class="layui-card">
                         <div class="layui-card-header">
-                            <h3 style="text-align: center;">{:config('app_name')}</h3>
+                            <div class="layui-row">
+                                <div class="layui-col-md11">
+                                    <h3 style="text-align: center;">{:config('app_name')}</h3>
+                                </div>
+                                <div class="layui-col-md1">
+                                    <a href="{:url('login/sysexit')}" class="layui-btn layui-btn-primary layui-btn-sm" title="退出系统">退出</a>
+                                </div>
+                            </div>
                         </div>
                         {notempty name="$project"}
                         <div class="layui-card-body layui-row">
@@ -49,9 +56,9 @@
     <!-- JavaScript -->
     <script src="__LAYUI__/layui/layui.js"></script>
     <script>
-    layui.use(['jquery', 'element'], function() {
+        layui.use(['jquery', 'element'], function () {
 
-    });
+        });
     </script>
 </body>
 

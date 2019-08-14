@@ -8,8 +8,8 @@ use think\facade\Session;
 class Base extends Controller
 {
     public function initialize()
-    {	
-    	$this->isLogin();
+    {
+        $this->isLogin();
     }
 
     /**
@@ -18,12 +18,12 @@ class Base extends Controller
      */
     public function isLogin()
     {
-    	$is_login = Session::has('admin_id');
+        $is_login = Session::has('admin_id');
 
-    	if ($is_login) {
-    		# code...
-    	} else {
+        if ($is_login) {
+            # code...
+        } else {
             action('admin/login/sysexit');
-    	}
+        }
     }
 }

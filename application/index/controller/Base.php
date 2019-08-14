@@ -1,4 +1,5 @@
 <?php
+
 namespace app\index\controller;
 
 use think\Controller;
@@ -7,8 +8,8 @@ use think\facade\Session;
 class Base extends Controller
 {
     public function initialize()
-    {	
-    	$this->isLogin();
+    {
+        $this->isLogin();
     }
 
     /**
@@ -17,12 +18,12 @@ class Base extends Controller
      */
     public function isLogin()
     {
-    	$is_login = Session::has('user_id');
+        $is_login = Session::has('user_id');
 
-    	if ($is_login) {
-    		# code...
-    	} else {
+        if ($is_login) {
+            # code...
+        } else {
             action('login/sysexit');
-    	}
+        }
     }
 }
