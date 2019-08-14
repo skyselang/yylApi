@@ -79,16 +79,16 @@
                                             {if $interface.request}
                                             {foreach $interface.request as $key=>$vo}
                                             <tr>
-                                                <td width="25%"><input class="layui-input" type="text" name="request_param_name[]" value="{$vo.request_param_name}" placeholder="名称"></td>
-                                                <td width="40%"><input class="layui-input" type="text" name="request_param_explain[]" value="{$vo.request_param_explain}" placeholder="说明"></td>
+                                                <td width="22%"><input class="layui-input" type="text" name="request_param_name[]" value="{$vo.request_param_name}" placeholder="名称"></td>
+                                                <td width="35%"><input class="layui-input" type="text" name="request_param_explain[]" value="{$vo.request_param_explain}" placeholder="说明"></td>
                                                 <td><input class="layui-input" type="text" name="request_param_example[]" value="{$vo.request_param_example}" placeholder="示例"></td>
-                                                <td>
+                                                <td width="70">
                                                     <select name="request_param_must[]" id="request_param_must" lay-filter="request_param_must" lay-verify="">
                                                         <option value="0" {if $vo.request_param_must==0}selected{/if}>是 </option> 
                                                         <option value="1" {if $vo.request_param_must==1}selected{/if}>否 </option> 
                                                     </select> 
                                                 </td> 
-                                                <td>
+                                                <td width="80">
                                                     <select name="request_param_type[]" id="request_param_type" lay-filter="request_param_type" lay-verify="">
                                                         <option value="String" {if $vo.request_param_type=='String' }selected{/if}>String </option> 
                                                         <option value="Integer" {if $vo.request_param_type=='Integer' }selected{/if}>Integer </option> 
@@ -121,8 +121,8 @@
                                             {if $interface.response}
                                             {foreach $interface.response as $key=>$vo}
                                             <tr>
-                                                <td width="25%"><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_param_name}" placeholder="名称"></td>
-                                                <td width="40%"><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_param_explain}" placeholder="说明"></td>
+                                                <td width="22%"><input class="layui-input" type="text" name="response_param_name[]" value="{$vo.response_param_name}" placeholder="名称"></td>
+                                                <td width="35%"><input class="layui-input" type="text" name="response_param_explain[]" value="{$vo.response_param_explain}" placeholder="说明"></td>
                                                 <td><input class="layui-input" type="text" name="response_param_example[]" value="{$vo.response_param_example}" placeholder="示例"></td>
                                             </tr>
                                             {/foreach}

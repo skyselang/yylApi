@@ -92,20 +92,28 @@
                         <div class="layui-input-inline" style="width: 600px;">
                             <input type="text" id="apiurl_show" class="layui-input" value="{$interface.apiurl_prefix.0.apiurl_prefix_url}{$interface.url}">
                         </div>
+                        <div class="layui-input-inline">
+                                <button type="button" id="apiurl_show_copy" class="layui-btn layui-btn-primary" data-clipboard-target="#apiurl_show">Copy</button>
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">请求参数</label>
-                    <div class="layui-input-block">
+                    <div id="request_param_table" class="layui-input-block">
                         <table class="layui-table" lay-size="sm">
                             <thead>
                                 <tr>
-                                    <th width="25%">名称</th>
-                                    <th width="40%">说明</th>
+                                    <th style="width:22%;">名称</th>
+                                    <th style="width:35%;">说明</th>
                                     <th>示例</th>
-                                    <th>是否必须</th>
-                                    <th>数据类型</th>
-                                    <th width="12%"><button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button></th>
+                                    <th style="width:80px">是否必须</th>
+                                    <th style="width:90px">数据类型</th>
+                                    <th style="width:140px">
+                                        <div class="layui-btn-group">
+                                            <button type="button" id="request_param_add" class="layui-btn layui-btn-sm">添加</button>
+                                            <button type="button" id="request_param_to_edit" class="layui-btn layui-btn-sm layui-btn-primary">Edit</button>
+                                        </div>
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody id="request_param">
@@ -144,6 +152,27 @@
                                 {/if}
                             </tbody>
                         </table>
+                    </div>
+                    <div id="request_param_edit" class="layui-input-block layui-hide">
+                        <table class="layui-table" lay-size="sm">
+                            <thead>
+                                <tr>
+                                    <th width="22%"></th>
+                                    <th width="35%"></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th width="15%">
+                                        <div class="layui-btn-group">
+                                            <button type="button" id="request_param_add" class="layui-btn layui-btn-sm layui-disabled">添加</button>
+                                            <button type="button" id="request_param_to_table" class="layui-btn layui-btn-sm layui-btn-primary">Table</button>
+                                            <button type="button" id="request_param_copy" class="layui-btn layui-btn-sm layui-btn-primary" data-clipboard-target="#request_param_textarea">Copy</button>
+                                        </div>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <textarea id="request_param_textarea" class="layui-textarea"></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -244,6 +273,36 @@
         var loadOpen = layer.load(2, { shade: 0.1 });
         var ue = UE.getEditor('editor');
 
+        // 转换成键值
+        $('#request_param_to_edit').click(function(){
+            var str = '';
+            $("#request_param").find("tr").each(function(i){
+                if (i >= 0) {
+                    var a = $(this).find("input[type='text']:eq(0)").val();
+                    var b = $(this).find("input[type='text']:eq(2)").val();
+                    str = a + ':' + b + '\n' + str;
+                }
+            });
+            if (str) {
+                $('#request_param_textarea').html(str.substring(0, str.length-1));
+                $('#request_param_table').addClass('layui-hide');
+                $('#request_param_edit').removeClass('layui-hide');
+            }
+            form.render();//重新渲染表单
+        });
+        var clipboardParam = new ClipboardJS('#request_param_copy');
+            clipboardParam.on('success', function(e) {
+                layer.msg('复制成功')
+            });
+            clipboardParam.on('error', function(e) {
+                layer.msg('复制失败')
+            });
+        // 显示表格
+        $('#request_param_to_table').click(function(){
+            $('#request_param_table').removeClass('layui-hide');
+            $('#request_param_edit').addClass('layui-hide');
+        });
+
         // 分享
         $('#share-btn').click(function(){
             var url = $('#share-input').val();
@@ -274,7 +333,6 @@
             })
         });
         
-
         // 拼接接口url
         form.on('select(apiurl_prefix)', function(data){
             apiurl();
@@ -286,7 +344,15 @@
             var prefix = $("#apiurl_prefix option:selected").text();
             var url = $("input[name='url']").val();
             $('#apiurl_show').empty().val(prefix + url);
-        }
+        };
+        // copy apiurl
+        var clipboardApiUrl = new ClipboardJS('#apiurl_show_copy');
+        clipboardApiUrl.on('success', function(e) {
+            layer.msg('复制成功')
+        });
+        clipboardApiUrl.on('error', function(e) {
+            layer.msg('复制失败')
+        });
 
         // 返回参数模板
         $('#response_param_template').click(function(){
