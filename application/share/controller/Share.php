@@ -23,6 +23,7 @@ class Share extends Controller
         if (!$interface) {
             $this->error('接口不存在！'.$interface_id);
         } else {
+            $interface['fullname'] = api_fullname($interface_id);
             $interface['apiurl_prefix'] = unserialize($interface['apiurl_prefix']);
             $interface['request'] = unserialize($interface['request']);
             $interface['response'] = unserialize($interface['response']);

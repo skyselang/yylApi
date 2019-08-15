@@ -15,7 +15,7 @@
     <div class="layui-container">
         <div class="layui-row">
             <div class="layui-col-md12">
-                
+                <h4 style="text-align: center;margin: 8px 0">{$interface['fullname']}</h4>
             </div>
             <div class="layui-col-md12">
                 <form class="layui-form" action="">
@@ -166,6 +166,7 @@
         var $ = layui.jquery; //jquery
         var form = layui.form; //表单
         var layer = layui.layer; //弹出层
+        var loadOpen = layer.load(2, { shade: 0.1 });
         var is_editor = $('#is_editor').val();
         if (is_editor == 0) {
             var ue = UE.getEditor('editor', {
@@ -175,8 +176,8 @@
                 elementPathEnabled: false
             });
         }
-        
-        var loadOpen = layer.load(2, { shade: 0.1 });
+        // 重置layer标题
+        parent.layer.title("{$interface['fullname']}"); //重置标题 
         // 拼接接口url
         apiurl();
         form.on('select(apiurl_prefix)', function(data) {

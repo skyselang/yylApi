@@ -273,6 +273,9 @@
         var loadOpen = layer.load(2, { shade: 0.1 });
         var ue = UE.getEditor('editor');
 
+        // 重置layer标题
+        parent.layer.title("{$interface['fullname']}"); //重置标题 
+
         // 转换成键值
         $('#request_param_to_edit').click(function(){
             var str = '';
@@ -532,7 +535,7 @@
 
         form.render();//重新渲染表单
 
-        layer.close(loadOpen); 
+        layer.close(loadOpen); //关闭load
     });
     </script>
 </body>
